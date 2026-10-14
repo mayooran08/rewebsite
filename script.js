@@ -51,4 +51,19 @@
   });
 
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  var nav = document.querySelector('.nav');
+  window.addEventListener('scroll', function () {
+    nav.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+
+  var targets = document.querySelectorAll('.card, .about > div, .val-inner > *, .contact > *, .section h2');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12 });
+    targets.forEach(function (el) { el.classList.add('reveal'); io.observe(el); });
+  }
 })();

@@ -66,7 +66,22 @@ h2{font-size:clamp(1.9rem,3.5vw,2.7rem);margin-bottom:1rem}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin-top:3rem}
 .card{background:#fff;border-radius:var(--radius);padding:2.2rem 1.8rem;box-shadow:0 10px 30px rgba(20,30,50,.07);transition:.25s;border-top:3px solid var(--gold)}
 .card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(20,30,50,.12)}
-.icon{width:52px;height:52px;border-radius:50%;background:var(--navy);color:var(--gold-2);display:grid;place-items:center;font-size:1.4rem;margin-bottom:1.2rem}
+.icon{width:56px;height:56px;border-radius:50%;background:var(--navy);color:var(--gold-2);display:grid;place-items:center;margin-bottom:1.2rem;box-shadow:0 0 0 6px rgba(201,162,75,.15)}
+.icon svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+/* polish */
+::selection{background:var(--gold);color:var(--navy)}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--gold-2);outline-offset:3px}
+.nav{transition:box-shadow .3s}
+.nav.scrolled{box-shadow:0 8px 24px rgba(0,0,0,.25)}
+h2::after{content:"";display:block;width:56px;height:3px;background:var(--gold);margin-top:.9rem;border-radius:2px}
+h2.center::after{margin-inline:auto}
+.valuation h2::after{display:none}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+.cards .reveal:nth-child(2){transition-delay:.12s}
+.cards .reveal:nth-child(3){transition-delay:.24s}
+.no-js .reveal{opacity:1;transform:none}
 .card h3{font-size:1.35rem;margin-bottom:.6rem}
 .card p{margin:0;color:var(--muted)}
 
@@ -108,4 +123,5 @@ address strong{color:var(--ink)}
   .cards{grid-template-columns:1fr}
   .section{padding:64px 0}
 }
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}.reveal{opacity:1;transform:none}}
+html{scroll-padding-top:80px}
