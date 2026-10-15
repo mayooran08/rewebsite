@@ -1,4 +1,4 @@
-// Generates the bilingual multi-page site into the repo root.
+﻿// Generates the bilingual multi-page site into the repo root.
 // Run: node tools/build.mjs
 import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -36,6 +36,19 @@ const socialLinks = (l) => ['facebook', 'google'].map((k) => {
   return `<a class="social-link${SOCIAL[k] ? '' : ' pending'}" href="${href}"${ext} aria-label="${label}" title="${label}">${ICON[k]}<span>${k === 'facebook' ? 'Facebook' : 'Google'}</span></a>`;
 }).join('');
 
+// Photos live in assets/photos as <name>-520/-900 in .webp and .jpg
+const ALT = {
+  blacksuit: { en: 'Gevitha Kunaratnam, real estate broker in Laval, in a black blazer', fr: 'Gevitha Kunaratnam, courtière immobilière à Laval, en blazer noir' },
+  'blue-chair': { en: 'Gevitha Kunaratnam smiling, seated, in a navy blazer', fr: 'Gevitha Kunaratnam souriante, assise, en blazer marine' },
+  'green-sofa': { en: 'Gevitha Kunaratnam in a green suit, seated with her laptop and phone', fr: 'Gevitha Kunaratnam en tailleur vert, assise avec son ordinateur et son téléphone' },
+  'on-phone': { en: 'Gevitha Kunaratnam smiling while on a phone call', fr: 'Gevitha Kunaratnam souriante au téléphone' },
+};
+const pic = (n, l, { cls = '', eager = false, decorative = false, sizes = '(max-width: 860px) 80vw, 400px' } = {}) => {
+  const alt = decorative ? '' : ALT[n][l];
+  const base = `/assets/photos/${n}`;
+  return `<picture><source type="image/webp" srcset="${base}-520.webp 520w, ${base}-900.webp 900w" sizes="${sizes}"><img${cls ? ` class="${cls}"` : ''} src="${base}-900.jpg" srcset="${base}-520.jpg 520w, ${base}-900.jpg 900w" sizes="${sizes}" alt="${alt}" width="900" height="1350" ${eager ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"'}></picture>`;
+};
+
 const url = (l, id) => `/${l}/${PAGES[id].slug[l]}${PAGES[id].slug[l] ? '/' : ''}`;
 
 const NAV = [
@@ -71,7 +84,7 @@ function head(l, id, title, desc) {
     '@type': 'RealEstateAgent',
     name: 'Gevitha Kunaratnam',
     url: SITE + '/',
-    image: SITE + '/assets/gevitha.png',
+    image: SITE + '/assets/photos/blacksuit-900.jpg',
     telephone: '+1-514-570-2152',
     description: desc,
     knowsLanguage: ['en', 'fr', 'ta'],
@@ -103,7 +116,7 @@ function head(l, id, title, desc) {
 <meta property="og:title" content="${title}">
 <meta property="og:description" content="${desc}">
 <meta property="og:url" content="${twin(l)}">
-<meta property="og:image" content="${SITE}/assets/gevitha.png">
+<meta property="og:image" content="${SITE}/assets/photos/blacksuit-900.jpg">
 <meta property="og:locale" content="${l === 'fr' ? 'fr_CA' : 'en_CA'}">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1220'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='34' font-weight='700' text-anchor='middle' fill='%23c9a24b'%3EGK%3C/text%3E%3C/svg%3E">
@@ -170,12 +183,15 @@ function footer(l) {
 `;
 }
 
-function pageHero(l, h1, lead, crumb) {
-  return `<section class="page-hero">
+function pageHero(l, h1, lead, crumb, photo) {
+  return `<section class="page-hero${photo ? ' has-photo' : ''}">
   <div class="wrap">
-    <p class="crumbs"><a href="${url(l, 'home')}">${t('home', l)}</a> / ${crumb}</p>
-    <h1>${h1}</h1>
-    <p class="lead">${lead}</p>
+    <div>
+      <p class="crumbs"><a href="${url(l, 'home')}">${t('home', l)}</a> / ${crumb}</p>
+      <h1>${h1}</h1>
+      <p class="lead">${lead}</p>
+    </div>${photo ? `
+    <div class="page-hero-photo">${pic(photo, l, { decorative: true, sizes: '240px' })}</div>` : ''}
   </div>
 </section>
 `;
@@ -313,7 +329,7 @@ const BODY = {
       <p class="brokerage">RE/MAX 2000 INC.</p>
     </div>
     <div class="hero-photo">
-      <img src="/assets/gevitha.png" alt="${E ? 'Gevitha Kunaratnam, real estate broker in Laval' : 'Gevitha Kunaratnam, courtière immobilière à Laval'}" width="315" height="386">
+      ${pic('blacksuit', l, { eager: true })}
     </div>
   </div>
 </section>
@@ -324,6 +340,7 @@ const BODY = {
     <div>
       <p class="eyebrow dark">${E ? 'About me' : 'À propos de moi'}</p>
       <h2>${E ? 'From passion to profession' : 'De la passion à la profession'}</h2>
+      <div class="about-img">${pic('blue-chair', l, { sizes: '(max-width: 860px) 80vw, 380px' })}</div>
     </div>
     <div class="about-text">
       <p>${E ? 'Buying or selling a property is one of the biggest decisions you will make. I am here to make it clear, calm and successful, from the first conversation to the day you get your keys.' : 'Acheter ou vendre une propriété est l’une des plus grandes décisions de votre vie. Je suis là pour que ce soit clair, serein et réussi, de la première conversation jusqu’à la remise des clés.'}</p>
@@ -352,7 +369,7 @@ ${ctaBand(l, E ? 'Do you know the value of your property?' : 'Connaissez-vous la
     return `${pageHero(l, E ? 'About Gevitha Kunaratnam' : 'À propos de Gevitha Kunaratnam', E ? 'A Laval real estate broker who listens first and advises honestly.' : 'Une courtière immobilière de Laval qui écoute d’abord et conseille avec honnêteté.', E ? 'About' : 'À propos')}
 <section class="section">
   <div class="wrap about-page">
-    <img class="about-photo" src="/assets/gevitha.png" alt="${E ? 'Portrait of Gevitha Kunaratnam' : 'Portrait de Gevitha Kunaratnam'}" width="315" height="386" loading="lazy">
+    ${pic('green-sofa', l, { cls: 'about-photo', sizes: '(max-width: 860px) 80vw, 380px' })}
     <div class="prose">
       <!-- TODO: replace with Gevitha's own story -->
       <p>${E ? 'Buying or selling a property is one of the biggest decisions you will make. I am here to make it clear, calm and successful, from the first conversation to the day you get your keys.' : 'Acheter ou vendre une propriété est l’une des plus grandes décisions de votre vie. Je suis là pour que ce soit clair, serein et réussi, de la première conversation jusqu’à la remise des clés.'}</p>
@@ -373,7 +390,7 @@ ${ctaBand(l, E ? 'Do you know the value of your property?' : 'Connaissez-vous la
 
   buy(l) {
     const E = l === 'en';
-    return `${pageHero(l, E ? 'Buy a home in Laval' : 'Acheter une propriété à Laval', E ? 'From your first budget conversation to the day you receive your keys.' : 'De la première discussion sur votre budget jusqu’à la remise des clés.', E ? 'Buy' : 'Acheter')}
+    return `${pageHero(l, E ? 'Buy a home in Laval' : 'Acheter une propriété à Laval', E ? 'From your first budget conversation to the day you receive your keys.' : 'De la première discussion sur votre budget jusqu’à la remise des clés.', E ? 'Buy' : 'Acheter', 'blue-chair')}
 <section class="section">
   <div class="wrap prose">
     <p>${E ? 'The right home is a mix of price, location and lifestyle. I help you define what matters, search the market in Laval and nearby areas, and negotiate so you buy with confidence.' : 'La bonne propriété est un équilibre entre prix, emplacement et mode de vie. Je vous aide à définir vos priorités, à explorer le marché de Laval et des environs, et à négocier pour acheter en toute confiance.'}</p>
@@ -406,7 +423,7 @@ ${ctaBand(l, E ? 'Ready to start your search?' : 'Prêt à commencer votre reche
 
   sell(l) {
     const E = l === 'en';
-    return `${pageHero(l, E ? 'Sell your property in Laval' : 'Vendre votre propriété à Laval', E ? 'Accurate pricing, strong marketing and clear guidance, so you sell with confidence.' : 'Un juste prix, une mise en marché solide et un accompagnement clair pour vendre en toute confiance.', E ? 'Sell' : 'Vendre')}
+    return `${pageHero(l, E ? 'Sell your property in Laval' : 'Vendre votre propriété à Laval', E ? 'Accurate pricing, strong marketing and clear guidance, so you sell with confidence.' : 'Un juste prix, une mise en marché solide et un accompagnement clair pour vendre en toute confiance.', E ? 'Sell' : 'Vendre', 'blacksuit')}
 <section class="section">
   <div class="wrap prose">
     <p>${E ? 'A successful sale starts with the right price and a plan. I analyse your neighbourhood and recent sales, prepare your property for the market and manage offers so you get the best result.' : 'Une vente réussie commence par le bon prix et un plan. J’analyse votre quartier et les ventes récentes, je prépare votre propriété pour le marché et je gère les offres afin que vous obteniez le meilleur résultat.'}</p>
@@ -439,7 +456,7 @@ ${ctaBand(l, E ? 'Curious what your property is worth?' : 'Curieux de connaître
 
   commercial(l) {
     const E = l === 'en';
-    return `${pageHero(l, E ? 'Commercial real estate in Laval' : 'Immobilier commercial à Laval', E ? 'Support for business owners and investors who want to buy, sell or lease.' : 'Soutien aux propriétaires d’entreprise et aux investisseurs qui souhaitent acheter, vendre ou louer.', 'Commercial')}
+    return `${pageHero(l, E ? 'Commercial real estate in Laval' : 'Immobilier commercial à Laval', E ? 'Support for business owners and investors who want to buy, sell or lease.' : 'Soutien aux propriétaires d’entreprise et aux investisseurs qui souhaitent acheter, vendre ou louer.', 'Commercial', 'green-sofa')}
 <section class="section">
   <div class="wrap prose">
     <p>${E ? 'Whether you are moving your business, expanding or building an investment portfolio, you need a broker who understands both the numbers and the neighbourhood.' : 'Que vous déménagiez votre entreprise, que vous vous agrandissiez ou que vous bâtissiez un portefeuille de placements, vous avez besoin d’une courtière qui comprend à la fois les chiffres et le quartier.'}</p>
@@ -469,7 +486,7 @@ ${ctaBand(l, E ? 'Talk about your commercial project' : 'Parlons de votre projet
 
   valuation(l) {
     const E = l === 'en';
-    return `${pageHero(l, E ? 'Free property evaluation' : 'Évaluation gratuite de propriété', E ? 'Do you know the value of your property? Get a free, no-obligation estimate.' : 'Connaissez-vous la valeur de votre propriété ? Obtenez une estimation gratuite et sans engagement.', E ? 'Evaluation' : 'Évaluation')}
+    return `${pageHero(l, E ? 'Free property evaluation' : 'Évaluation gratuite de propriété', E ? 'Do you know the value of your property? Get a free, no-obligation estimate.' : 'Connaissez-vous la valeur de votre propriété ? Obtenez une estimation gratuite et sans engagement.', E ? 'Evaluation' : 'Évaluation', 'on-phone')}
 <section class="section">
   <div class="wrap contact">
     <div class="prose">
@@ -497,6 +514,7 @@ ${ctaBand(l, E ? 'Talk about your commercial project' : 'Parlons de votre projet
       <h3 class="social-h">${E ? 'Social networks' : 'Réseaux sociaux'}</h3>
       <p class="social-note">${E ? 'Follow me and see what clients say.' : 'Suivez-moi et lisez ce que disent mes clients.'}</p>
       <div class="social">${socialLinks(l)}</div>
+      <div class="contact-img">${pic('on-phone', l, { sizes: '(max-width: 860px) 80vw, 320px' })}</div>
     </div>
     ${form(l, 'contact')}
   </div>
