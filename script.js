@@ -1,63 +1,57 @@
 (function () {
-  var html = document.documentElement;
-  var langBtn = document.getElementById('lang');
+  var nav = document.querySelector('.nav');
   var links = document.getElementById('links');
   var burger = document.getElementById('burger');
-  var form = document.getElementById('form');
-  var status = document.getElementById('status');
-  var msgs = {
-    en: { sending: 'Sending…', ok: 'Thank you! Your message was sent.', err: 'Something went wrong. Please call 514 570-2152.' },
-    fr: { sending: 'Envoi…', ok: 'Merci ! Votre message a été envoyé.', err: 'Une erreur est survenue. Veuillez appeler le 514 570-2152.' }
-  };
 
-  function setLang(lang) {
-    html.lang = lang;
-    document.querySelectorAll('[data-en]').forEach(function (el) {
-      var t = el.getAttribute('data-' + lang);
-      if (t !== null) el.textContent = t;
+  // remember the chosen language for the root redirect
+  document.querySelectorAll('.lang').forEach(function (a) {
+    a.addEventListener('click', function () {
+      try { localStorage.setItem('lang', a.getAttribute('data-lang')); } catch (e) {}
     });
-    langBtn.textContent = lang === 'en' ? 'FR' : 'EN';
-    try { localStorage.setItem('lang', lang); } catch (e) {}
+  });
+  try { localStorage.setItem('lang', document.documentElement.lang); } catch (e) {}
+
+  if (burger && links) {
+    burger.addEventListener('click', function () {
+      var open = links.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open);
+    });
+    links.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') links.classList.remove('open');
+    });
   }
 
-  var saved = 'en';
-  try { saved = localStorage.getItem('lang') || ((navigator.language || '').slice(0, 2) === 'fr' ? 'fr' : 'en'); } catch (e) {}
-  if (saved === 'fr') setLang('fr');
+  if (nav) {
+    window.addEventListener('scroll', function () {
+      nav.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
+  }
 
-  langBtn.addEventListener('click', function () {
-    setLang(html.lang === 'en' ? 'fr' : 'en');
+  // contact / valuation forms (Web3Forms)
+  document.querySelectorAll('.js-form').forEach(function (form) {
+    var status = form.querySelector('.status');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      status.className = 'status';
+      status.textContent = form.getAttribute('data-sending');
+      fetch(form.action, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d.success) {
+            status.className = 'status ok';
+            status.textContent = form.getAttribute('data-ok');
+            form.reset();
+          } else { throw new Error('failed'); }
+        })
+        .catch(function () {
+          status.className = 'status err';
+          status.textContent = form.getAttribute('data-err');
+        });
+    });
   });
 
-  burger.addEventListener('click', function () {
-    var open = links.classList.toggle('open');
-    burger.setAttribute('aria-expanded', open);
-  });
-  links.addEventListener('click', function (e) {
-    if (e.target.tagName === 'A') links.classList.remove('open');
-  });
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var m = msgs[html.lang] || msgs.en;
-    status.className = 'status';
-    status.textContent = m.sending;
-    fetch(form.action, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) })
-      .then(function (r) { return r.json(); })
-      .then(function (d) {
-        if (d.success) { status.className = 'status ok'; status.textContent = m.ok; form.reset(); }
-        else throw new Error('failed');
-      })
-      .catch(function () { status.className = 'status err'; status.textContent = m.err; });
-  });
-
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  var nav = document.querySelector('.nav');
-  window.addEventListener('scroll', function () {
-    nav.classList.toggle('scrolled', window.scrollY > 10);
-  }, { passive: true });
-
-  var targets = document.querySelectorAll('.card, .about > div, .val-inner > *, .contact > *, .section h2');
+  // scroll reveal
+  var targets = document.querySelectorAll('.card, .about > div, .val-inner > *, .contact > *, .section h2, .steps li, .about-page > *');
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
