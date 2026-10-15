@@ -235,7 +235,7 @@ function form(l, kind) {
   <input type="hidden" name="access_key" value="${KEY}">
   <input type="hidden" name="subject" value="${kind === 'valuation' ? 'Evaluation request' : 'New message'} from gevithakunaratnam.ca (${l.toUpperCase()})">
   <input type="hidden" name="from_name" value="gevithakunaratnam.ca">
-  <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+  <input type="checkbox" name="botcheck" class="hp" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
   <label><span>${F.name[l]}</span><input type="text" name="name" required autocomplete="name"></label>
   <label><span>${F.email[l]}</span><input type="email" name="email" required autocomplete="email"></label>
   <label><span>${F.phone[l]}</span><input type="tel" name="phone" autocomplete="tel"></label>${extra}

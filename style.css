@@ -102,7 +102,7 @@ address strong{color:var(--ink)}
 .form input[type=text],.form input[type=email],.form input[type=tel],.form textarea{font:inherit;padding:.75rem .9rem;border:1px solid #d6d2c8;border-radius:10px;background:#fff}
 .form input:focus,.form textarea:focus{outline:2px solid var(--gold);border-color:transparent}
 .form .check{display:flex;gap:.6rem;align-items:flex-start;font-weight:400}
-.hp{position:absolute;left:-9999px}
+.hp{display:none!important}
 .status{margin:0;font-size:.95rem}
 .status.ok{color:#1d7a46}
 .status.err{color:#b3261e}
