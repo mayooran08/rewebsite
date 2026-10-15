@@ -220,3 +220,21 @@ picture{display:block}
 .page-hero-photo{height:260px}
 
 @media (max-width:860px){.hero-photo{width:min(250px,70%)}.hero{padding-bottom:56px}}
+
+/* RE/MAX programs */
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.programs-inner{display:grid;grid-template-columns:1fr 1.5fr;gap:3.5rem;align-items:start}
+.programs-intro p{color:var(--muted);font-size:1.05rem}
+.small-note{font-size:.85rem!important}
+.programs-intro .btn{margin-top:.6rem}
+.program-list{display:grid;gap:1.4rem}
+.program{display:grid;grid-template-columns:.9fr 1.3fr;gap:1.6rem;align-items:center;background:#fff;border-radius:var(--radius);padding:1.2rem;box-shadow:0 10px 30px rgba(20,30,50,.07);border:1px solid #ece7db}
+.program-logo{display:grid;place-items:center;background:#fff;border:1px solid #ece7db;border-radius:12px;min-height:150px;padding:1.2rem}
+.program-logo img{width:100%;max-width:220px;height:auto;max-height:110px;object-fit:contain}
+.program-body h3{font-size:1.25rem;margin-bottom:.5rem}
+.program-body p{margin:0 0 1rem;color:var(--muted);font-size:.98rem}
+@media (max-width:860px){
+  .programs-inner{grid-template-columns:1fr}
+  .program{grid-template-columns:1fr}
+  .program-logo{min-height:120px}
+}

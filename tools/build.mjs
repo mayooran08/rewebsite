@@ -269,6 +269,69 @@ function faq(items) {
   return `<div class="faq">${items.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join('')}</div>`;
 }
 
+/* ---------- RE/MAX programs (home page) ---------- */
+
+const PROGRAMS = [
+  {
+    logo: 'tranquilli-t',
+    name: 'Tranquilli-T',
+    href: { en: 'https://www.remax-quebec.com/en/tranquilli-t', fr: 'https://www.remax-quebec.com/fr/tranquilli-t' },
+    title: { en: 'Peace of mind assured', fr: 'La tranquillité d’esprit assurée' },
+    text: {
+      en: 'A protection offered at no extra charge by participating RE/MAX brokers on eligible residential transactions, including legal assistance.',
+      fr: 'Une protection offerte sans frais supplémentaires par les courtiers RE/MAX participants pour les transactions résidentielles admissibles, incluant l’assistance juridique.',
+    },
+  },
+  {
+    logo: 'integri-t',
+    name: 'Intégri-T',
+    href: { en: 'https://www.remax-quebec.com/en/integri-t', fr: 'https://www.remax-quebec.com/fr/integri-t' },
+    title: { en: 'A key solution against latent defects', fr: 'Une solution clé contre les vices cachés' },
+    text: {
+      en: 'A guarantee offered with GBQ that protects buyers against hidden defects for three years after the deed of purchase. It must be taken before signing at the notary.',
+      fr: 'Une garantie offerte avec GBQ qui protège l’acheteur contre les vices cachés pendant trois ans après l’acte d’achat. Elle doit être souscrite avant la signature chez le notaire.',
+    },
+  },
+  {
+    logo: 'discounts',
+    name: { en: 'My RE/MAX Discounts', fr: 'Mes rabais RE/MAX' },
+    href: { en: 'https://www.remax-quebec.com/en/my-remax-discounts', fr: 'https://www.remax-quebec.com/fr/mes-rabais-remax' },
+    title: { en: 'Exclusive discounts for RE/MAX clients', fr: 'Des rabais exclusifs pour les clients RE/MAX' },
+    text: {
+      en: 'With Mes rabais RE/MAX, save money with exclusive discounts from partner merchants.',
+      fr: 'Avec Mes rabais RE/MAX, économisez grâce à des rabais exclusifs offerts par des marchands partenaires.',
+    },
+  },
+];
+
+function programs(l) {
+  const E = l === 'en';
+  const cards = PROGRAMS.map((p) => {
+    const name = typeof p.name === 'string' ? p.name : p.name[l];
+    return `<article class="program">
+        <div class="program-logo"><img src="/assets/logos/${p.logo}-${l}.svg" alt="${name}" loading="lazy" decoding="async"></div>
+        <div class="program-body">
+          <h3>${p.title[l]}</h3>
+          <p>${p.text[l]}</p>
+          <a class="btn" href="${p.href[l]}" target="_blank" rel="noopener noreferrer">${t('learn', l)}<span class="sr-only"> ${name}</span></a>
+        </div>
+      </article>`;
+  }).join('\n      ');
+  return `<section class="section alt programs" id="programs">
+  <div class="wrap programs-inner">
+    <div class="programs-intro">
+      <h2>${E ? 'My RE/MAX programs and protections' : 'Mes programmes et protections RE/MAX'}</h2>
+      <p>${E ? 'Buying or selling a property is a pivotal moment in your life. As your broker at RE/MAX 2000, I can offer programs designed to bring extra protection and peace of mind to your transaction.' : 'Acheter ou vendre une propriété est un moment décisif de votre vie. Comme courtière chez RE/MAX 2000, je peux vous offrir des programmes conçus pour ajouter protection et tranquillité d’esprit à votre transaction.'}</p>
+      <p class="small-note">${E ? 'Eligibility and conditions apply. See the official RE/MAX Québec page of each program for details.' : 'Des conditions d’admissibilité s’appliquent. Consultez la page officielle RE/MAX Québec de chaque programme pour les détails.'}</p>
+      <a href="${url(l, 'contact')}" class="btn">${t('contactBtn', l)}</a>
+    </div>
+    <div class="program-list">
+      ${cards}
+    </div>
+  </div>
+</section>`;
+}
+
 /* ---------- page bodies ---------- */
 
 const META = {
@@ -361,7 +424,9 @@ const BODY = {
     </div>
   </div>
 </section>
-${ctaBand(l, E ? 'Do you know the value of your property?' : 'Connaissez-vous la valeur de votre propriété ?', E ? 'Get a free, no-obligation estimate based on your neighbourhood and recent market activity.' : 'Obtenez une estimation gratuite et sans engagement, basée sur votre quartier et l’activité récente du marché.', E ? 'Request an evaluation' : 'Demander une évaluation', 'valuation')}`;
+${ctaBand(l, E ? 'Do you know the value of your property?' : 'Connaissez-vous la valeur de votre propriété ?', E ? 'Get a free, no-obligation estimate based on your neighbourhood and recent market activity.' : 'Obtenez une estimation gratuite et sans engagement, basée sur votre quartier et l’activité récente du marché.', E ? 'Request an evaluation' : 'Demander une évaluation', 'valuation')}
+
+${programs(l)}`;
   },
 
   about(l) {
