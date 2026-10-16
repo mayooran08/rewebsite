@@ -5,7 +5,7 @@
     "quote_en": "Replace this with a real client testimonial. Entries with Published switched off are not shown on the website.",
     "quote_fr": "Remplacez ceci par un vrai témoignage de client. Les entrées dont « Publié » est désactivé ne s'affichent pas sur le site.",
     "rating": 5,
-    "featured": false,
-    "published": false
+    "featured": true,
+    "published": true
   }
 ]
