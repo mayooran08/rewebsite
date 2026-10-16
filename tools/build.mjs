@@ -18,6 +18,7 @@ const PAGES = {
   commercial: { slug: { en: 'commercial', fr: 'commercial' } },
   valuation:  { slug: { en: 'valuation', fr: 'evaluation' } },
   contact:    { slug: { en: 'contact', fr: 'contact' } },
+  testimonials: { slug: { en: 'testimonials', fr: 'temoignages' } },
 };
 
 // Social links: paste the real page URLs here, then run `node tools/build.mjs`.
@@ -149,10 +150,10 @@ function header(l, id) {
 }
 
 function footer(l) {
-  const foot = ['about', 'buy', 'sell', 'commercial', 'valuation', 'contact']
+  const foot = ['about', 'buy', 'sell', 'commercial', 'valuation', 'testimonials', 'contact']
     .map((p) => {
       const nav = NAV.find((n) => n[0] === p);
-      const label = nav ? nav[1][l] : t('contactBtn', l);
+      const label = nav ? nav[1][l] : p === 'testimonials' ? (l === 'en' ? 'Testimonials' : 'Témoignages') : t('contactBtn', l);
       return `<li><a href="${url(l, p)}">${label}</a></li>`;
     }).join('');
   return `<footer class="footer">
@@ -332,6 +333,20 @@ function programs(l) {
 </section>`;
 }
 
+/* ---------- testimonials (content comes from data/testimonials.json at runtime) ---------- */
+
+function testimonialStrip(l) {
+  const E = l === 'en';
+  return `<section class="section" id="clients-say" data-testimonials="featured" data-max="3" hidden>
+  <div class="wrap">
+    <p class="eyebrow dark center">${E ? 'Client testimonials' : 'Témoignages de clients'}</p>
+    <h2 class="center">${E ? 'What clients say' : 'Ce que disent mes clients'}</h2>
+    <div class="testimonial-grid" data-testimonial-list></div>
+    <p class="center"><a class="textlink" href="${url(l, 'testimonials')}">${E ? 'Read all testimonials' : 'Lire tous les témoignages'} →</a></p>
+  </div>
+</section>`;
+}
+
 /* ---------- page bodies ---------- */
 
 const META = {
@@ -362,6 +377,10 @@ const META = {
   contact: {
     title: { en: 'Contact Gevitha Kunaratnam | Real Estate Broker, Laval', fr: 'Contacter Gevitha Kunaratnam | Courtière immobilière, Laval' },
     desc: { en: 'Contact Gevitha Kunaratnam at RE/MAX 2000, 830 boul. Curé-Labelle, Laval. Call 514 570-2152 or send a message.', fr: 'Contactez Gevitha Kunaratnam chez RE/MAX 2000, 830 boul. Curé-Labelle, Laval. Appelez au 514 570-2152 ou envoyez un message.' },
+  },
+  testimonials: {
+    title: { en: 'Client Testimonials | Gevitha Kunaratnam, Real Estate Broker', fr: 'Témoignages de clients | Gevitha Kunaratnam, courtière immobilière' },
+    desc: { en: 'Read what buyers and sellers say about working with real estate broker Gevitha Kunaratnam, RE/MAX 2000.', fr: 'Lisez ce que disent acheteurs et vendeurs au sujet de leur expérience avec la courtière immobilière Gevitha Kunaratnam, RE/MAX 2000.' },
   },
 };
 
@@ -424,6 +443,7 @@ const BODY = {
     </div>
   </div>
 </section>
+${testimonialStrip(l)}
 ${ctaBand(l, E ? 'Do you know the value of your property?' : 'Connaissez-vous la valeur de votre propriété ?', E ? 'Get a free, no-obligation estimate based on your neighbourhood and recent market activity.' : 'Obtenez une estimation gratuite et sans engagement, basée sur votre quartier et l’activité récente du marché.', E ? 'Request an evaluation' : 'Demander une évaluation', 'valuation')}
 
 ${programs(l)}`;
@@ -584,6 +604,21 @@ ${ctaBand(l, E ? 'Talk about your commercial project' : 'Parlons de votre projet
     ${form(l, 'contact')}
   </div>
 </section>`;
+  },
+
+  testimonials(l) {
+    const E = l === 'en';
+    return `${pageHero(l, E ? 'Client testimonials' : 'Témoignages de clients', E ? 'What buyers and sellers say about working together.' : 'Ce que disent acheteurs et vendeurs au sujet de notre collaboration.', E ? 'Testimonials' : 'Témoignages')}
+<section class="section">
+  <div class="wrap">
+    <div id="testimonials-page" data-testimonials="all">
+      <div class="testimonial-grid" data-testimonial-list></div>
+      <p class="testimonial-empty" data-testimonial-empty hidden>${E ? 'Client testimonials will appear here soon.' : 'Les témoignages de clients apparaîtront bientôt ici.'}</p>
+      <noscript><p class="testimonial-empty">${E ? 'Please enable JavaScript to see the testimonials.' : 'Veuillez activer JavaScript pour voir les témoignages.'}</p></noscript>
+    </div>
+  </div>
+</section>
+${ctaBand(l, E ? 'Ready to start your own story?' : 'Prêt à écrire votre propre histoire ?', E ? 'Tell me about your project and I will take it from there.' : 'Parlez-moi de votre projet et je m’occupe du reste.', t('contactBtn', l), 'contact')}`;
   },
 };
 

@@ -1,0 +1,34 @@
+content:
+  - name: testimonials
+    label: Testimonials
+    type: file
+    path: data/testimonials.json
+    format: json
+    list: true
+    fields:
+      - name: name
+        label: Client name (first name or initials)
+        type: string
+        required: true
+      - name: city
+        label: City
+        type: string
+      - name: quote_en
+        label: Testimonial (English)
+        type: text
+        required: true
+      - name: quote_fr
+        label: Testimonial (French)
+        type: text
+      - name: rating
+        label: Stars (1 to 5, optional)
+        type: number
+      - name: date
+        label: Date or year (optional)
+        type: string
+      - name: featured
+        label: Show on the home page
+        type: boolean
+      - name: published
+        label: Published (switch off to hide)
+        type: boolean

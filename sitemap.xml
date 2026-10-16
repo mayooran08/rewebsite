@@ -84,4 +84,16 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://gevithakunaratnam.ca/en/contact/"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://gevithakunaratnam.ca/fr/contact/"/>
   </url>
+  <url>
+    <loc>https://gevithakunaratnam.ca/en/testimonials/</loc>
+    <lastmod>2026-10-16</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gevithakunaratnam.ca/en/testimonials/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gevithakunaratnam.ca/fr/temoignages/"/>
+  </url>
+  <url>
+    <loc>https://gevithakunaratnam.ca/fr/temoignages/</loc>
+    <lastmod>2026-10-16</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gevithakunaratnam.ca/en/testimonials/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gevithakunaratnam.ca/fr/temoignages/"/>
+  </url>
 </urlset>
