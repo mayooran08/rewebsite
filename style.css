@@ -249,3 +249,11 @@ picture{display:block}
 .stars{color:var(--gold);letter-spacing:.15em;font-size:1.05rem}
 .testimonial-empty{text-align:center;color:var(--muted);padding:2rem 0}
 [hidden]{display:none!important}
+
+/* menu has 6 links + button: switch to the burger menu a bit earlier */
+@media (max-width:1180px){
+  .burger{display:block}
+  .links{position:absolute;top:72px;left:0;right:0;flex-direction:column;align-items:flex-start;gap:1rem;background:var(--navy);padding:1.2rem 20px 1.6rem;display:none}
+  .links.open{display:flex}
+}
+@media (min-width:1181px){.links{gap:1.3rem}}

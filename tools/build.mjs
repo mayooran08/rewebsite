@@ -58,6 +58,7 @@ const NAV = [
   ['sell', { en: 'Sell', fr: 'Vendre' }],
   ['commercial', { en: 'Commercial', fr: 'Commercial' }],
   ['valuation', { en: 'Evaluation', fr: 'Évaluation' }],
+  ['testimonials', { en: 'Testimonials', fr: 'Témoignages' }],
 ];
 
 const T = {
