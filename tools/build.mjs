@@ -382,7 +382,7 @@ const BODY = {
     return `<section class="hero">
   <div class="wrap hero-inner">
     <div class="hero-text">
-      <p class="eyebrow">${E ? 'Residential &amp; Commercial Real Estate Broker · Laval' : 'Courtière immobilière résidentielle et commerciale · Laval'}</p>
+      <p class="eyebrow">${E ? 'Residential &amp; Commercial Real Estate Broker' : 'Courtière immobilière résidentielle et commerciale'}</p>
       <h1>Gevitha<br>Kunaratnam</h1>
       <p class="sub">${E ? 'Guiding you home, and guiding your business, with care, clarity and local expertise in Laval and beyond.' : 'Je vous guide vers votre chez-soi et votre commerce avec soin, clarté et expertise locale à Laval et ailleurs.'}</p>
       <div class="cta">
