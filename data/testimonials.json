@@ -7,5 +7,14 @@
     "rating": 5,
     "featured": true,
     "published": true
+  },
+  {
+    "name": "Gevitha",
+    "city": "Laval",
+    "quote_en": "Top",
+    "quote_fr": "Top",
+    "rating": 5,
+    "featured": true,
+    "published": true
   }
 ]
