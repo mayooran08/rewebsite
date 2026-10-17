@@ -432,7 +432,7 @@ const BODY = {
     <div class="hero-text">
       <p class="eyebrow">${E ? 'Residential &amp; Commercial Real Estate Broker' : 'Courtière immobilière résidentielle et commerciale'}</p>
       <h1>Gevitha<br>Kunaratnam</h1>
-      <p class="sub">${E ? 'Guiding you home, and guiding your business, with care, clarity and local expertise in Laval and beyond.' : 'Je vous guide vers votre chez-soi et votre commerce avec soin, clarté et expertise locale à Laval et ailleurs.'}</p>
+      <p class="sub">${E ? 'Honest advice. A strategic mindset. The same care I’d give my own family.' : 'Des conseils honnêtes. Une vision stratégique. Le même soin que j’offrirais à ma propre famille.'}</p>
       <div class="cta">
         <a href="${url(l, 'contact')}" class="btn">${t('appt', l)}</a>
         <a href="tel:+15145702152" class="btn btn-ghost">514 570-2152</a>
