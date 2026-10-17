@@ -334,38 +334,33 @@ function programs(l) {
 </section>`;
 }
 
-/* ---------- bio (French is Gevitha's own text; English is a translation) ---------- */
+/* ---------- bio (both versions are Gevitha's own texts, one per language) ---------- */
 
-const BIO = [
-  {
-    fr: 'Depuis toujours, j’ai été animée par le désir d’aider les gens, de bâtir des relations humaines authentiques et de contribuer positivement à leur qualité de vie. C’est cette passion qui m’a d’abord menée vers le domaine de la santé, où j’ai exercé pendant 10 ans comme hygiéniste dentaire.',
-    en: 'I have always been driven by the desire to help people, to build genuine human relationships and to contribute positively to their quality of life. That passion first led me to the health field, where I worked for 10 years as a dental hygienist.',
-  },
-  {
-    fr: 'Cette expérience m’a permis de développer des qualités qui me définissent encore aujourd’hui : l’écoute, l’empathie, la rigueur, le souci du détail et, surtout, l’importance de bâtir des relations de confiance durables. Au fil des années, j’ai eu le privilège de fidéliser une clientèle qui revenait spécialement pour la qualité de mes services et mon approche personnalisée.',
-    en: 'That experience helped me develop qualities that still define me today: listening, empathy, rigour, attention to detail and, above all, the importance of building lasting relationships of trust. Over the years, I had the privilege of building a loyal clientele who came back specially for the quality of my services and my personalized approach.',
-  },
-  {
-    fr: 'Aujourd’hui, en tant que courtière immobilière résidentielle et commerciale chez RE/MAX 2000, je poursuis cette même mission, mais d’une manière différente : accompagner les gens dans leurs projets de vie et les aider à prendre des décisions importantes pour leur avenir et leur patrimoine.',
-    en: 'Today, as a residential and commercial real estate broker at RE/MAX 2000, I continue the same mission in a different way: supporting people in their life projects and helping them make important decisions for their future and their assets.',
-  },
-  {
-    fr: 'Je combine mon approche humaine avec une vision stratégique de l’immobilier, en accordant une grande importance à l’analyse du marché, à la négociation, au marketing et à la protection des intérêts de mes clients. Je crois qu’une transaction réussie repose autant sur une bonne stratégie que sur une relation de confiance et une communication transparente.',
-    en: 'I combine my human approach with a strategic vision of real estate, placing great importance on market analysis, negotiation, marketing and the protection of my clients’ interests. I believe a successful transaction rests as much on a good strategy as on a relationship of trust and transparent communication.',
-  },
-  {
-    fr: 'Ma philosophie est simple : chaque projet immobilier mérite la même attention, la même rigueur et le même engagement que s’il s’agissait du mien ou de celui d’un membre de ma famille. Mes conseils et mes recommandations sont toujours guidés par la sincérité, l’honnêteté et le désir de vous aider à faire les meilleurs choix possibles.',
-    en: 'My philosophy is simple: every real estate project deserves the same attention, the same rigour and the same commitment as if it were my own or a family member’s. My advice and recommendations are always guided by sincerity, honesty and the desire to help you make the best possible choices.',
-  },
-  {
-    fr: 'Passionnée par l’innovation, j’intègre également les nouvelles technologies et les outils d’intelligence artificielle à mon travail afin d’explorer des stratégies créatives, de mettre les propriétés en valeur et d’offrir un service moderne et personnalisé.',
-    en: 'Passionate about innovation, I also use new technologies and artificial intelligence tools in my work to explore creative strategies, showcase properties and offer a modern, personalized service.',
-  },
-  {
-    fr: 'Pour moi, l’immobilier va bien au-delà de l’achat ou de la vente d’une propriété. C’est avant tout une relation humaine, une responsabilité professionnelle et un engagement sincère envers la réussite de vos projets.',
-    en: 'To me, real estate goes far beyond buying or selling a property. It is above all a human relationship, a professional responsibility and a sincere commitment to the success of your projects.',
-  },
-];
+const BIO = {
+  fr: [
+    "Depuis toujours, j’ai été animée par le désir d’aider les gens, de bâtir des relations humaines authentiques et de contribuer positivement à leur qualité de vie. C’est cette passion qui m’a d’abord menée vers le domaine de la santé, où j’ai exercé pendant 10 ans comme hygiéniste dentaire.",
+    "Cette expérience m’a permis de développer des qualités qui me définissent encore aujourd’hui : l’écoute, l’empathie, la rigueur, le souci du détail et, surtout, l’importance de bâtir des relations de confiance durables. Au fil des années, j’ai eu le privilège de fidéliser une clientèle qui revenait spécialement pour la qualité de mes services et mon approche personnalisée.",
+    "Aujourd’hui, en tant que courtière immobilière résidentielle et commerciale chez RE/MAX 2000, je poursuis cette même mission, mais d’une manière différente : accompagner les gens dans leurs projets de vie et les aider à prendre des décisions importantes pour leur avenir et leur patrimoine.",
+    "Je combine mon approche humaine avec une vision stratégique de l’immobilier, en accordant une grande importance à l’analyse du marché, à la négociation, au marketing et à la protection des intérêts de mes clients. Je crois qu’une transaction réussie repose autant sur une bonne stratégie que sur une relation de confiance et une communication transparente.",
+    "Ma philosophie est simple : chaque projet immobilier mérite la même attention, la même rigueur et le même engagement que s’il s’agissait du mien ou de celui d’un membre de ma famille. Mes conseils et mes recommandations sont toujours guidés par la sincérité, l’honnêteté et le désir de vous aider à faire les meilleurs choix possibles.",
+    "Passionnée par l’innovation, j’intègre également les nouvelles technologies et les outils d’intelligence artificielle à mon travail afin d’explorer des stratégies créatives, de mettre les propriétés en valeur et d’offrir un service moderne et personnalisé.",
+    "Pour moi, l’immobilier va bien au-delà de l’achat ou de la vente d’une propriété. C’est avant tout une relation humaine, une responsabilité professionnelle et un engagement sincère envers la réussite de vos projets.",
+  ],
+  en: [
+    "Helping people has always been a big part of who I am. I genuinely enjoy connecting with people, building relationships, and knowing that I can make a positive difference in their lives.",
+    "Before starting my career in real estate, I spent 10 years working as a dental hygienist. During those years, I learned that providing great service goes beyond simply doing your job well. It’s about listening, understanding people’s needs, paying attention to the little details, and most importantly, earning their trust. I was fortunate to build lasting relationships with clients who continued coming back because they felt comfortable, valued, and well taken care of.",
+    "Today, as a Residential and Commercial Real Estate Broker with RE/MAX 2000, I bring that same passion and dedication to real estate.",
+    "Whether you’re buying your first home, selling a property, or making an investment, I understand that these are important decisions, both financially and personally. My goal is to make sure you feel informed, confident, and supported every step of the way.",
+    "I believe in being honest, straightforward, and always putting my clients’ best interests first. I take the time to understand what matters most to you, and I combine that personal approach with market knowledge, strong negotiation skills, and thoughtful marketing strategies to help you achieve the best possible outcome.",
+    "One thing I always believe in is treating my clients the way I would want my own family to be treated. If I wouldn’t recommend something to someone close to me, I wouldn’t recommend it to you either. Your trust means a lot to me, and I never take that responsibility lightly.",
+    "I’m also someone who loves learning, exploring new ideas, and finding better ways to do things. That’s why I embrace technology, including artificial intelligence, to bring fresh ideas, creative marketing, and innovative solutions to my real estate business.",
+    "At the end of the day, real estate is not just about properties or transactions. It’s about people, their goals, their families, and their future.",
+    "And being part of that journey is what makes my work truly meaningful to me.",
+  ],
+};
+// which paragraph is shown as the highlighted quote, and which two appear on the home page
+const BIO_QUOTE = { fr: 4, en: 5 };
+const BIO_HOME = { fr: [0, 6], en: [0, 7] };
 
 /* ---------- testimonials (content comes from data/testimonials.json at runtime) ---------- */
 
@@ -459,8 +454,8 @@ const BODY = {
       <div class="about-img">${pic('blue-chair', l, { sizes: '(max-width: 860px) 80vw, 380px' })}</div>
     </div>
     <div class="about-text">
-      <p>${BIO[0][l]}</p>
-      <p>${BIO[6][l]}</p>
+      <p>${BIO[l][BIO_HOME[l][0]]}</p>
+      <p>${BIO[l][BIO_HOME[l][1]]}</p>
       <p><a class="textlink" href="${url(l, 'about')}">${E ? 'More about me' : 'En savoir plus sur moi'} →</a></p>
     </div>
   </div>
@@ -491,7 +486,7 @@ ${programs(l)}`;
     ${pic('green-sofa', l, { cls: 'about-photo', sizes: '(max-width: 860px) 80vw, 380px' })}
     <div class="prose">
       <h2>${E ? 'About me' : 'À propos de moi'}</h2>
-      ${BIO.map((p, i) => `<p${i === 4 ? ' class="pullquote"' : ''}>${p[l]}</p>`).join('\n      ')}
+      ${BIO[l].map((p, i) => `<p${i === BIO_QUOTE[l] ? ' class="pullquote"' : ''}>${p}</p>`).join('\n      ')}
       <p class="langs-line">${t('langs', l)} <strong>${t('langList', l)}</strong></p>
       <p><a href="${url(l, 'contact')}" class="btn">${t('appt', l)}</a></p>
     </div>
