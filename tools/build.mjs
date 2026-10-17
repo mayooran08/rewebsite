@@ -447,7 +447,6 @@ const BODY = {
         <a href="${url(l, 'contact')}" class="btn">${t('appt', l)}</a>
         <a href="tel:+15145702152" class="btn btn-ghost">514 570-2152</a>
       </div>
-      <p class="brokerage">RE/MAX 2000 INC.</p>
     </div>
     <div class="hero-photo">
       ${pic('blacksuit', l, { eager: true })}
