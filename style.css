@@ -257,3 +257,8 @@ picture{display:block}
   .links.open{display:flex}
 }
 @media (min-width:1181px){.links{gap:1.3rem}}
+
+/* bio */
+.prose .pullquote{border-left:3px solid var(--gold);padding:.4rem 0 .4rem 1.3rem;margin:1.8rem 0;font-family:"Playfair Display",Georgia,serif;font-size:1.22rem;line-height:1.6;color:var(--ink)}
+.langs-line{margin-top:1.6rem;color:var(--muted);font-size:.95rem}
+.langs-line strong{color:var(--ink);margin-left:.4rem}
