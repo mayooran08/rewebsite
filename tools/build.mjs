@@ -346,7 +346,7 @@ const BIO = [
     en: 'That experience helped me develop qualities that still define me today: listening, empathy, rigour, attention to detail and, above all, the importance of building lasting relationships of trust. Over the years, I had the privilege of building a loyal clientele who came back specially for the quality of my services and my personalized approach.',
   },
   {
-    fr: 'Aujourd’hui, en tant que courtier immobilier résidentiel et commercial chez RE/MAX 2000, je poursuis cette même mission, mais d’une manière différente : accompagner les gens dans leurs projets de vie et les aider à prendre des décisions importantes pour leur avenir et leur patrimoine.',
+    fr: 'Aujourd’hui, en tant que courtière immobilière résidentielle et commerciale chez RE/MAX 2000, je poursuis cette même mission, mais d’une manière différente : accompagner les gens dans leurs projets de vie et les aider à prendre des décisions importantes pour leur avenir et leur patrimoine.',
     en: 'Today, as a residential and commercial real estate broker at RE/MAX 2000, I continue the same mission in a different way: supporting people in their life projects and helping them make important decisions for their future and their assets.',
   },
   {
