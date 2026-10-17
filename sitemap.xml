@@ -96,16 +96,4 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://gevithakunaratnam.ca/en/testimonials/"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://gevithakunaratnam.ca/fr/temoignages/"/>
   </url>
-  <url>
-    <loc>https://gevithakunaratnam.ca/en/privacy/</loc>
-    <lastmod>2026-10-17</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://gevithakunaratnam.ca/en/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://gevithakunaratnam.ca/fr/confidentialite/"/>
-  </url>
-  <url>
-    <loc>https://gevithakunaratnam.ca/fr/confidentialite/</loc>
-    <lastmod>2026-10-17</lastmod>
-    <xhtml:link rel="alternate" hreflang="en" href="https://gevithakunaratnam.ca/en/privacy/"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://gevithakunaratnam.ca/fr/confidentialite/"/>
-  </url>
 </urlset>

@@ -19,7 +19,6 @@ const PAGES = {
   valuation:  { slug: { en: 'valuation', fr: 'evaluation' } },
   contact:    { slug: { en: 'contact', fr: 'contact' } },
   testimonials: { slug: { en: 'testimonials', fr: 'temoignages' } },
-  privacy:    { slug: { en: 'privacy', fr: 'confidentialite' } },
 };
 
 // Social links: paste the real page URLs here, then run `node tools/build.mjs`.
@@ -176,7 +175,7 @@ function footer(l) {
     </div>
   </div>
   <div class="wrap foot-bottom">
-    <p>© <span id="year">${new Date().getFullYear()}</span> Gevitha Kunaratnam · RE/MAX 2000 INC. · <a href="${url(l, 'privacy')}">${l === 'en' ? 'Privacy notice' : 'Avis de confidentialité'}</a></p>
+    <p>© <span id="year">${new Date().getFullYear()}</span> Gevitha Kunaratnam · RE/MAX 2000 INC.</p>
     <p class="small">${t('indep', l)}</p>
   </div>
 </footer>
@@ -259,7 +258,7 @@ function form(l, kind) {
   <label><span>${F.email[l]}</span><input type="email" name="email" required autocomplete="email"></label>
   <label><span>${F.phone[l]}</span><input type="tel" name="phone" autocomplete="tel"></label>${extra}
   <label><span>${F.msg[l]}</span><textarea name="message" rows="4"></textarea></label>
-  <label class="check"><input type="checkbox" name="consent" required><span>${F.consent[l]} <a href="${url(l, 'privacy')}" target="_blank" rel="noopener">${l === 'en' ? 'Privacy notice' : 'Avis de confidentialité'}</a></span></label>
+  <label class="check"><input type="checkbox" name="consent" required><span>${F.consent[l]}</span></label>
   <button type="submit" class="btn">${F.send[l]}</button>
   <p class="status" role="status"></p>
 </form>`;
@@ -416,10 +415,6 @@ const META = {
   testimonials: {
     title: { en: 'Client Testimonials | Gevitha Kunaratnam, Real Estate Broker', fr: 'Témoignages de clients | Gevitha Kunaratnam, courtière immobilière' },
     desc: { en: 'Read what buyers and sellers say about working with real estate broker Gevitha Kunaratnam, RE/MAX 2000.', fr: 'Lisez ce que disent acheteurs et vendeurs au sujet de leur expérience avec la courtière immobilière Gevitha Kunaratnam, RE/MAX 2000.' },
-  },
-  privacy: {
-    title: { en: 'Privacy Notice | Gevitha Kunaratnam', fr: 'Avis de confidentialité | Gevitha Kunaratnam' },
-    desc: { en: 'How this website collects, uses and protects your personal information.', fr: 'Comment ce site recueille, utilise et protège vos renseignements personnels.' },
   },
 };
 
@@ -650,46 +645,6 @@ ${ctaBand(l, E ? 'Talk about your commercial project' : 'Parlons de votre projet
   </div>
 </section>
 ${ctaBand(l, E ? 'Ready to start your own story?' : 'Prêt à écrire votre propre histoire ?', E ? 'Tell me about your project and I will take it from there.' : 'Parlez-moi de votre projet et je m’occupe du reste.', t('contactBtn', l), 'contact')}`;
-  },
-
-  privacy(l) {
-    const E = l === 'en';
-    const updated = new Date().toLocaleDateString(E ? 'en-CA' : 'fr-CA', { year: 'numeric', month: 'long', day: 'numeric' });
-    // DRAFT: to be reviewed by RE/MAX 2000 INC. or a legal advisor before being relied on.
-    const S = E ? [
-      ['Who we are', '<p>This website belongs to <strong>Gevitha Kunaratnam</strong>, residential and commercial real estate broker at <strong>RE/MAX 2000 INC.</strong>, 830, boul. Curé-Labelle, Laval (Chomedey), Québec H7V 2V3.</p>'],
-      ['What we collect', '<p>We only collect the personal information you choose to give us through the contact form and the property evaluation form:</p><ul class="ticks"><li>your name, email address and phone number;</li><li>for an evaluation request, the address and type of your property and your reason for asking;</li><li>the message you write.</li></ul><p>We do not ask for payment details, and we do not collect sensitive information through this website.</p>'],
-      ['Why we use it', '<p>We use your information only to answer your request, to contact you about it, and to provide the real estate service you ask for. We do not sell your information, and we do not use it for advertising.</p>'],
-      ['Your consent', '<p>You give your consent by ticking the box on each form. You may withdraw it at any time by contacting us (see below).</p>'],
-      ['Who handles your information', '<p>To work, this website relies on service providers who may process limited data on our behalf:</p><ul class="ticks"><li><strong>Web3Forms</strong> receives the content of the forms and delivers it by email to Gevitha. Their servers may be located outside Quebec or Canada.</li><li><strong>GitHub</strong> hosts the website. Like any web host, it may record technical data such as your IP address when you visit.</li><li><strong>Google Fonts</strong> supplies the website’s fonts, so your browser contacts Google’s servers when a page loads.</li></ul><p>Your information may also be shared with RE/MAX 2000 INC. as needed to handle your request.</p>'],
-      ['Cookies and similar technologies', '<p>This website does not use advertising or analytics cookies. It stores one preference in your browser (your language choice, English or French) so the site opens in the language you picked. You can clear it from your browser settings at any time.</p>'],
-      ['Testimonials', '<p>Client testimonials are published only with the client’s consent, using a first name or initials and a city.</p>'],
-      ['How long we keep it, and how we protect it', '<p>We keep your information only as long as needed for the purposes above, or as the law requires. We take reasonable measures to protect it, but no method of transmission over the internet is completely secure.</p>'],
-      ['Your rights', '<p>Under the applicable Quebec and Canadian privacy laws, you may ask to access the personal information we hold about you, ask us to correct it, or withdraw your consent, subject to legal requirements. To make a request or ask a question, contact us using the details below. You may also file a complaint with the <em>Commission d’accès à l’information du Québec</em>.</p>'],
-      ['Links to other websites', '<p>This website links to other sites such as RE/MAX Québec, Facebook and Google. They have their own privacy practices, and we are not responsible for them.</p>'],
-      ['Changes to this notice', '<p>We may update this notice from time to time. The date below shows the latest version.</p>'],
-      ['Contact', '<p>For any privacy question or request, contact Gevitha Kunaratnam at RE/MAX 2000 INC., 830, boul. Curé-Labelle, Laval (Chomedey), Québec H7V 2V3, by phone at <a href="tel:+15145702152">514 570-2152</a>, or through the <a href="' + url(l, 'contact') + '">contact form</a>.</p>'],
-    ] : [
-      ['Qui sommes-nous', '<p>Ce site appartient à <strong>Gevitha Kunaratnam</strong>, courtière immobilière résidentielle et commerciale chez <strong>RE/MAX 2000 INC.</strong>, 830, boul. Curé-Labelle, Laval (Chomedey), Québec H7V 2V3.</p>'],
-      ['Ce que nous recueillons', '<p>Nous recueillons uniquement les renseignements personnels que vous choisissez de nous transmettre au moyen du formulaire de contact et du formulaire d’évaluation de propriété :</p><ul class="ticks"><li>votre nom, votre adresse courriel et votre numéro de téléphone;</li><li>pour une demande d’évaluation, l’adresse et le type de votre propriété ainsi que la raison de votre demande;</li><li>le message que vous écrivez.</li></ul><p>Nous ne demandons aucune information de paiement et nous ne recueillons pas de renseignements sensibles par l’entremise de ce site.</p>'],
-      ['Pourquoi nous les utilisons', '<p>Nous utilisons vos renseignements uniquement pour répondre à votre demande, vous contacter à ce sujet et offrir le service immobilier que vous demandez. Nous ne vendons pas vos renseignements et ne les utilisons pas à des fins publicitaires.</p>'],
-      ['Votre consentement', '<p>Vous donnez votre consentement en cochant la case de chaque formulaire. Vous pouvez le retirer en tout temps en nous contactant (voir ci-dessous).</p>'],
-      ['Qui traite vos renseignements', '<p>Pour fonctionner, ce site s’appuie sur des fournisseurs de services qui peuvent traiter des données limitées en notre nom :</p><ul class="ticks"><li><strong>Web3Forms</strong> reçoit le contenu des formulaires et le transmet par courriel à Gevitha. Ses serveurs peuvent se trouver à l’extérieur du Québec ou du Canada.</li><li><strong>GitHub</strong> héberge le site. Comme tout hébergeur, il peut enregistrer des données techniques, comme votre adresse IP, lorsque vous visitez le site.</li><li><strong>Google Fonts</strong> fournit les polices de caractères du site, de sorte que votre navigateur communique avec les serveurs de Google lors du chargement d’une page.</li></ul><p>Vos renseignements peuvent aussi être communiqués à RE/MAX 2000 INC. dans la mesure nécessaire pour traiter votre demande.</p>'],
-      ['Témoins (cookies) et technologies similaires', '<p>Ce site n’utilise aucun témoin publicitaire ni d’analyse. Il conserve une seule préférence dans votre navigateur (votre choix de langue, français ou anglais) afin que le site s’ouvre dans la langue choisie. Vous pouvez l’effacer en tout temps dans les paramètres de votre navigateur.</p>'],
-      ['Témoignages', '<p>Les témoignages de clients ne sont publiés qu’avec le consentement du client, sous un prénom ou des initiales et une ville.</p>'],
-      ['Durée de conservation et protection', '<p>Nous conservons vos renseignements seulement le temps nécessaire aux fins décrites ci-dessus, ou selon ce que la loi exige. Nous prenons des mesures raisonnables pour les protéger, mais aucune méthode de transmission sur Internet n’est totalement sécuritaire.</p>'],
-      ['Vos droits', '<p>En vertu des lois applicables du Québec et du Canada en matière de protection des renseignements personnels, vous pouvez demander d’accéder aux renseignements personnels que nous détenons à votre sujet, de les faire corriger ou de retirer votre consentement, sous réserve des exigences légales. Pour faire une demande ou poser une question, communiquez avec nous aux coordonnées ci-dessous. Vous pouvez aussi déposer une plainte auprès de la <em>Commission d’accès à l’information du Québec</em>.</p>'],
-      ['Liens vers d’autres sites', '<p>Ce site contient des liens vers d’autres sites, comme RE/MAX Québec, Facebook et Google. Ils ont leurs propres pratiques de confidentialité et nous n’en sommes pas responsables.</p>'],
-      ['Modifications de cet avis', '<p>Nous pouvons mettre cet avis à jour de temps à autre. La date ci-dessous indique la version la plus récente.</p>'],
-      ['Nous joindre', '<p>Pour toute question ou demande relative à la confidentialité, communiquez avec Gevitha Kunaratnam chez RE/MAX 2000 INC., 830, boul. Curé-Labelle, Laval (Chomedey), Québec H7V 2V3, par téléphone au <a href="tel:+15145702152">514 570-2152</a> ou au moyen du <a href="' + url(l, 'contact') + '">formulaire de contact</a>.</p>'],
-    ];
-    return `${pageHero(l, E ? 'Privacy notice' : 'Avis de confidentialité', E ? 'How this website collects, uses and protects your personal information.' : 'Comment ce site recueille, utilise et protège vos renseignements personnels.', E ? 'Privacy' : 'Confidentialité')}
-<section class="section">
-  <div class="wrap prose legal">
-    ${S.map(([h, body]) => `<h2>${h}</h2>\n    ${body}`).join('\n    ')}
-    <p class="updated">${E ? 'Last updated' : 'Dernière mise à jour'} : ${updated}</p>
-  </div>
-</section>`;
   },
 };
 
