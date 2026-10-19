@@ -1,5 +1,5 @@
 ---
-title: Remax New
+title: Remax News
 date: 2026-10-19
 summary: "*The REMAX Fall 2026 Canadian Housing Market Outlook finds Canadians
   are changing where they look, what they buy and how they manage their finances
