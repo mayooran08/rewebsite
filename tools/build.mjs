@@ -253,7 +253,7 @@ function form(l, kind) {
     type: { en: 'Property type', fr: 'Type de propriété' },
     reason: { en: 'Reason for evaluation', fr: "Raison de l'évaluation" },
     consent: { en: 'I agree to be contacted about my request.', fr: "J'accepte d'être contactée au sujet de ma demande." },
-    send: { en: kind === 'valuation' ? 'Request my evaluation' : 'Send', fr: kind === 'valuation' ? 'Demander mon évaluation' : 'Envoyer' },
+    send: { en: kind === 'valuation' ? 'Request My Home Evaluation &amp; Selling Strategy' : 'Send', fr: kind === 'valuation' ? 'Demander mon évaluation et ma stratégie de vente' : 'Envoyer' },
   };
   const types = l === 'en'
     ? ['House', 'Condo', 'Plex (duplex, triplex…)', 'Commercial', 'Land', 'Other']
@@ -566,8 +566,8 @@ const META = {
     desc: { en: 'Buy, sell or lease commercial space and income properties in Laval with broker Gevitha Kunaratnam, RE/MAX 2000.', fr: 'Achetez, vendez ou louez un local commercial ou un immeuble à revenus à Laval avec la courtière Gevitha Kunaratnam, RE/MAX 2000.' },
   },
   valuation: {
-    title: { en: 'Free Property Evaluation in Laval | Gevitha Kunaratnam', fr: 'Évaluation gratuite de propriété à Laval | Gevitha Kunaratnam' },
-    desc: { en: 'Request a free, no-obligation estimate of your property’s value in Laval from broker Gevitha Kunaratnam.', fr: 'Demandez une estimation gratuite et sans engagement de la valeur de votre propriété à Laval auprès de la courtière Gevitha Kunaratnam.' },
+    title: { en: 'Home Evaluation &amp; Selling Strategy in Laval | Gevitha Kunaratnam', fr: 'Évaluation de propriété et stratégie de vente à Laval | Gevitha Kunaratnam' },
+    desc: { en: 'Get a personalized home evaluation and selling strategy: comparable sales, market analysis and a plan tailored to your timeline, from broker Gevitha Kunaratnam.', fr: 'Obtenez une évaluation personnalisée et une stratégie de vente : ventes comparables, analyse du marché et plan adapté à votre échéancier, avec la courtière Gevitha Kunaratnam.' },
   },
   contact: {
     title: { en: 'Contact Gevitha Kunaratnam | Real Estate Broker, Laval', fr: 'Contacter Gevitha Kunaratnam | Courtière immobilière, Laval' },
@@ -762,17 +762,30 @@ ${ctaBand(l, E ? 'Talk about your commercial project' : 'Parlons de votre projet
 
   valuation(l) {
     const E = l === 'en';
-    return `${pageHero(l, E ? 'Free property evaluation' : 'Évaluation gratuite de propriété', E ? 'Do you know the value of your property? Get a free, no-obligation estimate.' : 'Connaissez-vous la valeur de votre propriété ? Obtenez une estimation gratuite et sans engagement.', E ? 'Evaluation' : 'Évaluation', 'on-phone')}
+    // English: Gevitha's own text. French: a translation for her to review.
+    const how = E ? [
+      ['Tell Me About Your Property', 'Complete the form with a few details about your home and your real estate goals.'],
+      ['Receive a Personalized Market Analysis', 'I’ll review recent comparable sales, competing listings, current market conditions, and the unique features of your property to assess its potential market value.'],
+      ['Explore Your Selling Strategy', 'Discover how strategic pricing, property presentation, targeted marketing, and the right timing can help position your home for a successful sale.'],
+      ['Let’s Discuss Your Next Steps', 'I’ll personally contact you to discuss my findings, answer your questions, and explore a strategy tailored to your needs and timeline.'],
+    ] : [
+      ['Parlez-moi de votre propriété', 'Remplissez le formulaire avec quelques détails sur votre propriété et vos objectifs immobiliers.'],
+      ['Recevez une analyse de marché personnalisée', 'J’examinerai les ventes comparables récentes, les propriétés concurrentes, les conditions actuelles du marché et les caractéristiques uniques de votre propriété afin d’évaluer sa valeur marchande potentielle.'],
+      ['Découvrez votre stratégie de vente', 'Découvrez comment un prix stratégique, la mise en valeur de la propriété, un marketing ciblé et le bon moment peuvent positionner votre propriété pour une vente réussie.'],
+      ['Discutons de la suite', 'Je communiquerai personnellement avec vous pour discuter de mes conclusions, répondre à vos questions et élaborer une stratégie adaptée à vos besoins et à votre échéancier.'],
+    ];
+    const badges = E
+      ? ['Complimentary consultation', 'No obligation', 'Personalized professional guidance']
+      : ['Consultation offerte', 'Sans engagement', 'Accompagnement professionnel personnalisé'];
+    return `${pageHero(l, E ? 'Get Your Personalized Home Evaluation &amp; Selling Strategy' : 'Obtenez votre évaluation personnalisée et votre stratégie de vente', E ? 'A successful sale begins with the right strategy.' : 'Une vente réussie commence par la bonne stratégie.', E ? 'Evaluation' : 'Évaluation', 'on-phone')}
 <section class="section">
   <div class="wrap contact">
     <div class="prose">
-      <h2>${E ? 'How it works' : 'Comment ça fonctionne'}</h2>
-      <p>${E ? 'Send me a few details about your property. I compare recent sales and current listings in your neighbourhood, then contact you with an estimate and next steps.' : 'Envoyez-moi quelques détails sur votre propriété. Je compare les ventes récentes et les inscriptions actuelles de votre quartier, puis je vous contacte avec une estimation et les prochaines étapes.'}</p>
-      <ul class="ticks">
-        <li>${E ? 'Free and with no obligation' : 'Gratuit et sans engagement'}</li>
-        <li>${E ? 'Based on your neighbourhood and recent market activity' : 'Basée sur votre quartier et l’activité récente du marché'}</li>
-        <li>${E ? 'Reply in English, French or Tamil' : 'Réponse en français, en anglais ou en tamoul'}</li>
-      </ul>
+      <h2>${E ? 'Discover Your Home’s Value &amp; Selling Potential' : 'Découvrez la valeur de votre propriété et son potentiel de vente'}</h2>
+      <p>${E ? 'Every property is unique, and determining its value is only the first step. My approach goes beyond a simple home evaluation to help you understand your property’s position in today’s market and how to maximize its selling potential.' : 'Chaque propriété est unique, et déterminer sa valeur n’est que la première étape. Mon approche va au-delà d’une simple évaluation : elle vous aide à comprendre la position de votre propriété dans le marché actuel et à maximiser son potentiel de vente.'}</p>
+      <h2>${E ? 'How It Works' : 'Comment ça fonctionne'}</h2>
+      ${steps(how)}
+      <ul class="badges">${badges.map((b) => `<li>${b}</li>`).join('')}</ul>
     </div>
     ${form(l, 'valuation')}
   </div>
