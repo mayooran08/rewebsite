@@ -40,3 +40,7 @@ Use Pages CMS (https://app.pagescms.org) → **Blog posts (English)** or **Artic
 Each language has its own blog page and RSS feed (`/en/blog/feed.xml`, `/fr/blogue/feed.xml`).
 
 Preview drafts locally: `node tools/build.mjs --drafts` (do not commit that output).
+
+## Hosting
+The site is published by the GitHub Action in `.github/workflows/deploy.yml`
+(Settings > Pages > Source = GitHub Actions). Every push to `main` rebuilds all pages, including blog posts, and deploys them.
