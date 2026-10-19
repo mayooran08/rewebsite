@@ -298,3 +298,6 @@ picture{display:block}
 .follow p{color:var(--muted)}
 .follow .social{justify-content:center}
 .social-link svg[fill="none"]{fill:none}
+
+/* keep long summaries tidy on the cards */
+.post-card-body p:not(.post-meta){display:-webkit-box;-webkit-line-clamp:4;line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}

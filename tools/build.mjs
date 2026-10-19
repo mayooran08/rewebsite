@@ -437,7 +437,8 @@ function parsePost(l, file) {
     slug: file.replace(/\.md$/, ''),
     title: String(fm.title),
     date,
-    summary: String(fm.summary || '').trim(),
+    // the summary is plain text: drop Markdown marks (*, `, [text](url)) an author may have typed
+    summary: String(fm.summary || '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/[*`]/g, '').replace(/\s+/g, ' ').trim(),
     image: assetPath(fm.image ? String(fm.image) : ''),
     imageAlt: String(fm.image_alt || ''),
     pair: fm.pair ? String(fm.pair).trim().toLowerCase() : '', // same word in the EN and FR post links them as translations

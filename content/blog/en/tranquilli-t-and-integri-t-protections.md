@@ -1,18 +1,12 @@
 ---
 title: "Tranquilli-T and Intégri-T: what these RE/MAX protections mean for you"
 date: 2026-10-19
-published: true
----
-## ---
-title: "Tranquilli-T and Intégri-T: what these RE/MAX protections mean for you"
-date: 2026-10-19
 summary: "Buying or selling is a big step. Here is a plain-language look at two protection programs offered with RE/MAX, and where to read the official terms."
 image: /assets/blog/example-protections.jpg
 image_alt: "Gevitha Kunaratnam smiling, seated next to her laptop and phone"
 pair: protections
 published: false
-
-
+---
 
 Buying or selling a property is a big step, and it is normal to want some protection along the way. As a RE/MAX broker, I can offer you programs designed for exactly that. This article is a quick overview. The **official pages** carry the full terms, so please read them before you decide.
 

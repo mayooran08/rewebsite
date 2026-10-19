@@ -108,4 +108,9 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://gevithakunaratnam.ca/en/blog/"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://gevithakunaratnam.ca/fr/blogue/"/>
   </url>
+  <url>
+    <loc>https://gevithakunaratnam.ca/en/blog/remax-new/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gevithakunaratnam.ca/en/blog/remax-new/"/>
+  </url>
 </urlset>

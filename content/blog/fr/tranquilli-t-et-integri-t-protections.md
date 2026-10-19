@@ -1,4 +1,4 @@
-﻿---
+---
 title: "Tranquilli-T et Intégri-T : ce que ces protections RE/MAX signifient pour vous"
 date: 2026-10-19
 summary: "Acheter ou vendre est une grande étape. Voici un aperçu simple de deux programmes de protection offerts avec RE/MAX, et où consulter les conditions officielles."
