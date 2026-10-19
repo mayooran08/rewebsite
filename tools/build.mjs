@@ -1,8 +1,13 @@
 ﻿// Generates the bilingual multi-page site into the repo root.
 // Run: node tools/build.mjs
-import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdirSync, writeFileSync, rmSync, readFileSync, readdirSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { marked } from './vendor/marked.esm.js';
+import yaml from './vendor/js-yaml.mjs';
+
+// `node tools/build.mjs --drafts` also builds unpublished posts (local preview only, never commit that output)
+const INCLUDE_DRAFTS = process.argv.includes('--drafts');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = 'https://gevithakunaratnam.ca';
@@ -19,6 +24,7 @@ const PAGES = {
   valuation:  { slug: { en: 'valuation', fr: 'evaluation' } },
   contact:    { slug: { en: 'contact', fr: 'contact' } },
   testimonials: { slug: { en: 'testimonials', fr: 'temoignages' } },
+  blog:       { slug: { en: 'blog', fr: 'blogue' } },
 };
 
 // Social links: paste the real page URLs here, then run `node tools/build.mjs`.
@@ -68,6 +74,7 @@ const NAV = [
   ['commercial', { en: 'Commercial', fr: 'Commercial' }],
   ['valuation', { en: 'Evaluation', fr: 'Évaluation' }],
   ['testimonials', { en: 'Testimonials', fr: 'Témoignages' }],
+  ['blog', { en: 'Blog', fr: 'Blogue' }],
 ];
 
 const T = {
@@ -88,9 +95,12 @@ const t = (k, l) => T[k][l];
 
 /* ---------- shared chunks ---------- */
 
-function head(l, id, title, desc) {
-  const twin = (x) => SITE + url(x, id);
-  const ld = {
+function head(l, id, title, desc, opts = {}) {
+  const self = opts.canonical || url(l, id);
+  const alts = opts.alternates || { en: url('en', id), fr: url('fr', id) };
+  const ogImage = opts.image || '/assets/photos/blacksuit-900.jpg';
+  const ogType = opts.ogType || 'website';
+  const ld = opts.ld || {
     '@context': 'https://schema.org',
     '@type': 'RealEstateAgent',
     name: 'Gevitha Kunaratnam',
@@ -118,17 +128,17 @@ function head(l, id, title, desc) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
 <meta name="description" content="${desc}">
-<link rel="canonical" href="${twin(l)}">
-<link rel="alternate" hreflang="en" href="${twin('en')}">
-<link rel="alternate" hreflang="fr" href="${twin('fr')}">
-<link rel="alternate" hreflang="x-default" href="${SITE}/">
+<link rel="canonical" href="${SITE}${self}">
+${Object.entries(alts).map(([k, p]) => `<link rel="alternate" hreflang="${k}" href="${SITE}${p}">`).join('\n')}
+${alts.en && alts.fr ? `<link rel="alternate" hreflang="x-default" href="${SITE}/">` : ''}
 <meta name="theme-color" content="#0b1220">
-<meta property="og:type" content="website">
+<link rel="alternate" type="application/rss+xml" title="${l === 'en' ? 'Blog' : 'Blogue'} · Gevitha Kunaratnam" href="/${l}/${BLOG_SLUG[l]}/feed.xml">
+<meta property="og:type" content="${ogType}">
 <meta property="og:site_name" content="Gevitha Kunaratnam">
 <meta property="og:title" content="${title}">
 <meta property="og:description" content="${desc}">
-<meta property="og:url" content="${twin(l)}">
-<meta property="og:image" content="${SITE}/assets/photos/blacksuit-900.jpg">
+<meta property="og:url" content="${SITE}${self}">
+<meta property="og:image" content="${SITE}${ogImage}">
 <meta property="og:locale" content="${l === 'fr' ? 'fr_CA' : 'en_CA'}">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1220'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='34' font-weight='700' text-anchor='middle' fill='%23c9a24b'%3EGK%3C/text%3E%3C/svg%3E">
@@ -142,7 +152,7 @@ function head(l, id, title, desc) {
 `;
 }
 
-function header(l, id) {
+function header(l, id, twinHref) {
   const other = l === 'en' ? 'fr' : 'en';
   const links = NAV.map(([p, label]) =>
     `<a href="${url(l, p)}"${p === id ? ' aria-current="page"' : ''}>${label[l]}</a>`).join('\n      ');
@@ -152,7 +162,7 @@ function header(l, id) {
     <nav class="links" id="links" aria-label="Main">
       ${links}
       <a href="${url(l, 'contact')}" class="btn btn-sm"${id === 'contact' ? ' aria-current="page"' : ''}>${t('contactBtn', l)}</a>
-      <a class="lang" href="${url(other, id)}" hreflang="${other}" lang="${other}" data-lang="${other}" aria-label="${other === 'fr' ? 'Version française' : 'English version'}">${other.toUpperCase()}</a>
+      <a class="lang" href="${twinHref || url(other, id)}" hreflang="${other}" lang="${other}" data-lang="${other}" aria-label="${other === 'fr' ? 'Version française' : 'English version'}">${other.toUpperCase()}</a>
     </nav>
     <button class="burger" id="burger" aria-label="${t('menu', l)}" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
@@ -161,7 +171,7 @@ function header(l, id) {
 }
 
 function footer(l) {
-  const foot = ['about', 'buy', 'sell', 'commercial', 'valuation', 'testimonials', 'contact']
+  const foot = ['about', 'buy', 'sell', 'commercial', 'valuation', 'testimonials', 'blog', 'contact']
     .map((p) => {
       const nav = NAV.find((n) => n[0] === p);
       const label = nav ? nav[1][l] : p === 'testimonials' ? (l === 'en' ? 'Testimonials' : 'Témoignages') : t('contactBtn', l);
@@ -386,6 +396,151 @@ function testimonialStrip(l) {
 </section>`;
 }
 
+/* ---------- blog (Markdown files in content/blog/<lang>/, edited with Pages CMS) ---------- */
+
+const BLOG_SLUG = { en: 'blog', fr: 'blogue' };
+const blogPath = (l, slug) => `/${l}/${BLOG_SLUG[l]}/${slug}/`;
+const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const fmtDate = (iso, l) =>
+  new Date(iso + 'T12:00:00Z').toLocaleDateString(l === 'fr' ? 'fr-CA' : 'en-CA', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const assetPath = (p) => (!p ? '' : /^(https?:)?\/\//.test(p) || p.startsWith('/') ? p : '/' + p);
+
+marked.use({
+  gfm: true,
+  renderer: {
+    link({ href, title, tokens }) {
+      const external = /^https?:\/\//i.test(href) && !href.startsWith(SITE);
+      return `<a href="${esc(href)}"${title ? ` title="${esc(title)}"` : ''}${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${this.parser.parseInline(tokens)}</a>`;
+    },
+    image({ href, title, text }) {
+      return `<img src="${esc(href)}" alt="${esc(text)}"${title ? ` title="${esc(title)}"` : ''} loading="lazy" decoding="async">`;
+    },
+    heading({ tokens, depth }) {
+      const d = Math.min(Math.max(depth, 2), 4); // the page title is the only h1
+      return `<h${d}>${this.parser.parseInline(tokens)}</h${d}>\n`;
+    },
+  },
+});
+
+function parsePost(l, file) {
+  const raw = readFileSync(join(ROOT, 'content', 'blog', l, file), 'utf8').replace(/^﻿/, '');
+  const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+  if (!m) { console.warn(`blog: skipped ${l}/${file} (no front matter)`); return null; }
+  const fm = yaml.load(m[1]) || {};
+  const date = fm.date instanceof Date ? fm.date.toISOString().slice(0, 10) : String(fm.date || '').slice(0, 10);
+  if (!fm.title || !/^\d{4}-\d{2}-\d{2}$/.test(date)) { console.warn(`blog: skipped ${l}/${file} (needs a title and a date)`); return null; }
+  const published = fm.published === true;
+  if (!published && !INCLUDE_DRAFTS) return null;
+  const body = m[2].trim();
+  return {
+    lang: l,
+    slug: file.replace(/\.md$/, ''),
+    title: String(fm.title),
+    date,
+    summary: String(fm.summary || '').trim(),
+    image: assetPath(fm.image ? String(fm.image) : ''),
+    imageAlt: String(fm.image_alt || ''),
+    pair: fm.pair ? String(fm.pair).trim().toLowerCase() : '', // same word in the EN and FR post links them as translations
+    published,
+    html: marked.parse(body),
+    minutes: Math.max(1, Math.round(body.split(/\s+/).filter(Boolean).length / 200)),
+  };
+}
+
+const POSTS = { en: [], fr: [] };
+for (const l of LANGS) {
+  const dir = join(ROOT, 'content', 'blog', l);
+  if (!existsSync(dir)) continue;
+  for (const f of readdirSync(dir).filter((x) => x.endsWith('.md'))) {
+    const p = parsePost(l, f);
+    if (p) POSTS[l].push(p);
+  }
+  POSTS[l].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+}
+
+// the same article in the other language, if both posts share the same "pair" word
+const twinOf = (p) => {
+  if (!p.pair) return undefined;
+  return POSTS[p.lang === 'en' ? 'fr' : 'en'].find((x) => x.pair === p.pair);
+};
+
+function postCard(p, l) {
+  const E = l === 'en';
+  const href = blogPath(l, p.slug);
+  return `<article class="post-card">
+      ${p.image ? `<a class="post-card-img" href="${href}" tabindex="-1" aria-hidden="true"><img src="${esc(p.image)}" alt="" loading="lazy" decoding="async"></a>` : ''}
+      <div class="post-card-body">
+        <p class="post-meta">${fmtDate(p.date, l)}${p.published ? '' : ` · <span class="draft-tag">${E ? 'Draft preview' : 'Aperçu du brouillon'}</span>`}</p>
+        <h3><a href="${href}">${esc(p.title)}</a></h3>
+        ${p.summary ? `<p>${esc(p.summary)}</p>` : ''}
+        <a class="card-link" href="${href}">${E ? 'Read more' : 'Lire la suite'} →</a>
+      </div>
+    </article>`;
+}
+
+function blogStrip(l) {
+  const list = POSTS[l].slice(0, 3);
+  if (!list.length) return '';
+  const E = l === 'en';
+  return `<section class="section alt" id="blog-latest">
+  <div class="wrap">
+    <p class="eyebrow dark center">${E ? 'Blog' : 'Blogue'}</p>
+    <h2 class="center">${E ? 'Latest articles' : 'Derniers articles'}</h2>
+    <div class="post-grid">
+      ${list.map((p) => postCard(p, l)).join('\n      ')}
+    </div>
+    <p class="center"><a class="textlink" href="${url(l, 'blog')}">${E ? 'All articles' : 'Tous les articles'} →</a></p>
+  </div>
+</section>`;
+}
+
+function buildPost(p) {
+  const l = p.lang, E = l === 'en', o = E ? 'fr' : 'en';
+  const self = blogPath(l, p.slug);
+  const tw = twinOf(p);
+  const alternates = { [l]: self };
+  if (tw) alternates[o] = blogPath(o, tw.slug);
+  const image = p.image || '/assets/photos/blacksuit-900.jpg';
+  const abs = (u) => (/^https?:/.test(u) ? u : SITE + u);
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: p.title,
+    description: p.summary || p.title,
+    datePublished: p.date,
+    dateModified: p.date,
+    inLanguage: l,
+    mainEntityOfPage: SITE + self,
+    image: abs(image),
+    author: { '@type': 'Person', name: 'Gevitha Kunaratnam', url: SITE + '/' },
+  };
+  const blogLabel = E ? 'Blog' : 'Blogue';
+  const body = `<section class="page-hero">
+  <div class="wrap">
+    <div>
+      <p class="crumbs"><a href="${url(l, 'home')}">${t('home', l)}</a> / <a href="${url(l, 'blog')}">${blogLabel}</a></p>
+      <h1>${esc(p.title)}</h1>
+      <p class="lead">${fmtDate(p.date, l)} · ${p.minutes} ${E ? 'min read' : 'min de lecture'}</p>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap article">
+    ${p.published ? '' : `<p class="draft-banner">${E ? 'Draft preview. This article is not published.' : 'Aperçu du brouillon. Cet article n’est pas publié.'}</p>`}
+    ${p.image ? `<figure class="cover"><img src="${esc(p.image)}" alt="${esc(p.imageAlt)}" decoding="async"></figure>` : ''}
+    <div class="prose">
+      ${p.html}
+    </div>
+    <p class="post-back"><a class="textlink" href="${url(l, 'blog')}">← ${E ? 'All articles' : 'Tous les articles'}</a></p>
+  </div>
+</section>
+${ctaBand(l, E ? 'Have a question about your project?' : 'Une question sur votre projet ?', E ? 'Tell me what you need and I will follow up quickly.' : 'Dites-moi ce dont vous avez besoin et je vous répondrai rapidement.', t('contactBtn', l), 'contact')}`;
+  const title = `${esc(p.title)} | Gevitha Kunaratnam`;
+  const html = head(l, 'blog', title, esc(p.summary || p.title), { canonical: self, alternates, image, ogType: 'article', ld })
+    + header(l, 'blog', tw ? blogPath(o, tw.slug) : url(o, 'blog')) + '<main>\n' + body + '\n</main>\n' + footer(l);
+  return { path: `${l}/${BLOG_SLUG[l]}/${p.slug}/index.html`, html };
+}
+
 /* ---------- page bodies ---------- */
 
 const META = {
@@ -420,6 +575,10 @@ const META = {
   testimonials: {
     title: { en: 'Client Testimonials | Gevitha Kunaratnam, Real Estate Broker', fr: 'Témoignages de clients | Gevitha Kunaratnam, courtière immobilière' },
     desc: { en: 'Read what buyers and sellers say about working with real estate broker Gevitha Kunaratnam, RE/MAX 2000.', fr: 'Lisez ce que disent acheteurs et vendeurs au sujet de leur expérience avec la courtière immobilière Gevitha Kunaratnam, RE/MAX 2000.' },
+  },
+  blog: {
+    title: { en: 'Blog | Gevitha Kunaratnam, Real Estate Broker', fr: 'Blogue | Gevitha Kunaratnam, courtière immobilière' },
+    desc: { en: 'Articles and advice on buying, selling and investing in real estate, by broker Gevitha Kunaratnam.', fr: 'Articles et conseils pour acheter, vendre et investir en immobilier, par la courtière Gevitha Kunaratnam.' },
   },
 };
 
@@ -482,6 +641,7 @@ const BODY = {
   </div>
 </section>
 ${testimonialStrip(l)}
+${blogStrip(l)}
 ${ctaBand(l, E ? 'Do you know the value of your property?' : 'Connaissez-vous la valeur de votre propriété ?', E ? 'Get a free, no-obligation estimate based on your neighbourhood and recent market activity.' : 'Obtenez une estimation gratuite et sans engagement, basée sur votre quartier et l’activité récente du marché.', E ? 'Request an evaluation' : 'Demander une évaluation', 'valuation')}
 
 ${programs(l)}`;
@@ -650,6 +810,28 @@ ${ctaBand(l, E ? 'Talk about your commercial project' : 'Parlons de votre projet
 </section>
 ${ctaBand(l, E ? 'Ready to start your own story?' : 'Prêt à écrire votre propre histoire ?', E ? 'Tell me about your project and I will take it from there.' : 'Parlez-moi de votre projet et je m’occupe du reste.', t('contactBtn', l), 'contact')}`;
   },
+
+  blog(l) {
+    const E = l === 'en';
+    const list = POSTS[l];
+    return `${pageHero(l, E ? 'Blog' : 'Blogue', E ? 'Advice and news on buying, selling and investing in real estate.' : 'Conseils et actualités pour acheter, vendre et investir en immobilier.', E ? 'Blog' : 'Blogue')}
+<section class="section">
+  <div class="wrap">
+    ${list.length
+      ? `<div class="post-grid">\n      ${list.map((p) => postCard(p, l)).join('\n      ')}\n    </div>`
+      : `<p class="testimonial-empty">${E ? 'Articles are coming soon.' : 'Les articles arrivent bientôt.'}</p>`}
+    <div class="follow">
+      <h2>${E ? 'Follow the blog' : 'Suivre le blogue'}</h2>
+      <p>${E ? 'Get new articles as soon as they are published.' : 'Recevez les nouveaux articles dès leur publication.'}</p>
+      <div class="social">
+        <a class="social-link" href="${url(l, 'blog')}feed.xml" aria-label="RSS"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="5.5" cy="18.5" r="2" /></svg><span>RSS</span></a>
+        ${socialLinks(l)}
+      </div>
+    </div>
+  </div>
+</section>
+${ctaBand(l, E ? 'Have a question about your project?' : 'Une question sur votre projet ?', E ? 'Tell me what you need and I will follow up quickly.' : 'Dites-moi ce dont vous avez besoin et je vous répondrai rapidement.', t('contactBtn', l), 'contact')}`;
+  },
 };
 
 /* ---------- write files ---------- */
@@ -668,6 +850,36 @@ for (const l of LANGS) {
     const html = head(l, id, m.title[l], m.desc[l]) + header(l, id) + '<main>\n' + BODY[id](l) + '\n</main>\n' + footer(l);
     write(`${l}${url(l, id).slice(l.length + 1)}index.html`, html);
   }
+}
+
+for (const l of LANGS) {
+  for (const p of POSTS[l]) {
+    const b = buildPost(p);
+    write(b.path, b.html);
+  }
+}
+
+// RSS feeds (published posts only, never drafts)
+const xmlEsc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+for (const l of LANGS) {
+  const items = POSTS[l].filter((p) => p.published).slice(0, 20).map((p) => `    <item>
+      <title>${xmlEsc(p.title)}</title>
+      <link>${SITE}${blogPath(l, p.slug)}</link>
+      <guid isPermaLink="true">${SITE}${blogPath(l, p.slug)}</guid>
+      <pubDate>${new Date(p.date + 'T12:00:00Z').toUTCString()}</pubDate>
+      <description>${xmlEsc(p.summary || p.title)}</description>
+    </item>`).join('\n');
+  write(`${l}/${BLOG_SLUG[l]}/feed.xml`, `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>${l === 'en' ? 'Blog' : 'Blogue'} · Gevitha Kunaratnam</title>
+    <link>${SITE}${url(l, 'blog')}</link>
+    <description>${xmlEsc(META.blog.desc[l])}</description>
+    <language>${l === 'fr' ? 'fr-ca' : 'en-ca'}</language>
+${items}
+  </channel>
+</rss>
+`);
 }
 
 // root: language chooser (x-default)
@@ -741,6 +953,20 @@ for (const id of Object.keys(PAGES)) {
     <xhtml:link rel="alternate" hreflang="fr" href="${SITE}${url('fr', id)}"/>
   </url>`);
 }
+for (const l of LANGS) {
+  for (const p of POSTS[l]) {
+    if (!p.published) continue; // drafts never go in the sitemap
+    const tw = twinOf(p);
+    const o = l === 'en' ? 'fr' : 'en';
+    const alt = [`    <xhtml:link rel="alternate" hreflang="${l}" href="${SITE}${blogPath(l, p.slug)}"/>`];
+    if (tw && tw.published) alt.push(`    <xhtml:link rel="alternate" hreflang="${o}" href="${SITE}${blogPath(o, tw.slug)}"/>`);
+    urls.push(`  <url>
+    <loc>${SITE}${blogPath(l, p.slug)}</loc>
+    <lastmod>${p.date}</lastmod>
+${alt.join('\n')}
+  </url>`);
+  }
+}
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls.join('\n')}
@@ -748,4 +974,5 @@ ${urls.join('\n')}
 `);
 write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 
-console.log('Built', LANGS.length * Object.keys(PAGES).length, 'pages + root, 404, sitemap, robots');
+const nPosts = LANGS.reduce((n, l) => n + POSTS[l].length, 0);
+console.log('Built', LANGS.length * Object.keys(PAGES).length, 'pages +', nPosts, 'blog posts' + (INCLUDE_DRAFTS ? ' (drafts included)' : '') + ', root, 404, sitemap, robots');

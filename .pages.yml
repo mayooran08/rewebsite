@@ -1,3 +1,9 @@
+media:
+  input: assets/blog
+  output: /assets/blog
+  rename: safe
+  extensions: [jpg, jpeg, png, webp]
+
 content:
   - name: testimonials
     label: Testimonials
@@ -32,3 +38,79 @@ content:
       - name: published
         label: Published (switch off to hide)
         type: boolean
+
+  - name: blog_en
+    label: Blog posts (English)
+    type: collection
+    path: content/blog/en
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: title
+      sort: date
+      order: desc
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: date
+        label: Date
+        type: date
+        required: true
+      - name: summary
+        label: Short summary (shown on the cards and in Google)
+        type: text
+      - name: image
+        label: Cover image (about 1200 px wide, under 300 KB)
+        type: image
+      - name: image_alt
+        label: Cover image description (for accessibility)
+        type: string
+      - name: pair
+        label: Link to the French version (type the same word in both versions, optional)
+        type: string
+      - name: published
+        label: Published (switch on to show on the website)
+        type: boolean
+      - name: body
+        label: Article
+        type: rich-text
+
+  - name: blog_fr
+    label: Articles de blogue (français)
+    type: collection
+    path: content/blog/fr
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: title
+      sort: date
+      order: desc
+    fields:
+      - name: title
+        label: Titre
+        type: string
+        required: true
+      - name: date
+        label: Date
+        type: date
+        required: true
+      - name: summary
+        label: Court résumé (affiché sur les cartes et dans Google)
+        type: text
+      - name: image
+        label: Image de couverture (environ 1200 px de large, moins de 300 Ko)
+        type: image
+      - name: image_alt
+        label: Description de l'image (accessibilité)
+        type: string
+      - name: pair
+        label: Lien vers la version anglaise (écrire le même mot dans les deux versions, facultatif)
+        type: string
+      - name: published
+        label: Publié (activer pour afficher sur le site)
+        type: boolean
+      - name: body
+        label: Article
+        type: rich-text
