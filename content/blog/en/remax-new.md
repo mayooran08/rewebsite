@@ -5,6 +5,7 @@ summary: "*The REMAX Fall 2026 Canadian Housing Market Outlook finds Canadians
   are changing where they look, what they buy and how they manage their finances
   to make homeownership a reality*"
 image: /assets/blog/example-protections.jpg
+image_alt: Remax new Agente
 published: true
 ---
 *The REMAX Fall 2026 Canadian Housing Market Outlook finds Canadians are changing where they look, what they buy and how they manage their finances to make homeownership a reality*
