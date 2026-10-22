@@ -15,5 +15,14 @@
     "rating": 5,
     "featured": true,
     "published": true
+  },
+  {
+    "name": "Badr Jalal",
+    "city": "Montreal",
+    "quote_en": "Je tenais à te remercier sincèrement pour ton excellent travail dans le dossier du duplex sur la 15 e rue , Ta disponibilité, tes conseils judicieux et ton professionnalisme ont rendu tout le processus beaucoup plus simple et rassurant pour Mariam et moi.\n\nOn a vraiment senti que tu avais nos intérêts à cœur. Merci encore, et c'est avec plaisir qu'on te recommandera autour de nous!\n\nBadr",
+    "quote_fr": "Je tenais à te remercier sincèrement pour ton excellent travail dans le dossier du duplex sur la 15 e rue , Ta disponibilité, tes conseils judicieux et ton professionnalisme ont rendu tout le processus beaucoup plus simple et rassurant pour Mariam et moi.\n\nOn a vraiment senti que tu avais nos intérêts à cœur. Merci encore, et c'est avec plaisir qu'on te recommandera autour de nous!\n\nBadr",
+    "rating": 5,
+    "featured": true,
+    "published": true
   }
 ]
