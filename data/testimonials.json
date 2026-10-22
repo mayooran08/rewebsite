@@ -34,5 +34,14 @@
     "rating": 5,
     "featured": true,
     "published": true
+  },
+  {
+    "name": "Mayooran Gnanam",
+    "city": "Laval",
+    "quote_en": "J’ai acheté une maison à Laval et j’ai vraiment apprécié son accompagnement tout au long du processus. Elle connaît très bien le quartier et a su me donner de précieux conseils pour faire le bon choix. Malgré un marché très compétitif et plusieurs offres sur la maison, nous avons réussi à l’obtenir grâce à son aide et à ses bons conseils. Un gros merci pour ton excellent travail ! Je recommande sans hésitation !",
+    "quote_fr": "J’ai acheté une maison à Laval et j’ai vraiment apprécié son accompagnement tout au long du processus. Elle connaît très bien le quartier et a su me donner de précieux conseils pour faire le bon choix. Malgré un marché très compétitif et plusieurs offres sur la maison, nous avons réussi à l’obtenir grâce à son aide et à ses bons conseils. Un gros merci pour ton excellent travail ! Je recommande sans hésitation !",
+    "rating": 5,
+    "featured": true,
+    "published": true
   }
 ]
