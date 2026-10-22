@@ -25,5 +25,14 @@
     "rating": 5,
     "featured": true,
     "published": true
+  },
+  {
+    "name": " Chav Tha Chau",
+    "city": "Montreal",
+    "quote_en": "I bought a house with Gevitha. She acts fast, gives valuable advices and very knowledgeable of Laval area. She really takes care of my transaction.\nThank you,",
+    "quote_fr": "I bought a house with Gevitha. She acts fast, gives valuable advices and very knowledgeable of Laval area. She really takes care of my transaction.\nThank you,",
+    "rating": 5,
+    "featured": true,
+    "published": true
   }
 ]
