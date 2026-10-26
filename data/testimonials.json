@@ -43,5 +43,14 @@
     "rating": 5,
     "featured": true,
     "published": true
+  },
+  {
+    "name": "Laxman N",
+    "city": "Laval",
+    "quote_en": "We were referred to Gevitha by one of my wife’s colleagues, and we’re so glad we chose her as our realtor!\n\nFrom the beginning, she clearly explained the home-buying process and guided us through every step. During the nearly two months we spent searching for our home, she was always responsive, patient, and ready to answer all our questions. She also helped us evaluate neighbourhoods, resale values, and the long-term potential of different properties.\n\nEven after our offer was accepted, she supported us during the home inspection and helped us understand the important details before making our final decision.\n\nWhat makes her truly special is that she still checks in with us every three months to see how we’re doing in our new home.\n\nThank you, Gevitha, for your dedication, guidance, and continued support. We truly appreciate everything you’ve done for us. Highly recommended!",
+    "quote_fr": "We were referred to Gevitha by one of my wife’s colleagues, and we’re so glad we chose her as our realtor!\n\nFrom the beginning, she clearly explained the home-buying process and guided us through every step. During the nearly two months we spent searching for our home, she was always responsive, patient, and ready to answer all our questions. She also helped us evaluate neighbourhoods, resale values, and the long-term potential of different properties.\n\nEven after our offer was accepted, she supported us during the home inspection and helped us understand the important details before making our final decision.\n\nWhat makes her truly special is that she still checks in with us every three months to see how we’re doing in our new home.\n\nThank you, Gevitha, for your dedication, guidance, and continued support. We truly appreciate everything you’ve done for us. Highly recommended!",
+    "rating": 5,
+    "featured": true,
+    "published": true
   }
 ]
