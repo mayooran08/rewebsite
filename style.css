@@ -252,8 +252,8 @@ picture{display:block}
 }
 
 /* testimonials */
-.testimonial-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.6rem;margin:2.4rem 0}
-.testimonial{margin:0;background:#fff;border-radius:var(--radius);padding:1.8rem 1.7rem;box-shadow:0 10px 30px rgba(20,40,32,.07);border-top:3px solid var(--gold);display:flex;flex-direction:column;gap:1rem}
+.testimonial-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2.6rem 2.4rem;margin:2.4rem 0}
+.testimonial{margin:0;border-left:3px solid var(--leaf);padding:.1rem 0 .1rem 1.3rem;display:flex;flex-direction:column;gap:.8rem}
 .testimonial blockquote{margin:0;color:var(--ink);font-size:1.05rem;line-height:1.7;position:relative}
 .testimonial blockquote::before{content:"\201C";font-family:var(--font-head);font-size:3rem;line-height:0;color:var(--gold-text);display:block;height:1.2rem}
 .testimonial figcaption{margin-top:auto;color:var(--muted);font-size:.92rem}
@@ -422,3 +422,43 @@ main:focus{outline:none}
   .final-cta .wrap{display:block}
   .final-cta .cta{margin-top:1.4rem}
 }
+/* ===== redesign phase 3: inner pages ===== */
+.page-hero{background:linear-gradient(135deg,var(--grove) 0%,var(--grove-3) 100%);padding:122px 0 60px}
+.page-hero h1{font-size:clamp(2rem,4.2vw,3.1rem);font-stretch:108%;max-width:26ch}
+.page-hero .lead{font-size:1.15rem;max-width:40rem}
+.crumbs a{color:var(--sage)}
+.page-hero.has-photo{padding-bottom:64px}
+.page-hero.has-photo .wrap{grid-template-columns:1fr 200px;gap:3.5rem}
+.page-hero-photo{width:200px;height:270px}
+.page-hero-photo::before{display:none}
+.page-hero-photo img{border-radius:999px 999px 14px 14px;box-shadow:0 22px 44px rgba(0,0,0,.3)}
+
+/* closing band at the end of each page */
+.valuation{background:var(--grove-3);color:#fff;padding:64px 0}
+.valuation h2{color:#fff;font-size:clamp(1.5rem,3vw,2rem);margin:0 0 .4rem}
+.valuation p{color:#d3e0d7;margin:0;max-width:34rem}
+
+/* numbered steps: a real sequence, so numbers belong; flat list instead of cards */
+.steps{gap:0;margin:1.4rem 0}
+.steps li{background:none;box-shadow:none;border-radius:0;border-bottom:1px solid #d3ddd1;padding:1.3rem .5rem 1.3rem 4rem}
+.steps li:first-child{border-top:1px solid #d3ddd1}
+.steps li::before{left:.3rem;top:1.25rem;background:var(--grove);color:var(--sage)}
+.faq summary{font-weight:700}
+.faq details[open] summary{color:var(--leaf-text)}
+
+/* quieter cards */
+.post-card{box-shadow:none;border:1px solid #d3ddd1}
+.post-card:hover{box-shadow:none;transform:none;border-color:var(--leaf)}
+.program{box-shadow:none}
+.testimonial blockquote::before{display:none}
+.testimonial blockquote{font-size:1.1rem;line-height:1.6}
+/* header photo: fixed crop so the band stays compact */
+.page-hero-photo{height:250px}
+.page-hero-photo picture{display:block;height:100%}
+.page-hero-photo img{object-position:50% 18%}
+
+/* full testimonials page: quotes flow in columns, so long and short ones sit together */
+#testimonials-page .testimonial-grid{display:block;column-count:3;column-gap:2.6rem}
+#testimonials-page .testimonial{break-inside:avoid;margin:0 0 2.4rem}
+@media (max-width:1000px){#testimonials-page .testimonial-grid{column-count:2}}
+@media (max-width:640px){#testimonials-page .testimonial-grid{column-count:1}}

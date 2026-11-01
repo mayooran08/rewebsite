@@ -256,7 +256,7 @@ function contactInfo(l) {
   <li><span>${t('office', l)}</span> <a href="tel:+14506822000">450 682-2000</a></li>
   <li><span>${t('fax', l)}</span> 450 682-2242</li>
 </ul>
-<p><a class="textlink" href="https://www.google.com/maps/search/?api=1&amp;query=830+boul+Cur%C3%A9-Labelle+Laval+QC+H7V+2V3" target="_blank" rel="noopener">${l === 'en' ? 'View on Google Maps' : 'Voir sur Google Maps'} →</a></p>`;
+<p><a class="textlink" href="https://www.google.com/maps/search/?api=1&amp;query=830+boul+Cur%C3%A9-Labelle+Laval+QC+H7V+2V3" target="_blank" rel="noopener">${l === 'en' ? 'View on Google Maps' : 'Voir sur Google Maps'}</a></p>`;
 }
 
 function form(l, kind) {
@@ -492,7 +492,7 @@ function postCard(p, l) {
         <p class="post-meta">${fmtDate(p.date, l)}${p.published ? '' : ` · <span class="draft-tag">${E ? 'Draft preview' : 'Aperçu du brouillon'}</span>`}</p>
         <h3><a href="${href}">${esc(p.title)}</a></h3>
         ${p.summary ? `<p>${esc(p.summary)}</p>` : ''}
-        <a class="card-link" href="${href}">${E ? 'Read more' : 'Lire la suite'} →</a>
+        <a class="card-link" href="${href}">${E ? 'Read more' : 'Lire la suite'}</a>
       </div>
     </article>`;
 }
@@ -507,7 +507,7 @@ function blogStrip(l) {
     <div class="post-grid">
       ${list.map((p) => postCard(p, l)).join('\n      ')}
     </div>
-    <p class="center"><a class="textlink" href="${url(l, 'blog')}">${E ? 'All articles' : 'Tous les articles'} →</a></p>
+    <p class="center"><a class="textlink" href="${url(l, 'blog')}">${E ? 'All articles' : 'Tous les articles'}</a></p>
   </div>
 </section>`;
 }
@@ -549,7 +549,7 @@ function buildPost(p) {
     <div class="prose">
       ${p.html}
     </div>
-    <p class="post-back"><a class="textlink" href="${url(l, 'blog')}">← ${E ? 'All articles' : 'Tous les articles'}</a></p>
+    <p class="post-back"><a class="textlink" href="${url(l, 'blog')}">${E ? 'All articles' : 'Tous les articles'}</a></p>
   </div>
 </section>
 ${ctaBand(l, E ? 'Have a question about your project?' : 'Une question sur votre projet ?', E ? 'Tell me what you need and I will follow up quickly.' : 'Dites-moi ce dont vous avez besoin et je vous répondrai rapidement.', t('contactBtn', l), 'contact')}`;
