@@ -114,15 +114,4 @@
         else { var e = box.querySelector('[data-testimonial-empty]'); if (e) e.hidden = false; }
       });
   });
-
-  // scroll reveal
-  var targets = document.querySelectorAll('.card, .about > div, .val-inner > *, .contact > *, .section h2, .steps li, .about-page > *');
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
-      });
-    }, { threshold: 0.12 });
-    targets.forEach(function (el) { el.classList.add('reveal'); io.observe(el); });
-  }
 })();

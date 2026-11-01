@@ -1,4 +1,4 @@
-﻿// Generates the bilingual multi-page site into the repo root.
+// Generates the bilingual multi-page site into the repo root.
 // Run: node tools/build.mjs
 import { mkdirSync, writeFileSync, rmSync, readFileSync, readdirSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -55,6 +55,7 @@ const WHATSAPP = {
     fr: 'Bonjour Gevitha, j’ai trouvé votre site et j’aimerais discuter d’immobilier.',
   },
 };
+ICON.phone = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
 const waLink = (l) => `https://wa.me/${WHATSAPP.number}?text=${encodeURIComponent(WHATSAPP.text[l])}`;
 const waLabel = (l) => (l === 'en' ? 'Chat on WhatsApp' : 'Discuter sur WhatsApp');
 ICON.whatsapp = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>';
@@ -78,15 +79,18 @@ const pic = (n, l, { cls = '', eager = false, decorative = false, sizes = '(max-
 
 const url = (l, id) => `/${l}/${PAGES[id].slug[l]}${PAGES[id].slug[l] ? '/' : ''}`;
 
-const NAV = [
-  ['about', { en: 'About', fr: 'À propos' }],
-  ['buy', { en: 'Buy', fr: 'Acheter' }],
-  ['sell', { en: 'Sell', fr: 'Vendre' }],
-  ['commercial', { en: 'Commercial', fr: 'Commercial' }],
-  ['valuation', { en: 'Evaluation', fr: 'Évaluation' }],
-  ['testimonials', { en: 'Testimonials', fr: 'Témoignages' }],
-  ['blog', { en: 'Blog', fr: 'Blogue' }],
-];
+const LABEL = {
+  buy: { en: 'Buy', fr: 'Acheter' },
+  sell: { en: 'Sell', fr: 'Vendre' },
+  commercial: { en: 'Commercial', fr: 'Commercial' },
+  about: { en: 'About', fr: 'À propos' },
+  blog: { en: 'Blog', fr: 'Blogue' },
+  valuation: { en: 'Home evaluation', fr: 'Évaluation de propriété' },
+  testimonials: { en: 'Testimonials', fr: 'Témoignages' },
+  contact: { en: 'Contact', fr: 'Contact' },
+};
+// Main menu: a short list. Evaluation and testimonials are reached from the page content and the footer.
+const NAV = ['buy', 'sell', 'commercial', 'about', 'blog'].map((p) => [p, LABEL[p]]);
 
 const T = {
   contactBtn: { en: 'Contact me', fr: 'Me contacter' },
@@ -142,7 +146,7 @@ function head(l, id, title, desc, opts = {}) {
 <link rel="canonical" href="${SITE}${self}">
 ${Object.entries(alts).map(([k, p]) => `<link rel="alternate" hreflang="${k}" href="${SITE}${p}">`).join('\n')}
 ${alts.en && alts.fr ? `<link rel="alternate" hreflang="x-default" href="${SITE}/">` : ''}
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#1e3b33">
 <link rel="alternate" type="application/rss+xml" title="${l === 'en' ? 'Blog' : 'Blogue'} · Gevitha Kunaratnam" href="/${l}/${BLOG_SLUG[l]}/feed.xml">
 <meta property="og:type" content="${ogType}">
 <meta property="og:site_name" content="Gevitha Kunaratnam">
@@ -152,10 +156,9 @@ ${alts.en && alts.fr ? `<link rel="alternate" hreflang="x-default" href="${SITE}
 <meta property="og:image" content="${SITE}${ogImage}">
 <meta property="og:locale" content="${l === 'fr' ? 'fr_CA' : 'en_CA'}">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b1220'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='34' font-weight='700' text-anchor='middle' fill='%23c9a24b'%3EGK%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231e3b33'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='34' font-weight='700' text-anchor='middle' fill='%23e9a825'%3EGK%3C/text%3E%3C/svg%3E">
+<link rel="preload" href="/assets/fonts/anek-latin-100-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/atkinson-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css">
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
 </head>
@@ -173,6 +176,7 @@ function header(l, id, twinHref) {
     <a href="${url(l, 'home')}" class="brand">Gevitha <span>Kunaratnam</span></a>
     <nav class="links" id="links" aria-label="Main">
       ${links}
+      <a class="nav-phone" href="tel:+15145702152" aria-label="${l === 'en' ? 'Call' : 'Appeler'} 514 570-2152">${ICON.phone}<span>514 570-2152</span></a>
       <a href="${url(l, 'contact')}" class="btn btn-sm"${id === 'contact' ? ' aria-current="page"' : ''}>${t('contactBtn', l)}</a>
       <a class="lang" href="${twinHref || url(other, id)}" hreflang="${other}" lang="${other}" data-lang="${other}" aria-label="${other === 'fr' ? 'Version française' : 'English version'}">${other.toUpperCase()}</a>
     </nav>
@@ -185,9 +189,7 @@ function header(l, id, twinHref) {
 function footer(l) {
   const foot = ['about', 'buy', 'sell', 'commercial', 'valuation', 'testimonials', 'blog', 'contact']
     .map((p) => {
-      const nav = NAV.find((n) => n[0] === p);
-      const label = nav ? nav[1][l] : p === 'testimonials' ? (l === 'en' ? 'Testimonials' : 'Témoignages') : t('contactBtn', l);
-      return `<li><a href="${url(l, p)}">${label}</a></li>`;
+      return `<li><a href="${url(l, p)}">${LABEL[p][l]}</a></li>`;
     }).join('');
   return `<footer class="footer">
   <div class="wrap foot-cols">
@@ -926,7 +928,7 @@ write('index.html', `<!doctype html>
 <link rel="alternate" hreflang="en" href="${SITE}/en/">
 <link rel="alternate" hreflang="fr" href="${SITE}/fr/">
 <link rel="alternate" hreflang="x-default" href="${SITE}/">
-<meta name="theme-color" content="#0b1220">
+<meta name="theme-color" content="#1e3b33">
 <link rel="stylesheet" href="/style.css">
 <script>
 (function(){try{
