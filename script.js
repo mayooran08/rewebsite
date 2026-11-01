@@ -118,13 +118,25 @@
       });
   });
 
-  // prefill the evaluation form from the quick form on the home page (?address=...&email=...)
-  try {
-    var qs = new URLSearchParams(location.search);
-    ['address', 'email'].forEach(function (k) {
-      var v = qs.get(k);
-      var field = v && document.querySelector('.js-form [name="' + k + '"]');
-      if (field && !field.value) field.value = v.slice(0, 300);
+  // Quick evaluation form on the home page: hand the address to the full form inside the browser
+  // (sessionStorage), so personal details are not placed in the web address.
+  document.querySelectorAll('.quick-eval').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      var field = form.querySelector('[name="address"]');
+      try {
+        sessionStorage.setItem('evalAddress', field.value.slice(0, 300));
+        e.preventDefault();
+        location.href = form.getAttribute('action');
+      } catch (err) { /* storage blocked: the form falls back to a normal GET with ?address= */ }
     });
+  });
+
+  // On the evaluation page, fill the address that was typed on the home page
+  try {
+    var saved = sessionStorage.getItem('evalAddress');
+    var addr = saved || new URLSearchParams(location.search).get('address');
+    var addrField = addr && document.querySelector('.js-form [name="address"]');
+    if (addrField && !addrField.value) addrField.value = addr.slice(0, 300);
+    if (saved) sessionStorage.removeItem('evalAddress');
   } catch (e) {}
 })();

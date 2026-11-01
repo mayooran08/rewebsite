@@ -660,7 +660,6 @@ ${testimonialStrip(l)}
         <p>${E ? 'Accurate pricing, professional marketing and guidance through every step to sell with confidence.' : 'Établissement du juste prix, mise en marché professionnelle et accompagnement à chaque étape pour vendre en toute confiance.'}</p>
         <form class="quick-eval" action="${url(l, 'valuation')}" method="get">
           <label><span>${E ? 'Property address' : 'Adresse de la propriété'}</span><input type="text" name="address" required autocomplete="street-address"></label>
-          <label><span>${E ? 'Email' : 'Courriel'}</span><input type="email" name="email" required autocomplete="email"></label>
           <button class="btn" type="submit">${E ? 'Find out what my home is worth' : 'Connaître la valeur de ma propriété'}</button>
         </form>
         <p class="svc-note">${E ? 'Free and without obligation.' : 'Gratuit et sans engagement.'} <a class="textlink-light" href="${url(l, 'sell')}">${E ? 'How selling works' : 'Comment se passe une vente'}</a></p>
