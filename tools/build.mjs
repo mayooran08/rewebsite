@@ -146,7 +146,7 @@ function head(l, id, title, desc, opts = {}) {
 <link rel="canonical" href="${SITE}${self}">
 ${Object.entries(alts).map(([k, p]) => `<link rel="alternate" hreflang="${k}" href="${SITE}${p}">`).join('\n')}
 ${alts.en && alts.fr ? `<link rel="alternate" hreflang="x-default" href="${SITE}/">` : ''}
-<meta name="theme-color" content="#1e3b33">
+<meta name="theme-color" content="#1d3557">
 <link rel="alternate" type="application/rss+xml" title="${l === 'en' ? 'Blog' : 'Blogue'} · Gevitha Kunaratnam" href="/${l}/${BLOG_SLUG[l]}/feed.xml">
 <meta property="og:type" content="${ogType}">
 <meta property="og:site_name" content="Gevitha Kunaratnam">
@@ -156,8 +156,8 @@ ${alts.en && alts.fr ? `<link rel="alternate" hreflang="x-default" href="${SITE}
 <meta property="og:image" content="${SITE}${ogImage}">
 <meta property="og:locale" content="${l === 'fr' ? 'fr_CA' : 'en_CA'}">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231e3b33'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='34' font-weight='700' text-anchor='middle' fill='%23e9a825'%3EGK%3C/text%3E%3C/svg%3E">
-<link rel="preload" href="/assets/fonts/anek-latin-100-800-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231d3557'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='34' font-weight='700' text-anchor='middle' fill='%23ffffff'%3EGK%3C/text%3E%3C/svg%3E">
+<link rel="preload" href="/assets/fonts/newsreader-500-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/atkinson-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/style.css">
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
@@ -663,8 +663,13 @@ const BODY = {
       : ['Des conseils honnêtes.', 'Une vision stratégique.', 'Le même soin que j’offrirais à ma propre famille.'];
     const waIcon = ICON.whatsapp.replace('<svg ', '<svg class="ico" ');
     const callLabel = `${E ? 'Call' : 'Appeler le'} 514 570-2152`;
+    const svc = (id, h, p, link) => `<li>
+        <h3>${h}</h3>
+        <div><p>${p}</p><a class="textlink" href="${url(l, id)}">${link}</a></div>
+      </li>`;
     return `<section class="hero hero-v2">
   <div class="wrap hero-inner">
+    <div class="hero-photo">${pic('green-sofa', l, { eager: true, sizes: '(max-width: 860px) 100vw, 520px' })}</div>
     <div class="hero-text">
       <h1 class="statement">${lines.map((x) => `<span class="line">${x}</span>`).join(' ')}</h1>
       <p class="signature"><strong>Gevitha Kunaratnam</strong><span>${E ? 'Residential and commercial real estate broker, RE/MAX 2000' : 'Courtière immobilière résidentielle et commerciale, RE/MAX 2000'}</span></p>
@@ -675,41 +680,31 @@ const BODY = {
         <a class="textlink-light" href="${url(l, 'valuation')}">${E ? 'Get a free home evaluation' : 'Évaluation gratuite de ma propriété'}</a>
       </div>
     </div>
-    <div class="hero-photo">${pic('on-phone', l, { eager: true, sizes: '(max-width: 860px) 70vw, 400px' })}</div>
   </div>
 </section>
 ${testimonialStrip(l)}
 <section class="section services" id="services">
   <div class="wrap">
     <h2>${E ? 'How I can help' : 'Comment je peux vous aider'}</h2>
-    <div class="mosaic">
-      <article class="svc svc-buy">
-        <div class="svc-photo">${pic('blue-chair', l, { sizes: '(max-width: 860px) 100vw, 560px' })}</div>
-        <div class="svc-body">
-          <h3>${E ? 'Buying a home' : 'Acheter une propriété'}</h3>
-          <p>${E ? 'Targeted search, visits, offer strategy and negotiation until you have the right home at the right price.' : 'Recherche ciblée, visites, stratégie d’offre et négociation jusqu’à la propriété idéale au bon prix.'}</p>
-          <a class="textlink" href="${url(l, 'buy')}">${E ? 'How buying works' : 'Comment se passe un achat'}</a>
-        </div>
-      </article>
-      <article class="svc svc-sell">
-        <h3>${E ? 'Selling your property' : 'Vendre votre propriété'}</h3>
-        <p>${E ? 'Accurate pricing, professional marketing and guidance through every step to sell with confidence.' : 'Établissement du juste prix, mise en marché professionnelle et accompagnement à chaque étape pour vendre en toute confiance.'}</p>
-        <form class="quick-eval" action="${url(l, 'valuation')}" method="get">
-          <label><span>${E ? 'Property address' : 'Adresse de la propriété'}</span><input type="text" name="address" required autocomplete="street-address"></label>
-          <button class="btn" type="submit">${E ? 'Find out what my home is worth' : 'Connaître la valeur de ma propriété'}</button>
-        </form>
-        <p class="svc-note">${E ? 'Free and without obligation.' : 'Gratuit et sans engagement.'} <a class="textlink-light" href="${url(l, 'sell')}">${E ? 'How selling works' : 'Comment se passe une vente'}</a></p>
-      </article>
-      <article class="svc svc-com">
-        <h3>${E ? 'Commercial real estate' : 'Immobilier commercial'}</h3>
-        <ul class="ticks">
-          <li>${E ? 'Buying or selling retail, office and industrial space' : 'Achat ou vente de locaux commerciaux, de bureaux et industriels'}</li>
-          <li>${E ? 'Leasing space for your business' : 'Location de locaux pour votre entreprise'}</li>
-          <li>${E ? 'Income properties and investment opportunities' : 'Immeubles à revenus et occasions de placement'}</li>
-        </ul>
-        <a class="textlink" href="${url(l, 'commercial')}">${E ? 'Talk about a commercial project' : 'Parler d’un projet commercial'}</a>
-      </article>
+    <ul class="svc-list">
+      ${svc('buy', E ? 'Buying a home' : 'Acheter une propriété', E ? 'Targeted search, visits, offer strategy and negotiation until you have the right home at the right price.' : 'Recherche ciblée, visites, stratégie d’offre et négociation jusqu’à la propriété idéale au bon prix.', E ? 'How buying works' : 'Comment se passe un achat')}
+      ${svc('sell', E ? 'Selling your property' : 'Vendre votre propriété', E ? 'Accurate pricing, professional marketing and guidance through every step to sell with confidence.' : 'Établissement du juste prix, mise en marché professionnelle et accompagnement à chaque étape pour vendre en toute confiance.', E ? 'How selling works' : 'Comment se passe une vente')}
+      ${svc('commercial', E ? 'Commercial real estate' : 'Immobilier commercial', E ? 'Buying, selling or leasing retail, office and industrial space, and income properties and investment opportunities.' : 'Achat, vente ou location de locaux commerciaux, de bureaux et industriels, d’immeubles à revenus et d’occasions de placement.', E ? 'Talk about a commercial project' : 'Parler d’un projet commercial')}
+    </ul>
+  </div>
+</section>
+
+<section class="eval-band" id="evaluation">
+  <div class="wrap eval-inner">
+    <div class="eval-text">
+      <h2>${E ? 'What is your home worth?' : 'Quelle est la valeur de votre propriété ?'}</h2>
+      <p>${E ? 'Enter the address and I will prepare a personalized evaluation and selling strategy. Free and without obligation.' : 'Entrez l’adresse et je préparerai une évaluation personnalisée et une stratégie de vente. Gratuit et sans engagement.'}</p>
+      <form class="quick-eval" action="${url(l, 'valuation')}" method="get">
+        <label><span>${E ? 'Property address' : 'Adresse de la propriété'}</span><input type="text" name="address" required autocomplete="street-address"></label>
+        <button class="btn" type="submit">${E ? 'Find out what my home is worth' : 'Connaître la valeur de ma propriété'}</button>
+      </form>
     </div>
+    <div class="eval-photo">${pic('blue-chair', l, { sizes: '(max-width: 860px) 100vw, 460px' })}</div>
   </div>
 </section>
 
@@ -717,7 +712,7 @@ ${testimonialStrip(l)}
   <div class="wrap about">
     <div>
       <h2>${E ? 'From passion to profession' : 'De la passion à la profession'}</h2>
-      <div class="about-img">${pic('green-sofa', l, { sizes: '(max-width: 860px) 80vw, 380px' })}</div>
+      <div class="about-img">${pic('blacksuit', l, { sizes: '(max-width: 860px) 80vw, 380px' })}</div>
     </div>
     <div class="about-text">
       <p>${BIO[l][BIO_HOME[l][0]]}</p>
@@ -992,7 +987,7 @@ write('index.html', `<!doctype html>
 <link rel="alternate" hreflang="en" href="${SITE}/en/">
 <link rel="alternate" hreflang="fr" href="${SITE}/fr/">
 <link rel="alternate" hreflang="x-default" href="${SITE}/">
-<meta name="theme-color" content="#1e3b33">
+<meta name="theme-color" content="#1d3557">
 <link rel="stylesheet" href="/style.css">
 <script>
 (function(){try{
