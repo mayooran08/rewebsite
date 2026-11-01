@@ -5,7 +5,7 @@ summary: "*The REMAX Fall 2026 Canadian Housing Market Outlook finds Canadians
   are changing where they look, what they buy and how they manage their finances
   to make homeownership a reality*"
 image: /assets/blog/example-protections.jpg
-image_alt: Remax new Agente
+image_alt: Gevitha Kunaratnam, real estate broker, seated with her laptop and phone
 published: true
 ---
 *The REMAX Fall 2026 Canadian Housing Market Outlook finds Canadians are changing where they look, what they buy and how they manage their finances to make homeownership a reality*
