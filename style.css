@@ -277,9 +277,6 @@ address strong{color:var(--ink)}
 .foot-bottom p{margin:0}
 
 /* ---------- chat buttons ---------- */
-.wa-float{position:fixed;right:18px;bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;align-items:center;gap:.6rem;background:#0b7a55;color:#fff;padding:.75rem 1.2rem .75rem .95rem;border-radius:999px;box-shadow:0 10px 28px rgba(0,0,0,.25);font-weight:700;font-size:.95rem;text-decoration:none;transition:background .2s}
-.wa-float svg{width:26px;height:26px;fill:currentColor;flex:none}
-.wa-float:hover{background:#09694a}
 .mobile-bar{display:none}
 
 /* ---------- standalone pages (language chooser, 404) ---------- */
@@ -317,7 +314,6 @@ address strong{color:var(--ink)}
   .final-cta .wrap,.val-inner{display:block}
   .final-cta .cta,.valuation .btn{margin-top:1.4rem}
   .footer{padding-bottom:2rem}
-  .wa-float{display:none}
   .mobile-bar{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:.6rem .8rem calc(.6rem + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(22,36,29,.1)}
   .mobile-bar a{display:flex;align-items:center;justify-content:center;gap:.55rem;min-height:48px;border-radius:12px;font-weight:700;text-decoration:none}
   .mobile-bar svg{width:22px;height:22px;flex:none}
@@ -328,4 +324,4 @@ address strong{color:var(--ink)}
   body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 }
 @media (max-width:640px){#testimonials-page .testimonial-grid{column-count:1}}
-@media print{.wa-float,.mobile-bar,.nav{display:none}}
+@media print{.mobile-bar,.nav{display:none}}

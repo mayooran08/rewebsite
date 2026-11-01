@@ -213,7 +213,6 @@ function footer(l) {
     <p class="small">${t('indep', l)}</p>
   </div>
 </footer>
-<a class="wa-float" href="${waLink(l)}" target="_blank" rel="noopener noreferrer" aria-label="${waLabel(l)}">${ICON.whatsapp}<span>${waLabel(l)}</span></a>
 <nav class="mobile-bar" aria-label="${l === 'en' ? 'Quick contact' : 'Contact rapide'}">
   <a class="mb-call" href="tel:+15145702152">${ICON.phone}<span>${l === 'en' ? 'Call' : 'Appeler'}</span></a>
   <a class="mb-wa" href="${waLink(l)}" target="_blank" rel="noopener noreferrer">${ICON.whatsapp}<span>WhatsApp</span></a>
