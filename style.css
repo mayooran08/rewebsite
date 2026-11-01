@@ -60,19 +60,19 @@ h2{font-size:clamp(1.9rem,3.5vw,2.7rem);margin-bottom:1rem}
 /* hero */
 .hero{background:radial-gradient(1200px 600px at 80% 20%,#2c5246 0%,var(--navy) 60%);color:#fff;padding:140px 0 80px;overflow:hidden}
 .hero-inner{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:center}
-.eyebrow{font-size:1rem;letter-spacing:.005em;color:var(--gold-2);margin:0 0 .8rem;font-weight:700}
-.eyebrow.dark{color:var(--gold-text)}
+
+
 .hero h1{font-size:clamp(2.8rem,7vw,5rem);font-weight:700}
-.sub{font-size:1.15rem;color:#d3e0d7;max-width:34rem;margin:1.4rem 0 2rem}
+
 .cta{display:flex;gap:1rem;flex-wrap:wrap}
-.brokerage{margin-top:2.2rem;color:#a3b8ac;letter-spacing:.2em;font-size:.8rem}
+
 .hero-photo{position:relative;justify-self:center}
 .hero-photo::before{content:"";position:absolute;inset:-14px -14px 14px 14px;border:2px solid var(--gold);border-radius:var(--radius);opacity:.7}
 .hero-photo img{position:relative;border-radius:var(--radius);box-shadow:0 30px 60px rgba(0,0,0,.5);width:min(380px,100%);height:auto}
 
 /* languages band */
-.languages{background:var(--navy-2);color:#d3e0d7;text-align:center;padding:1.1rem 0;font-size:.95rem}
-.languages strong{color:var(--gold-2);margin-left:.7rem;letter-spacing:.04em}
+
+
 
 /* sections */
 .section{padding:96px 0}
@@ -120,8 +120,8 @@ address strong{color:var(--ink)}
 .status.err{color:#b3261e}
 
 .footer{background:var(--navy);color:#aec2b6;padding:2rem 0;font-size:.9rem}
-.foot-inner{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.foot-inner p{margin:0}
+
+
 .small{font-size:.8rem}
 
 @media (max-width:860px){
@@ -202,7 +202,7 @@ html{scroll-padding-top:80px}
 .social-link svg{width:22px;height:22px;fill:currentColor;color:var(--gold-2)}
 .social-link:hover{background:var(--sage);color:var(--grove);transform:translateY(-2px)}
 .social-link:hover svg{color:var(--navy)}
-.social-link.pending{opacity:.75;cursor:default}
+
 .social-foot{margin-top:1rem}
 .footer .social-link{color:#fff}
 .footer .social-link:hover{color:var(--navy)}
@@ -283,9 +283,9 @@ picture{display:block}
 .post-card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
 .post-card:hover .post-card-img img{transform:scale(1.04)}
 .post-card-body{padding:1.5rem 1.6rem 1.7rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
-.post-card-body h3{font-size:1.25rem;line-height:1.3}
-.post-card-body h3 a{text-decoration:none}
-.post-card-body h3 a:hover{color:#3b5226}
+.post-card-body h2,.post-card-body h3{font-size:1.25rem;line-height:1.3}
+.post-card-body h2 a,.post-card-body h3 a{text-decoration:none}
+.post-card-body h2 a:hover,.post-card-body h3 a:hover{color:#3b5226}
 .post-card-body p{margin:0;color:var(--muted);font-size:.98rem}
 .post-card-body .card-link{margin-top:auto;align-self:flex-start}
 .post-meta{font-size:.9rem!important;color:var(--gold-text)!important;font-weight:700}
@@ -502,3 +502,10 @@ main:focus{outline:none}
 
 /* on wide screens the form follows the reader while the text beside it scrolls */
 @media (min-width:861px){.contact .form{align-self:start;position:sticky;top:96px}}
+
+/* comfortable tap targets: links and pills are at least 44px tall */
+.card-link,.textlink{display:inline-flex;align-items:center;min-height:44px;margin-top:.2rem;border-bottom:0;text-decoration:underline;text-decoration-color:var(--leaf);text-decoration-thickness:2px;text-underline-offset:5px}
+.textlink-light{display:inline-flex;align-items:center;min-height:44px}
+.brand{display:inline-flex;align-items:center;min-height:44px}
+.social-link{min-height:44px}
+.faq summary{min-height:44px;display:flex;align-items:center}

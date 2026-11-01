@@ -519,16 +519,16 @@ const twinOf = (p) => {
   return POSTS[p.lang === 'en' ? 'fr' : 'en'].find((x) => x.pair === p.pair);
 };
 
-function postCard(p, l) {
+function postCard(p, l, level = 3) {
   const E = l === 'en';
   const href = blogPath(l, p.slug);
   return `<article class="post-card">
       ${p.image ? `<a class="post-card-img" href="${href}" tabindex="-1" aria-hidden="true"><img src="${esc(p.image)}" alt="" loading="lazy" decoding="async"></a>` : ''}
       <div class="post-card-body">
         <p class="post-meta">${fmtDate(p.date, l)}${p.published ? '' : ` · <span class="draft-tag">${E ? 'Draft preview' : 'Aperçu du brouillon'}</span>`}</p>
-        <h3><a href="${href}">${esc(p.title)}</a></h3>
+        <h${level}><a href="${href}">${esc(p.title)}</a></h${level}>
         ${p.summary ? `<p>${esc(p.summary)}</p>` : ''}
-        <a class="card-link" href="${href}">${E ? 'Read more' : 'Lire la suite'}</a>
+        <a class="card-link" href="${href}">${E ? 'Read more' : 'Lire la suite'}<span class="sr-only">${E ? ': ' : ' : '}${esc(p.title)}</span></a>
       </div>
     </article>`;
 }
@@ -916,7 +916,7 @@ ${ctaBand(l, E ? 'Ready to start your own story?' : 'Prêt à écrire votre prop
 <section class="section">
   <div class="wrap">
     ${list.length
-      ? `<div class="post-grid">\n      ${list.map((p) => postCard(p, l)).join('\n      ')}\n    </div>`
+      ? `<div class="post-grid">\n      ${list.map((p) => postCard(p, l, 2)).join('\n      ')}\n    </div>`
       : `<p class="testimonial-empty">${E ? 'Articles are coming soon.' : 'Les articles arrivent bientôt.'}</p>`}
     <div class="follow">
       <h2>${E ? 'Follow the blog' : 'Suivre le blogue'}</h2>
