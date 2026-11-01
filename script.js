@@ -212,3 +212,25 @@
     if (saved) sessionStorage.removeItem('evalAddress');
   } catch (e) {}
 })();
+
+/* Live chat (Tawk.to): loaded after the page is idle so it never slows the first view */
+(function () {
+  window.Tawk_API = window.Tawk_API || {};
+  window.Tawk_LoadStart = new Date();
+  window.Tawk_API.customStyle = {
+    visibility: {
+      desktop: { position: 'br', xOffset: 18, yOffset: 18 },
+      mobile: { position: 'br', xOffset: 10, yOffset: 78 }
+    }
+  };
+  function load() {
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://embed.tawk.to/6ae7bb7026050d3c3477c6d5/1k6cj8bt6';
+    s.charset = 'UTF-8';
+    s.setAttribute('crossorigin', '*');
+    document.head.appendChild(s);
+  }
+  if ('requestIdleCallback' in window) window.addEventListener('load', function () { requestIdleCallback(load, { timeout: 4000 }); });
+  else window.addEventListener('load', function () { setTimeout(load, 2000); });
+})();
