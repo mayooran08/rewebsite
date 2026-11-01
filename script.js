@@ -86,7 +86,10 @@
       }
 
       var q = document.createElement('blockquote');
-      q.textContent = t['quote_' + lang] || t.quote_en || t.quote_fr;
+      var text = t['quote_' + lang] || t.quote_en || t.quote_fr;
+      var clamp = parseInt(box.getAttribute('data-clamp') || '0', 10);
+      if (clamp && text.length > clamp) text = text.slice(0, clamp).replace(/\s+\S*$/, '') + '…';
+      q.textContent = text;
       fig.appendChild(q);
 
       var cap = document.createElement('figcaption');
@@ -114,4 +117,14 @@
         else { var e = box.querySelector('[data-testimonial-empty]'); if (e) e.hidden = false; }
       });
   });
+
+  // prefill the evaluation form from the quick form on the home page (?address=...&email=...)
+  try {
+    var qs = new URLSearchParams(location.search);
+    ['address', 'email'].forEach(function (k) {
+      var v = qs.get(k);
+      var field = v && document.querySelector('.js-form [name="' + k + '"]');
+      if (field && !field.value) field.value = v.slice(0, 300);
+    });
+  } catch (e) {}
 })();

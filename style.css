@@ -91,9 +91,9 @@ h2{font-size:clamp(1.9rem,3.5vw,2.7rem);margin-bottom:1rem}
 a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--grove);outline-offset:2px;box-shadow:0 0 0 6px #fff}
 .nav{transition:box-shadow .3s}
 .nav.scrolled{box-shadow:0 8px 24px rgba(0,0,0,.25)}
-h2::after{content:"";display:block;width:56px;height:3px;background:var(--gold);margin-top:.9rem;border-radius:2px}
-h2.center::after{margin-inline:auto}
-.valuation h2::after{display:none}
+
+
+
 .card h3{font-size:1.35rem;margin-bottom:.6rem}
 .card p{margin:0;color:var(--muted)}
 
@@ -342,3 +342,83 @@ main:focus{outline:none}
 
 /* keep the last footer line clear of the floating chat button */
 .footer{padding-bottom:5rem}
+
+/* ===== redesign phase 2: home page ===== */
+.hero-v2{padding:124px 0 88px}
+.hero-v2 .hero-inner{grid-template-columns:1.3fr .7fr;gap:4rem;align-items:center}
+.hero-v2 .statement{font-size:clamp(2rem,4.1vw,3.3rem);font-weight:700;font-stretch:108%;line-height:1.1;letter-spacing:-.02em;margin:0 0 1.6rem}
+.statement .line{display:block}
+.signature{display:flex;flex-direction:column;gap:.1rem;margin:0 0 .5rem}
+.signature strong{font-family:var(--font-head);font-weight:650;font-stretch:112%;font-size:1.3rem;color:#fff}
+.signature span{color:#d3e0d7}
+.lang-line{margin:0 0 2rem;color:#d3e0d7}
+.hero-v2 .cta{align-items:center;gap:1rem 1.6rem}
+.btn-light{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.6)}
+.btn-light:hover{background:rgba(255,255,255,.12);transform:none}
+.btn .ico{width:20px;height:20px;fill:currentColor;margin:-3px .55rem -3px 0;vertical-align:middle}
+.textlink-light{color:#fff;font-weight:700;text-decoration:underline;text-decoration-color:var(--sage);text-decoration-thickness:2px;text-underline-offset:6px}
+.textlink-light:hover{color:var(--sage)}
+.hero-v2 .hero-photo{order:0;width:min(400px,100%);justify-self:end}
+.hero-v2 .hero-photo::before{display:none}
+.hero-v2 .hero-photo img{width:100%;height:auto;border-radius:999px 999px 18px 18px;box-shadow:0 30px 60px rgba(0,0,0,.35)}
+
+/* the one animated moment: the hero statement rises in */
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.statement .line{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+.statement .line:nth-child(2){animation-delay:.14s}
+.statement .line:nth-child(3){animation-delay:.28s}
+.hero-v2 .signature,.hero-v2 .lang-line,.hero-v2 .cta{animation:rise .7s .5s cubic-bezier(.2,.7,.2,1) both}
+@media (prefers-reduced-motion:reduce){.statement .line,.hero-v2 .signature,.hero-v2 .lang-line,.hero-v2 .cta{animation:none}}
+
+/* proof: real client words right after the hero */
+.proof{padding:76px 0 28px}
+.proof h2{font-size:clamp(1.5rem,2.6vw,2rem);margin:0 0 2rem}
+.proof .testimonial-grid{grid-template-columns:repeat(3,1fr);gap:2.4rem;margin:0 0 1.6rem}
+.proof .testimonial{background:none;box-shadow:none;border-radius:0;border:0;border-left:3px solid var(--leaf);padding:.1rem 0 .1rem 1.3rem;gap:.8rem}
+.proof .testimonial blockquote{font-size:1.15rem;line-height:1.55;color:var(--ink)}
+.proof .testimonial blockquote::before{display:none}
+
+/* services: three different blocks, not three identical cards */
+.services{padding-top:72px}
+.services h2{margin-bottom:2.2rem}
+.mosaic{display:grid;grid-template-columns:1.05fr 1fr;grid-template-rows:auto 1fr;gap:1.6rem}
+.svc{border-radius:var(--radius);overflow:hidden}
+.svc h3{font-size:1.5rem;margin-bottom:.6rem}
+.svc p{color:var(--muted);margin:0 0 1rem}
+.svc-buy{grid-row:1/3;background:var(--mist);display:flex;flex-direction:column}
+.svc-photo{position:relative;flex:1 1 auto;min-height:300px}
+.svc-photo picture{position:absolute;inset:0;display:block}
+.svc-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block}
+.svc-body{padding:1.8rem 1.9rem 2rem}
+.svc-sell{background:var(--grove);color:#fff;padding:1.9rem 1.9rem 1.6rem}
+.svc-sell h3{color:#fff}
+.svc-sell p{color:#d3e0d7}
+.quick-eval{display:grid;gap:.9rem;margin:1.2rem 0 1rem}
+.quick-eval label{display:grid;gap:.3rem;font-weight:700;font-size:.95rem}
+.quick-eval input{font:inherit;font-weight:400;padding:.8rem .95rem;border:1px solid rgba(255,255,255,.35);border-radius:10px;background:#fff;color:var(--ink)}
+.quick-eval .btn{width:100%;border-radius:14px;line-height:1.3;padding:.95rem 1.2rem}
+.svc-sell .svc-note{margin:0;font-size:.95rem}
+.svc-com{background:#fff;border:2px solid var(--mist);padding:1.9rem}
+.svc-com .ticks{margin:.6rem 0 1.2rem}
+.about-band{padding-top:72px}
+
+/* closing call to action */
+.final-cta{background:var(--grove-3);color:#fff;padding:84px 0}
+.final-cta .wrap{display:flex;align-items:center;justify-content:space-between;gap:2rem 3rem;flex-wrap:wrap}
+.final-cta h2{color:#fff;margin:0 0 .5rem}
+.final-cta p{margin:0;color:#d3e0d7;max-width:34rem}
+.final-cta .cta{align-items:center;gap:1rem 1.6rem}
+
+@media (max-width:860px){
+  .hero-v2{padding:104px 0 64px}
+  .hero-v2 .hero-inner{grid-template-columns:1fr;gap:2.4rem}
+  .hero-v2 .hero-photo{width:min(260px,70%);justify-self:start}
+  .proof .testimonial-grid{grid-template-columns:1fr;gap:1.6rem}
+  .mosaic{grid-template-columns:1fr}
+  .svc-buy{grid-row:auto}
+  .svc-photo{position:static;flex:none;min-height:0}
+  .svc-photo picture{position:static}
+  .svc-photo img{height:auto;aspect-ratio:4/3}
+  .final-cta .wrap{display:block}
+  .final-cta .cta{margin-top:1.4rem}
+}

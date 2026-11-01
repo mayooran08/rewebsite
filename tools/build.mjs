@@ -403,12 +403,11 @@ const BIO_HOME = { fr: [0, 6], en: [0, 7] };
 
 function testimonialStrip(l) {
   const E = l === 'en';
-  return `<section class="section" id="clients-say" data-testimonials="featured" data-max="3" hidden>
+  return `<section class="proof" id="clients-say" data-testimonials="featured" data-max="3" data-clamp="230" hidden>
   <div class="wrap">
-    <p class="eyebrow dark center">${E ? 'Client testimonials' : 'Témoignages de clients'}</p>
-    <h2 class="center">${E ? 'What clients say' : 'Ce que disent mes clients'}</h2>
+    <h2>${E ? 'What clients say' : 'Ce que disent mes clients'}</h2>
     <div class="testimonial-grid" data-testimonial-list></div>
-    <p class="center"><a class="textlink" href="${url(l, 'testimonials')}">${E ? 'Read all testimonials' : 'Lire tous les témoignages'} →</a></p>
+    <p><a class="textlink" href="${url(l, 'testimonials')}">${E ? 'Read all testimonials' : 'Lire tous les témoignages'}</a></p>
   </div>
 </section>`;
 }
@@ -504,7 +503,6 @@ function blogStrip(l) {
   const E = l === 'en';
   return `<section class="section alt" id="blog-latest">
   <div class="wrap">
-    <p class="eyebrow dark center">${E ? 'Blog' : 'Blogue'}</p>
     <h2 class="center">${E ? 'Latest articles' : 'Derniers articles'}</h2>
     <div class="post-grid">
       ${list.map((p) => postCard(p, l)).join('\n      ')}
@@ -603,69 +601,100 @@ const META = {
   },
 };
 
+function finalCta(l) {
+  const E = l === 'en';
+  const waIcon = ICON.whatsapp.replace('<svg ', '<svg class="ico" ');
+  return `<section class="final-cta">
+  <div class="wrap">
+    <div>
+      <h2>${E ? 'Let’s talk about your project' : 'Parlons de votre projet'}</h2>
+      <p>${E ? 'Call me, message me on WhatsApp, or send a note. I will get back to you.' : 'Appelez-moi, écrivez-moi sur WhatsApp ou envoyez-moi un mot. Je vous reviendrai.'}</p>
+    </div>
+    <div class="cta">
+      <a class="btn" href="tel:+15145702152">${E ? 'Call' : 'Appeler le'} 514 570-2152</a>
+      <a class="btn btn-light" href="${waLink(l)}" target="_blank" rel="noopener noreferrer">${waIcon}WhatsApp</a>
+      <a class="textlink-light" href="${url(l, 'contact')}">${E ? 'Send a message' : 'Envoyer un message'}</a>
+    </div>
+  </div>
+</section>`;
+}
+
 const BODY = {
   home(l) {
     const E = l === 'en';
-    const card = (id, icon, h, p) => `<article class="card">
-          <div class="icon">${icon}</div>
-          <h3>${h}</h3>
-          <p>${p}</p>
-          <a class="card-link" href="${url(l, id)}">${t('learn', l)} →</a>
-        </article>`;
-    const I = {
-      home: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>',
-      dollar: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20"/><path d="M17 6.5C16 5 14.3 4.5 12 4.5c-2.8 0-4.5 1.3-4.5 3.2 0 4.3 9.5 2 9.5 6.6 0 2-1.9 3.4-5 3.4-2.4 0-4.2-.7-5.2-2.2"/></svg>',
-      building: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V4a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v17"/><path d="M15 9h4a1 1 0 0 1 1 1v11"/><path d="M2 21h20"/><path d="M8 7h3M8 11h3M8 15h3"/></svg>',
-    };
-    return `<section class="hero">
+    const lines = E
+      ? ['Honest advice.', 'A strategic mindset.', 'The same care I’d give my own family.']
+      : ['Des conseils honnêtes.', 'Une vision stratégique.', 'Le même soin que j’offrirais à ma propre famille.'];
+    const waIcon = ICON.whatsapp.replace('<svg ', '<svg class="ico" ');
+    const callLabel = `${E ? 'Call' : 'Appeler le'} 514 570-2152`;
+    return `<section class="hero hero-v2">
   <div class="wrap hero-inner">
     <div class="hero-text">
-      <p class="eyebrow">${E ? 'Residential &amp; Commercial Real Estate Broker' : 'Courtière immobilière résidentielle et commerciale'}</p>
-      <h1>Gevitha<br>Kunaratnam</h1>
-      <p class="sub">${E ? 'Honest advice. A strategic mindset. The same care I’d give my own family.' : 'Des conseils honnêtes. Une vision stratégique. Le même soin que j’offrirais à ma propre famille.'}</p>
+      <h1 class="statement">${lines.map((x) => `<span class="line">${x}</span>`).join(' ')}</h1>
+      <p class="signature"><strong>Gevitha Kunaratnam</strong><span>${E ? 'Residential and commercial real estate broker, RE/MAX 2000' : 'Courtière immobilière résidentielle et commerciale, RE/MAX 2000'}</span></p>
+      <p class="lang-line">${E ? 'I speak English, French and Tamil.' : 'Je parle français, anglais et tamoul.'}</p>
       <div class="cta">
-        <a href="${url(l, 'contact')}" class="btn">${t('appt', l)}</a>
-        <a href="tel:+15145702152" class="btn btn-ghost">514 570-2152</a>
+        <a class="btn" href="tel:+15145702152">${callLabel}</a>
+        <a class="btn btn-light" href="${waLink(l)}" target="_blank" rel="noopener noreferrer">${waIcon}${E ? 'Message me on WhatsApp' : 'M’écrire sur WhatsApp'}</a>
+        <a class="textlink-light" href="${url(l, 'valuation')}">${E ? 'Get a free home evaluation' : 'Évaluation gratuite de ma propriété'}</a>
       </div>
     </div>
-    <div class="hero-photo">
-      ${pic('blacksuit', l, { eager: true })}
+    <div class="hero-photo">${pic('on-phone', l, { eager: true, sizes: '(max-width: 860px) 70vw, 400px' })}</div>
+  </div>
+</section>
+${testimonialStrip(l)}
+<section class="section services" id="services">
+  <div class="wrap">
+    <h2>${E ? 'How I can help' : 'Comment je peux vous aider'}</h2>
+    <div class="mosaic">
+      <article class="svc svc-buy">
+        <div class="svc-photo">${pic('blue-chair', l, { sizes: '(max-width: 860px) 100vw, 560px' })}</div>
+        <div class="svc-body">
+          <h3>${E ? 'Buying a home' : 'Acheter une propriété'}</h3>
+          <p>${E ? 'Targeted search, visits, offer strategy and negotiation until you have the right home at the right price.' : 'Recherche ciblée, visites, stratégie d’offre et négociation jusqu’à la propriété idéale au bon prix.'}</p>
+          <a class="textlink" href="${url(l, 'buy')}">${E ? 'How buying works' : 'Comment se passe un achat'}</a>
+        </div>
+      </article>
+      <article class="svc svc-sell">
+        <h3>${E ? 'Selling your property' : 'Vendre votre propriété'}</h3>
+        <p>${E ? 'Accurate pricing, professional marketing and guidance through every step to sell with confidence.' : 'Établissement du juste prix, mise en marché professionnelle et accompagnement à chaque étape pour vendre en toute confiance.'}</p>
+        <form class="quick-eval" action="${url(l, 'valuation')}" method="get">
+          <label><span>${E ? 'Property address' : 'Adresse de la propriété'}</span><input type="text" name="address" required autocomplete="street-address"></label>
+          <label><span>${E ? 'Email' : 'Courriel'}</span><input type="email" name="email" required autocomplete="email"></label>
+          <button class="btn" type="submit">${E ? 'Find out what my home is worth' : 'Connaître la valeur de ma propriété'}</button>
+        </form>
+        <p class="svc-note">${E ? 'Free and without obligation.' : 'Gratuit et sans engagement.'} <a class="textlink-light" href="${url(l, 'sell')}">${E ? 'How selling works' : 'Comment se passe une vente'}</a></p>
+      </article>
+      <article class="svc svc-com">
+        <h3>${E ? 'Commercial real estate' : 'Immobilier commercial'}</h3>
+        <ul class="ticks">
+          <li>${E ? 'Buying or selling retail, office and industrial space' : 'Achat ou vente de locaux commerciaux, de bureaux et industriels'}</li>
+          <li>${E ? 'Leasing space for your business' : 'Location de locaux pour votre entreprise'}</li>
+          <li>${E ? 'Income properties and investment opportunities' : 'Immeubles à revenus et occasions de placement'}</li>
+        </ul>
+        <a class="textlink" href="${url(l, 'commercial')}">${E ? 'Talk about a commercial project' : 'Parler d’un projet commercial'}</a>
+      </article>
     </div>
   </div>
 </section>
-<section class="languages"><div class="wrap"><p>${t('langs', l)} <strong>${t('langList', l)}</strong></p></div></section>
 
-<section class="section" id="about">
+<section class="section about-band" id="about">
   <div class="wrap about">
     <div>
-      <p class="eyebrow dark">${E ? 'About me' : 'À propos de moi'}</p>
       <h2>${E ? 'From passion to profession' : 'De la passion à la profession'}</h2>
-      <div class="about-img">${pic('blue-chair', l, { sizes: '(max-width: 860px) 80vw, 380px' })}</div>
+      <div class="about-img">${pic('green-sofa', l, { sizes: '(max-width: 860px) 80vw, 380px' })}</div>
     </div>
     <div class="about-text">
       <p>${BIO[l][BIO_HOME[l][0]]}</p>
       <p>${BIO[l][BIO_HOME[l][1]]}</p>
-      <p><a class="textlink" href="${url(l, 'about')}">${E ? 'More about me' : 'En savoir plus sur moi'} →</a></p>
+      <p><a class="textlink" href="${url(l, 'about')}">${E ? 'More about me' : 'En savoir plus sur moi'}</a></p>
     </div>
   </div>
 </section>
 
-<section class="section alt" id="services">
-  <div class="wrap">
-    <p class="eyebrow dark center">${E ? 'Real estate expertise' : 'Expertise immobilière'}</p>
-    <h2 class="center">${E ? 'How I can help' : 'Comment je peux vous aider'}</h2>
-    <div class="cards">
-      ${card('buy', I.home, E ? 'Buying a home' : 'Acheter une propriété', E ? 'Targeted search, visits, offer strategy and negotiation until you have the right home at the right price.' : 'Recherche ciblée, visites, stratégie d’offre et négociation jusqu’à la propriété idéale au bon prix.')}
-      ${card('sell', I.dollar, E ? 'Selling your property' : 'Vendre votre propriété', E ? 'Accurate pricing, professional marketing and guidance through every step to sell with confidence.' : 'Établissement du juste prix, mise en marché professionnelle et accompagnement à chaque étape pour vendre en toute confiance.')}
-      ${card('commercial', I.building, E ? 'Commercial real estate' : 'Immobilier commercial', E ? 'Support for business owners and investors looking to buy, sell or lease commercial space.' : 'Soutien aux propriétaires d’entreprise et aux investisseurs qui souhaitent acheter, vendre ou louer un local commercial.')}
-    </div>
-  </div>
-</section>
-${testimonialStrip(l)}
+${programs(l)}
 ${blogStrip(l)}
-${ctaBand(l, E ? 'Do you know the value of your property?' : 'Connaissez-vous la valeur de votre propriété ?', E ? 'Get a free, no-obligation estimate based on your neighbourhood and recent market activity.' : 'Obtenez une estimation gratuite et sans engagement, basée sur votre quartier et l’activité récente du marché.', E ? 'Request an evaluation' : 'Demander une évaluation', 'valuation')}
-
-${programs(l)}`;
+${finalCta(l)}`;
   },
 
   about(l) {
