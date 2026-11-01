@@ -1,3 +1,13 @@
+# Show who made each change: the editor's name goes in the commit message and in the committer details.
+settings:
+  commit:
+    identity: user
+    templates:
+      create: "Create {path} by {userName} (via Pages CMS)"
+      update: "Update {path} by {userName} (via Pages CMS)"
+      delete: "Delete {path} by {userName} (via Pages CMS)"
+      rename: "Rename {oldPath} to {newPath} by {userName} (via Pages CMS)"
+
 media:
   input: assets/blog
   output: /assets/blog
