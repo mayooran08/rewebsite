@@ -44,3 +44,4 @@ Preview drafts locally: `node tools/build.mjs --drafts` (do not commit that outp
 ## Hosting
 The site is published by the GitHub Action in `.github/workflows/deploy.yml`
 (Settings > Pages > Source = GitHub Actions). Every push to `main` rebuilds all pages, including blog posts, and deploys them.
+When content changes (for example a post saved in Pages CMS), the Action also saves the rebuilt pages back into the repo, so the site stays correct even if the older "Deploy from a branch" method is still switched on.

@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write   # lets the "Save the rebuilt pages" step update the repo
   pages: write
   id-token: write
 
@@ -38,6 +38,24 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+
+      # Safety net: when content changes (for example a blog post saved in Pages CMS), also save the
+      # freshly built pages in the repo. That way the older "Deploy from a branch" publishing method,
+      # if it is still switched on, publishes the same up-to-date pages instead of stale ones.
+      # It never fails the deployment: if anything goes wrong it just skips.
+      - name: Save the rebuilt pages in the repo
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Pages in the repo are already up to date."
+            exit 0
+          fi
+          git commit -m "Rebuild pages from content changes"
+          git pull --rebase origin main || { git rebase --abort; echo "Skipped: the repo changed in the meantime."; exit 0; }
+          git push origin HEAD:main || echo "Push skipped."
 
   deploy:
     needs: build
