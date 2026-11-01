@@ -1,4 +1,5 @@
 :root{
+  --gold-text:#82631a; /* gold for TEXT on light backgrounds (5:1 contrast) */
   --navy:#0b1220;
   --navy-2:#131c30;
   --gold:#c9a24b;
@@ -44,7 +45,7 @@ h2{font-size:clamp(1.9rem,3.5vw,2.7rem);margin-bottom:1rem}
 .hero{background:radial-gradient(1200px 600px at 80% 20%,#1b2a4a 0%,var(--navy) 60%);color:#fff;padding:140px 0 80px;overflow:hidden}
 .hero-inner{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;align-items:center}
 .eyebrow{text-transform:uppercase;letter-spacing:.18em;font-size:.78rem;color:var(--gold-2);margin:0 0 1rem;font-weight:600}
-.eyebrow.dark{color:var(--gold)}
+.eyebrow.dark{color:var(--gold-text)}
 .hero h1{font-size:clamp(2.8rem,7vw,5rem);font-weight:700}
 .sub{font-size:1.15rem;color:#c9d0de;max-width:34rem;margin:1.4rem 0 2rem}
 .cta{display:flex;gap:1rem;flex-wrap:wrap}
@@ -140,7 +141,7 @@ html{scroll-padding-top:80px}
 .contact .prose{max-width:none}
 .ticks{list-style:none;padding:0;margin:1.2rem 0}
 .ticks li{position:relative;padding-left:1.9rem;margin:.6rem 0;color:var(--ink)}
-.ticks li::before{content:"";position:absolute;left:0;top:.45rem;width:.9rem;height:.5rem;border-left:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(-45deg)}
+.ticks li::before{content:"";position:absolute;left:0;top:.45rem;width:.9rem;height:.5rem;border-left:2px solid var(--gold-text);border-bottom:2px solid var(--gold-text);transform:rotate(-45deg)}
 .steps{counter-reset:s;list-style:none;padding:0;margin:1.6rem 0;display:grid;gap:1rem}
 .steps li{counter-increment:s;background:#fff;border-radius:var(--radius);padding:1.2rem 1.4rem 1.2rem 4.3rem;position:relative;box-shadow:0 8px 24px rgba(20,30,50,.07);color:var(--muted)}
 .steps li::before{content:counter(s);position:absolute;left:1.2rem;top:1.15rem;width:2.1rem;height:2.1rem;border-radius:50%;background:var(--navy);color:var(--gold-2);display:grid;place-items:center;font-weight:600}
@@ -243,10 +244,10 @@ picture{display:block}
 .testimonial-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.6rem;margin:2.4rem 0}
 .testimonial{margin:0;background:#fff;border-radius:var(--radius);padding:1.8rem 1.7rem;box-shadow:0 10px 30px rgba(20,30,50,.07);border-top:3px solid var(--gold);display:flex;flex-direction:column;gap:1rem}
 .testimonial blockquote{margin:0;color:var(--ink);font-size:1.05rem;line-height:1.7;position:relative}
-.testimonial blockquote::before{content:"\201C";font-family:"Playfair Display",serif;font-size:3rem;line-height:0;color:var(--gold);display:block;height:1.2rem}
+.testimonial blockquote::before{content:"\201C";font-family:"Playfair Display",serif;font-size:3rem;line-height:0;color:var(--gold-text);display:block;height:1.2rem}
 .testimonial figcaption{margin-top:auto;color:var(--muted);font-size:.92rem}
 .testimonial figcaption strong{color:var(--ink)}
-.stars{color:var(--gold);letter-spacing:.15em;font-size:1.05rem}
+.stars{color:var(--gold-text);letter-spacing:.15em;font-size:1.05rem}
 .testimonial-empty{text-align:center;color:var(--muted);padding:2rem 0}
 [hidden]{display:none!important}
 
@@ -276,7 +277,7 @@ picture{display:block}
 .post-card-body h3 a:hover{color:#7a5c14}
 .post-card-body p{margin:0;color:var(--muted);font-size:.98rem}
 .post-card-body .card-link{margin-top:auto;align-self:flex-start}
-.post-meta{font-size:.82rem!important;letter-spacing:.04em;text-transform:uppercase;color:var(--gold)!important;font-weight:600}
+.post-meta{font-size:.82rem!important;letter-spacing:.04em;text-transform:uppercase;color:var(--gold-text)!important;font-weight:600}
 .draft-tag,.draft-banner{background:#fdecc8;color:#6b4e00;border-radius:6px;padding:.1rem .5rem;font-size:.78rem;font-weight:600}
 .draft-banner{display:block;padding:.7rem 1rem;margin-bottom:1.4rem;font-size:.95rem}
 .article{max-width:46rem;margin-inline:auto}
@@ -305,7 +306,12 @@ picture{display:block}
 /* valuation page badges */
 .badges{display:flex;flex-wrap:wrap;gap:.6rem;list-style:none;padding:0;margin:2rem 0 0}
 .badges li{background:var(--alt);border:1px solid #ece7db;border-radius:999px;padding:.5rem 1.1rem;font-weight:600;font-size:.9rem;color:var(--ink)}
-.badges li::before{content:"\2713";color:var(--gold);margin-right:.5rem;font-weight:700}
+.badges li::before{content:"\2713";color:var(--gold-text);margin-right:.5rem;font-weight:700}
 
 /* form submit: full-width bar, handles long labels */
 .form button.btn{width:100%;border-radius:14px;line-height:1.3;padding:.95rem 1.2rem;text-align:center}
+
+/* skip link: visible only when focused with the keyboard */
+.skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#fff;color:#0b1220;padding:.7rem 1.1rem;border-radius:0 0 10px 0;font-weight:600;text-decoration:none}
+.skip-link:focus{left:0}
+main:focus{outline:none}

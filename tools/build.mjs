@@ -13,7 +13,6 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = 'https://gevithakunaratnam.ca';
 const KEY = 'bf96f6c2-df22-4371-a191-958c660c935b';
 const LANGS = ['en', 'fr'];
-const TODAY = new Date().toISOString().slice(0, 10);
 
 const PAGES = {
   home:       { slug: { en: '', fr: '' } },
@@ -156,7 +155,8 @@ function header(l, id, twinHref) {
   const other = l === 'en' ? 'fr' : 'en';
   const links = NAV.map(([p, label]) =>
     `<a href="${url(l, p)}"${p === id ? ' aria-current="page"' : ''}>${label[l]}</a>`).join('\n      ');
-  return `<header class="nav" id="top">
+  return `<a class="skip-link" href="#main">${l === 'en' ? 'Skip to content' : 'Aller au contenu'}</a>
+<header class="nav" id="top">
   <div class="wrap nav-inner">
     <a href="${url(l, 'home')}" class="brand">Gevitha <span>Kunaratnam</span></a>
     <nav class="links" id="links" aria-label="Main">
@@ -296,6 +296,7 @@ function faq(items) {
 const PROGRAMS = [
   {
     logo: 'tranquilli-t',
+    ext: 'webp', // the original SVG embeds 27 raster images (360 KB); the WebP render is 16 KB
     name: 'Tranquilli-T',
     href: { en: 'https://www.remax-quebec.com/en/tranquilli-t', fr: 'https://www.remax-quebec.com/fr/tranquilli-t' },
     title: { en: 'Peace of mind assured', fr: 'La tranquillité d’esprit assurée' },
@@ -331,7 +332,7 @@ function programs(l) {
   const cards = PROGRAMS.map((p) => {
     const name = typeof p.name === 'string' ? p.name : p.name[l];
     return `<article class="program">
-        <div class="program-logo"><img src="/assets/logos/${p.logo}-${l}.svg" alt="${name}" loading="lazy" decoding="async"></div>
+        <div class="program-logo"><img src="/assets/logos/${p.logo}-${l}.${p.ext || 'svg'}" alt="${name}" loading="lazy" decoding="async"></div>
         <div class="program-body">
           <h3>${p.title[l]}</h3>
           <p>${p.text[l]}</p>
@@ -401,6 +402,8 @@ function testimonialStrip(l) {
 const BLOG_SLUG = { en: 'blog', fr: 'blogue' };
 const blogPath = (l, slug) => `/${l}/${BLOG_SLUG[l]}/${slug}/`;
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+// shorten text for <meta description> at a word boundary
+const clip = (s, n) => (s.length <= n ? s : s.slice(0, n - 1).replace(/\s+\S*$/, '') + '…');
 const fmtDate = (iso, l) =>
   new Date(iso + 'T12:00:00Z').toLocaleDateString(l === 'fr' ? 'fr-CA' : 'en-CA', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 const assetPath = (p) => (!p ? '' : /^(https?:)?\/\//.test(p) || p.startsWith('/') ? p : '/' + p);
@@ -536,9 +539,10 @@ function buildPost(p) {
   </div>
 </section>
 ${ctaBand(l, E ? 'Have a question about your project?' : 'Une question sur votre projet ?', E ? 'Tell me what you need and I will follow up quickly.' : 'Dites-moi ce dont vous avez besoin et je vous répondrai rapidement.', t('contactBtn', l), 'contact')}`;
-  const title = `${esc(p.title)} | Gevitha Kunaratnam`;
-  const html = head(l, 'blog', title, esc(p.summary || p.title), { canonical: self, alternates, image, ogType: 'article', ld })
-    + header(l, 'blog', tw ? blogPath(o, tw.slug) : url(o, 'blog')) + '<main>\n' + body + '\n</main>\n' + footer(l);
+  const withSite = `${p.title} | Gevitha Kunaratnam`;
+  const title = esc(withSite.length <= 70 ? withSite : p.title); // keep search-result titles from being cut off
+  const html = head(l, 'blog', title, esc(clip(p.summary || p.title, 160)), { canonical: self, alternates, image, ogType: 'article', ld })
+    + header(l, 'blog', tw ? blogPath(o, tw.slug) : url(o, 'blog')) + '<main id="main">\n' + body + '\n</main>\n' + footer(l);
   return { path: `${l}/${BLOG_SLUG[l]}/${p.slug}/index.html`, html };
 }
 
@@ -551,7 +555,7 @@ const META = {
   },
   about: {
     title: { en: 'About Gevitha Kunaratnam | Real Estate Broker, Laval', fr: 'À propos de Gevitha Kunaratnam | Courtière immobilière, Laval' },
-    desc: { en: 'Meet Gevitha Kunaratnam: a former dental hygienist turned residential and commercial real estate broker at RE/MAX 2000. Service in English, French and Tamil.', fr: 'Faites connaissance avec Gevitha Kunaratnam : ancienne hygiéniste dentaire devenue courtière immobilière résidentielle et commerciale chez RE/MAX 2000. Service en français, anglais et tamoul.' },
+    desc: { en: 'Meet Gevitha Kunaratnam: a former dental hygienist turned residential and commercial real estate broker at RE/MAX 2000. Service in English, French and Tamil.', fr: 'Faites connaissance avec Gevitha Kunaratnam, ancienne hygiéniste dentaire devenue courtière immobilière chez RE/MAX 2000. Service en français, anglais et tamoul.' },
   },
   buy: {
     title: { en: 'Buy a Home in Laval | Gevitha Kunaratnam, RE/MAX 2000', fr: 'Acheter une propriété à Laval | Gevitha Kunaratnam, RE/MAX 2000' },
@@ -566,7 +570,7 @@ const META = {
     desc: { en: 'Buy, sell or lease commercial space and income properties in Laval with broker Gevitha Kunaratnam, RE/MAX 2000.', fr: 'Achetez, vendez ou louez un local commercial ou un immeuble à revenus à Laval avec la courtière Gevitha Kunaratnam, RE/MAX 2000.' },
   },
   valuation: {
-    title: { en: 'Home Evaluation &amp; Selling Strategy in Laval | Gevitha Kunaratnam', fr: 'Évaluation de propriété et stratégie de vente à Laval | Gevitha Kunaratnam' },
+    title: { en: 'Home Evaluation &amp; Selling Strategy in Laval | Gevitha Kunaratnam', fr: 'Évaluation de propriété et stratégie de vente | Gevitha Kunaratnam' },
     desc: { en: 'Get a personalized home evaluation and selling strategy: comparable sales, market analysis and a plan tailored to your timeline, from broker Gevitha Kunaratnam.', fr: 'Obtenez une évaluation personnalisée et une stratégie de vente : ventes comparables, analyse du marché et plan adapté à votre échéancier, avec la courtière Gevitha Kunaratnam.' },
   },
   contact: {
@@ -861,7 +865,7 @@ for (const l of LANGS) rmSync(join(ROOT, l), { recursive: true, force: true });
 for (const l of LANGS) {
   for (const id of Object.keys(PAGES)) {
     const m = META[id];
-    const html = head(l, id, m.title[l], m.desc[l]) + header(l, id) + '<main>\n' + BODY[id](l) + '\n</main>\n' + footer(l);
+    const html = head(l, id, m.title[l], m.desc[l]) + header(l, id) + '<main id="main">\n' + BODY[id](l) + '\n</main>\n' + footer(l);
     write(`${l}${url(l, id).slice(l.length + 1)}index.html`, html);
   }
 }
@@ -956,13 +960,11 @@ const urls = [];
 for (const id of Object.keys(PAGES)) {
   urls.push(`  <url>
     <loc>${SITE}${url('en', id)}</loc>
-    <lastmod>${TODAY}</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="${SITE}${url('en', id)}"/>
     <xhtml:link rel="alternate" hreflang="fr" href="${SITE}${url('fr', id)}"/>
   </url>`);
   urls.push(`  <url>
     <loc>${SITE}${url('fr', id)}</loc>
-    <lastmod>${TODAY}</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="${SITE}${url('en', id)}"/>
     <xhtml:link rel="alternate" hreflang="fr" href="${SITE}${url('fr', id)}"/>
   </url>`);
