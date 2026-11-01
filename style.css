@@ -462,3 +462,43 @@ main:focus{outline:none}
 #testimonials-page .testimonial{break-inside:avoid;margin:0 0 2.4rem}
 @media (max-width:1000px){#testimonials-page .testimonial-grid{column-count:2}}
 @media (max-width:640px){#testimonials-page .testimonial-grid{column-count:1}}
+
+/* ===== redesign phase 4: stepped evaluation form and phone bar ===== */
+.form fieldset{border:0;margin:0;padding:0;min-width:0;display:grid;gap:1rem}
+.form fieldset + fieldset{margin-top:1.6rem}
+.form legend{font-family:var(--font-head);font-weight:650;font-stretch:108%;font-size:1.3rem;padding:0;margin:0 0 .8rem}
+.form.is-stepped fieldset + fieldset{margin-top:0}
+.step-progress{margin:0 0 1.5rem}
+.step-label{margin:0 0 .6rem;font-weight:700;color:var(--ink)}
+.step-bar{height:6px;border-radius:99px;background:#c9d6c7;overflow:hidden}
+.step-bar span{display:block;height:100%;width:0;background:var(--grove);transition:width .3s ease}
+.step-nav{display:flex;align-items:center;gap:1rem;margin-top:.4rem}
+.form .step-nav .btn{width:auto;flex:1}
+.btn-text{background:none;border:0;color:var(--ink);font:inherit;font-weight:700;text-decoration:underline;text-decoration-color:var(--leaf);text-underline-offset:4px;cursor:pointer;padding:.7rem .3rem}
+.btn-text:hover{color:var(--leaf-text)}
+
+/* after sending: only the confirmation stays */
+.form.done > :not(.status){display:none!important}
+.form.done .status{margin:0;padding:1.4rem 1.5rem;background:#fff;border-radius:12px;border-left:4px solid var(--leaf-text);font-size:1.1rem;line-height:1.55;color:var(--ink)}
+
+/* phone only: quick contact bar replaces the floating chat button */
+.mobile-bar{display:none}
+@media (max-width:860px){
+  .wa-float{display:none}
+  .mobile-bar{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:.6rem .8rem calc(.6rem + env(safe-area-inset-bottom,0px));background:var(--grove);box-shadow:0 -8px 24px rgba(0,0,0,.25)}
+  .mobile-bar a{display:flex;align-items:center;justify-content:center;gap:.55rem;min-height:48px;border-radius:12px;font-weight:700;text-decoration:none}
+  .mobile-bar svg{width:22px;height:22px;flex:none}
+  .mb-call{background:var(--action);color:var(--grove)}
+  .mb-call svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .mb-wa{background:#0b7a55;color:#fff}
+  .mb-wa svg{fill:currentColor}
+  body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+  .footer{padding-bottom:2rem}
+}
+@media print{.mobile-bar{display:none}}
+
+/* the form panel stretches to the height of the text beside it: keep its content at the top, not spread out */
+.form{align-content:start}
+
+/* on wide screens the form follows the reader while the text beside it scrolls */
+@media (min-width:861px){.contact .form{align-self:start;position:sticky;top:96px}}

@@ -41,6 +41,11 @@
             status.className = 'status ok';
             status.textContent = form.getAttribute('data-ok');
             form.reset();
+            if (form.hasAttribute('data-steps')) {
+              form.classList.add('done');
+              status.setAttribute('tabindex', '-1');
+              status.focus();
+            }
           } else { throw new Error('failed'); }
         })
         .catch(function () {
@@ -50,6 +55,73 @@
     });
   });
 
+  // Evaluation form: turns the three groups into steps. Without this script all groups simply show at once.
+  document.querySelectorAll('.js-form[data-steps]').forEach(function (form) {
+    var groups = [].slice.call(form.querySelectorAll('fieldset[data-step]'));
+    if (groups.length < 2) return;
+    var current = 0;
+    form.classList.add('is-stepped');
+
+    var progress = document.createElement('div');
+    progress.className = 'step-progress';
+    progress.innerHTML = '<p class="step-label" aria-live="polite"></p><div class="step-bar"><span></span></div>';
+    form.insertBefore(progress, groups[0]);
+    var label = progress.querySelector('.step-label');
+    var bar = progress.querySelector('.step-bar span');
+
+    function makeButton(cls, text, onClick) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = cls;
+      b.textContent = text;
+      b.addEventListener('click', onClick);
+      return b;
+    }
+
+    // check only the fields of the visible step; show the browser's own message for the first problem
+    function stepIsValid(group) {
+      var fields = group.querySelectorAll('input, select, textarea');
+      for (var k = 0; k < fields.length; k++) {
+        if (!fields[k].checkValidity()) { fields[k].reportValidity(); fields[k].focus(); return false; }
+      }
+      return true;
+    }
+
+    function show(n, moveFocus) {
+      current = n;
+      groups.forEach(function (g, k) { g.hidden = k !== n; });
+      label.textContent = form.getAttribute('data-step-label')
+        .replace('{n}', n + 1).replace('{t}', groups.length).replace('{name}', groups[n].getAttribute('data-step-name'));
+      bar.style.width = (((n + 1) / groups.length) * 100) + '%';
+      if (moveFocus) {
+        var first = groups[n].querySelector('input:not([type="hidden"]), select, textarea');
+        if (first) first.focus();
+      }
+    }
+
+    groups.forEach(function (group, idx) {
+      var nav = document.createElement('div');
+      nav.className = 'step-nav';
+      if (idx > 0) nav.appendChild(makeButton('btn-text', form.getAttribute('data-back'), function () { show(idx - 1, true); }));
+      if (idx < groups.length - 1) {
+        nav.appendChild(makeButton('btn', form.getAttribute('data-next'), function () { if (stepIsValid(group)) show(idx + 1, true); }));
+      } else {
+        var submit = group.querySelector('button[type="submit"]');
+        if (submit) nav.appendChild(submit);
+      }
+      group.appendChild(nav);
+    });
+
+    // Enter moves to the next step instead of sending early
+    form.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA' && current < groups.length - 1) {
+        e.preventDefault();
+        if (stepIsValid(groups[current])) show(current + 1, true);
+      }
+    });
+
+    show(0, false);
+  });
   // testimonials, loaded from /data/testimonials.json (edited by the admin)
   function renderTestimonials(box, items) {
     var lang = document.documentElement.lang === 'fr' ? 'fr' : 'en';

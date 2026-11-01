@@ -214,6 +214,10 @@ function footer(l) {
   </div>
 </footer>
 <a class="wa-float" href="${waLink(l)}" target="_blank" rel="noopener noreferrer" aria-label="${waLabel(l)}">${ICON.whatsapp}<span>${waLabel(l)}</span></a>
+<nav class="mobile-bar" aria-label="${l === 'en' ? 'Quick contact' : 'Contact rapide'}">
+  <a class="mb-call" href="tel:+15145702152">${ICON.phone}<span>${l === 'en' ? 'Call' : 'Appeler'}</span></a>
+  <a class="mb-wa" href="${waLink(l)}" target="_blank" rel="noopener noreferrer">${ICON.whatsapp}<span>WhatsApp</span></a>
+</nav>
 <script src="/script.js"></script>
 </body>
 </html>
@@ -278,24 +282,56 @@ function form(l, kind) {
     ? ['Planning to sell soon', 'Thinking about selling', 'Just curious', 'Refinancing or estate']
     : ['Je prévois vendre bientôt', 'Je songe à vendre', 'Simple curiosité', 'Refinancement ou succession'];
   const opts = (a) => a.map((o) => `<option>${o}</option>`).join('');
-  const extra = kind === 'valuation' ? `
-  <label><span>${F.addr[l]}</span><input type="text" name="address" required autocomplete="street-address"></label>
-  <label><span>${F.type[l]}</span><select name="property_type">${opts(types)}</select></label>
-  <label><span>${F.reason[l]}</span><select name="reason">${opts(reasons)}</select></label>` : '';
-  return `<form class="form js-form" action="https://api.web3forms.com/submit" method="POST"
-  data-sending="${l === 'en' ? 'Sending…' : 'Envoi…'}"
-  data-ok="${l === 'en' ? 'Thank you! Your message was sent.' : 'Merci ! Votre message a été envoyé.'}"
-  data-err="${l === 'en' ? 'Something went wrong. Please call 514 570-2152.' : 'Une erreur est survenue. Veuillez appeler le 514 570-2152.'}">
+  const E = l === 'en';
+  const L = (label, control) => `<label><span>${label}</span>${control}</label>`;
+  const nameF = L(F.name[l], '<input type="text" name="name" required autocomplete="name">');
+  const emailF = L(F.email[l], '<input type="email" name="email" required autocomplete="email">');
+  const phoneF = L(F.phone[l], '<input type="tel" name="phone" autocomplete="tel">');
+  const msgF = L(F.msg[l], '<textarea name="message" rows="4"></textarea>');
+  const consentF = `<label class="check"><input type="checkbox" name="consent" required><span>${F.consent[l]}</span></label>`;
+  const submit = `<button type="submit" class="btn">${F.send[l]}</button>`;
+  const isEval = kind === 'valuation';
+  const okMsg = isEval
+    ? (E ? 'Thank you! Your request was sent. I will contact you personally to talk about your home.' : 'Merci ! Votre demande a été envoyée. Je communiquerai personnellement avec vous au sujet de votre propriété.')
+    : (E ? 'Thank you! Your message was sent.' : 'Merci ! Votre message a été envoyé.');
+  // The evaluation form is three groups. Without JavaScript they all show as one long form;
+  // script.js turns them into steps (Next / Back, progress, check before moving on).
+  const stepAttrs = isEval
+    ? ` data-steps data-next="${E ? 'Next' : 'Suivant'}" data-back="${E ? 'Back' : 'Retour'}" data-step-label="${E ? 'Step {n} of {t}: {name}' : 'Étape {n} de {t} : {name}'}"`
+    : '';
+  const groups = isEval ? `
+  <fieldset data-step data-step-name="${E ? 'Your property' : 'Votre propriété'}">
+    <legend>${E ? 'Your property' : 'Votre propriété'}</legend>
+    ${L(F.addr[l], '<input type="text" name="address" required autocomplete="street-address">')}
+    ${L(F.type[l], `<select name="property_type">${opts(types)}</select>`)}
+    ${L(F.reason[l], `<select name="reason">${opts(reasons)}</select>`)}
+  </fieldset>
+  <fieldset data-step data-step-name="${E ? 'Your details' : 'Vos coordonnées'}">
+    <legend>${E ? 'Your details' : 'Vos coordonnées'}</legend>
+    ${nameF}
+    ${emailF}
+    ${phoneF}
+  </fieldset>
+  <fieldset data-step data-step-name="${E ? 'Anything to add?' : 'Autre chose à ajouter ?'}">
+    <legend>${E ? 'Anything to add?' : 'Autre chose à ajouter ?'}</legend>
+    ${msgF}
+    ${consentF}
+    ${submit}
+  </fieldset>` : `
+  ${nameF}
+  ${emailF}
+  ${phoneF}
+  ${msgF}
+  ${consentF}
+  ${submit}`;
+  return `<form class="form js-form" action="https://api.web3forms.com/submit" method="POST"${stepAttrs}
+  data-sending="${E ? 'Sending…' : 'Envoi…'}"
+  data-ok="${okMsg}"
+  data-err="${E ? 'Something went wrong. Please call 514 570-2152.' : 'Une erreur est survenue. Veuillez appeler le 514 570-2152.'}">
   <input type="hidden" name="access_key" value="${KEY}">
-  <input type="hidden" name="subject" value="${kind === 'valuation' ? 'Evaluation request' : 'New message'} from gevithakunaratnam.ca (${l.toUpperCase()})">
+  <input type="hidden" name="subject" value="${isEval ? 'Evaluation request' : 'New message'} from gevithakunaratnam.ca (${l.toUpperCase()})">
   <input type="hidden" name="from_name" value="gevithakunaratnam.ca">
-  <input type="checkbox" name="botcheck" class="hp" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
-  <label><span>${F.name[l]}</span><input type="text" name="name" required autocomplete="name"></label>
-  <label><span>${F.email[l]}</span><input type="email" name="email" required autocomplete="email"></label>
-  <label><span>${F.phone[l]}</span><input type="tel" name="phone" autocomplete="tel"></label>${extra}
-  <label><span>${F.msg[l]}</span><textarea name="message" rows="4"></textarea></label>
-  <label class="check"><input type="checkbox" name="consent" required><span>${F.consent[l]}</span></label>
-  <button type="submit" class="btn">${F.send[l]}</button>
+  <input type="checkbox" name="botcheck" class="hp" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">${groups}
   <p class="status" role="status"></p>
 </form>`;
 }
