@@ -96,7 +96,7 @@ address{font-style:normal;color:var(--muted);margin:1.4rem 0}
 address strong{color:var(--ink)}
 .phones{list-style:none;padding:0;margin:0;color:var(--muted)}
 .phones li{margin:.3rem 0}
-.phones span{display:inline-block;width:4rem;color:var(--ink);font-weight:600}
+.phones span{display:inline-block;width:6.2rem;color:var(--ink);font-weight:600}
 .phones a{text-decoration:none;border-bottom:1px solid var(--gold)}
 .form{background:var(--alt);padding:2rem;border-radius:var(--radius);display:grid;gap:1rem}
 .form label{display:grid;gap:.35rem;font-weight:500;font-size:.92rem}
@@ -315,3 +315,11 @@ picture{display:block}
 .skip-link{position:absolute;left:-9999px;top:0;z-index:100;background:#fff;color:#0b1220;padding:.7rem 1.1rem;border-radius:0 0 10px 0;font-weight:600;text-decoration:none}
 .skip-link:focus{left:0}
 main:focus{outline:none}
+
+/* WhatsApp floating button */
+.wa-float{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;align-items:center;gap:.6rem;background:#0b7a55;color:#fff;padding:.75rem 1.2rem .75rem .95rem;border-radius:999px;box-shadow:0 10px 28px rgba(0,0,0,.28);font-weight:600;font-size:.95rem;text-decoration:none;transition:transform .2s,background .2s}
+.wa-float svg{width:26px;height:26px;fill:currentColor;flex:none}
+.wa-float:hover{background:#09694a;transform:translateY(-2px)}
+.wa-float:focus-visible{outline:3px solid #fff;outline-offset:2px;box-shadow:0 0 0 6px #0b7a55,0 10px 28px rgba(0,0,0,.28)}
+@media (max-width:600px){.wa-float{padding:.85rem;right:14px}.wa-float span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.wa-float svg{width:28px;height:28px}}
+@media print{.wa-float{display:none}}
