@@ -80,7 +80,7 @@ main:focus{outline:none}
 .hero-photo{position:relative;aspect-ratio:4/5;border-radius:28px;overflow:hidden;box-shadow:0 30px 60px rgba(22,36,29,.18)}
 .hero-photo picture{position:absolute;inset:0}
 .hero-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
-.statement{font-size:clamp(2.2rem,4.4vw,3.7rem);line-height:1.08;letter-spacing:-.018em;margin:0 0 1.6rem}
+.statement{font-size:clamp(2rem,4.4vw,3.7rem);line-height:1.08;letter-spacing:-.018em;margin:0 0 1.3rem}
 .statement .line{display:block}
 .signature{display:flex;flex-direction:column;margin:0 0 .4rem}
 .signature strong{font-family:var(--font-head);font-weight:500;font-size:1.45rem;color:var(--navy)}
@@ -300,11 +300,13 @@ address strong{color:var(--ink)}
 }
 @media (max-width:1000px){#testimonials-page .testimonial-grid{column-count:2}}
 @media (max-width:860px){
-  .hero-v2{padding:92px 0 44px}
+  .hero-v2{padding:84px 0 36px}
   .hero-inner,.about,.about-page,.contact,.programs-inner,.eval-inner,.foot-cols{grid-template-columns:1fr}
-  .hero-inner{gap:2rem}
-  .hero-photo{aspect-ratio:4/3}
+  .hero-inner{gap:1.4rem}
+  .hero-photo{aspect-ratio:16/10;border-radius:22px}
   .hero-photo img{object-position:50% 28%}
+  .hero-v2 .cta .btn{display:none}   /* the bottom bar already offers Call and WhatsApp */
+  .hero-v2 .cta .textlink-light{width:100%;justify-content:center;border:2px solid var(--navy);border-radius:12px;padding:.8rem 1.2rem;text-decoration:none}
   .section,.eval-band{padding:60px 0}
   .svc-list li{grid-template-columns:1fr;gap:.6rem}
   .testimonial-grid{grid-template-columns:1fr;gap:1.8rem}
