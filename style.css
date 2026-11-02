@@ -214,6 +214,10 @@ address strong{color:var(--ink)}
 .form .check input{margin-top:.3rem}
 .form .note{margin:.2rem 0 0;font-size:.9rem;color:var(--muted)}
 .report-band{background:var(--wash)}
+.report-inner{display:flex;align-items:center;justify-content:space-between;gap:1.5rem 2.5rem;flex-wrap:wrap}
+.report-inner>div{flex:1 1 420px;max-width:760px}
+.report-inner h2{margin:0 0 .4rem}
+.report-inner p{margin:0;max-width:52ch}
 .form button.btn{width:100%}
 .hp{display:none!important}
 .status{margin:0;font-size:.98rem}

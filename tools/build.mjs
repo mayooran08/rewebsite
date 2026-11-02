@@ -748,12 +748,12 @@ ${testimonialStrip(l)}
 </section>
 
 <section class="section report-band" id="market-report">
-  <div class="wrap contact">
-    <div class="prose">
+  <div class="wrap report-inner">
+    <div>
       <h2>${E ? 'What is happening in the real estate market in your area?' : 'Que se passe-t-il sur le marché immobilier dans votre secteur ?'}</h2>
       <p>${E ? 'Get a free email report on your neighbourhood: properties sold and local trends.' : 'Recevez gratuitement par courriel un rapport sur le marché immobilier de votre quartier : propriétés vendues et tendances locales.'}</p>
     </div>
-    ${form(l, 'report')}
+    <a class="btn" href="${url(l, 'report')}">${E ? 'Get my free report' : 'Recevoir mon rapport gratuit'}</a>
   </div>
 </section>
 
