@@ -212,6 +212,8 @@ address strong{color:var(--ink)}
 .form input[type=text],.form input[type=email],.form input[type=tel],.form textarea,.form select{font:inherit;font-weight:400;padding:.8rem 1rem;border:1.5px solid #b9c8b4;border-radius:12px;background:#fff;color:var(--ink)}
 .form .check{display:flex;gap:.6rem;align-items:flex-start;font-weight:400}
 .form .check input{margin-top:.3rem}
+.form .note{margin:.2rem 0 0;font-size:.9rem;color:var(--muted)}
+.report-band{background:var(--wash)}
 .form button.btn{width:100%}
 .hp{display:none!important}
 .status{margin:0;font-size:.98rem}

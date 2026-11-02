@@ -23,6 +23,7 @@ const PAGES = {
   valuation:  { slug: { en: 'valuation', fr: 'evaluation' } },
   contact:    { slug: { en: 'contact', fr: 'contact' } },
   testimonials: { slug: { en: 'testimonials', fr: 'temoignages' } },
+  report:     { slug: { en: 'market-report', fr: 'rapport-marche' } },
   blog:       { slug: { en: 'blog', fr: 'blogue' } },
 };
 
@@ -87,6 +88,7 @@ const LABEL = {
   blog: { en: 'Blog', fr: 'Blogue' },
   valuation: { en: 'Home evaluation', fr: 'Évaluation de propriété' },
   testimonials: { en: 'Testimonials', fr: 'Témoignages' },
+  report: { en: 'Market report', fr: 'Rapport du marché' },
   contact: { en: 'Contact', fr: 'Contact' },
 };
 // Main menu: a short list. Evaluation and testimonials are reached from the page content and the footer.
@@ -187,7 +189,7 @@ function header(l, id, twinHref) {
 }
 
 function footer(l) {
-  const foot = ['about', 'buy', 'sell', 'commercial', 'valuation', 'testimonials', 'blog', 'contact']
+  const foot = ['about', 'buy', 'sell', 'commercial', 'valuation', 'report', 'testimonials', 'blog', 'contact']
     .map((p) => {
       return `<li><a href="${url(l, p)}">${LABEL[p][l]}</a></li>`;
     }).join('');
@@ -289,6 +291,26 @@ function form(l, kind) {
   const msgF = L(F.msg[l], '<textarea name="message" rows="4"></textarea>');
   const consentF = `<label class="check"><input type="checkbox" name="consent" required><span>${F.consent[l]}</span></label>`;
   const submit = `<button type="submit" class="btn">${F.send[l]}</button>`;
+  if (kind === 'report') {
+    const req = (x) => x + ' *';
+    return `<form class="form js-form" action="https://api.web3forms.com/submit" method="POST"
+  data-sending="${E ? 'Sending…' : 'Envoi…'}"
+  data-ok="${E ? 'Thank you! Your request was sent. I will email you your neighbourhood market report.' : 'Merci ! Votre demande a été envoyée. Je vous enverrai par courriel le rapport du marché de votre quartier.'}"
+  data-err="${E ? 'Something went wrong. Please call 514 570-2152.' : 'Une erreur est survenue. Veuillez appeler le 514 570-2152.'}">
+  <input type="hidden" name="access_key" value="${KEY}">
+  <input type="hidden" name="subject" value="Market report request from gevithakunaratnam.ca (${l.toUpperCase()})">
+  <input type="hidden" name="from_name" value="gevithakunaratnam.ca">
+  <input type="checkbox" name="botcheck" class="hp" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+  ${L(req(E ? 'Full name' : 'Nom complet'), '<input type="text" name="name" required autocomplete="name">')}
+  ${L(req(E ? 'Email address' : 'Adresse courriel'), '<input type="email" name="email" required autocomplete="email">')}
+  ${L(req(E ? 'City and neighbourhood, or postal code' : 'Ville et quartier ou code postal'), '<input type="text" name="area" required autocomplete="postal-code">')}
+  ${L(E ? 'Phone number (optional)' : 'Numéro de téléphone (facultatif)', '<input type="tel" name="phone" autocomplete="tel">')}
+  <label class="check"><input type="checkbox" name="consent" required><span>${E ? 'I would like to receive local real estate market reports by email from Gevitha Kunaratnam, real estate broker. I can unsubscribe at any time.' : 'Je souhaite recevoir par courriel les rapports du marché immobilier de mon secteur de la part de Gevitha Kunaratnam, courtière immobilière. Je peux me désabonner à tout moment.'}</span></label>
+  <button type="submit" class="btn">${E ? 'Get my free report' : 'Recevoir mon rapport gratuit'}</button>
+  <p class="note">${E ? 'Fields marked with an asterisk (*) are required.' : 'Les champs marqués d’un astérisque (*) sont obligatoires.'}</p>
+  <p class="status" role="status"></p>
+</form>`;
+  }
   const isEval = kind === 'valuation';
   const okMsg = isEval
     ? (E ? 'Thank you! Your request was sent. I will contact you personally to talk about your home.' : 'Merci ! Votre demande a été envoyée. Je communiquerai personnellement avec vous au sujet de votre propriété.')
@@ -626,6 +648,10 @@ const META = {
     title: { en: 'Contact Gevitha Kunaratnam | Real Estate Broker, Laval', fr: 'Contacter Gevitha Kunaratnam | Courtière immobilière, Laval' },
     desc: { en: 'Contact Gevitha Kunaratnam at RE/MAX 2000, 830 boul. Curé-Labelle, Laval. Call 514 570-2152 or send a message.', fr: 'Contactez Gevitha Kunaratnam chez RE/MAX 2000, 830 boul. Curé-Labelle, Laval. Appelez au 514 570-2152 ou envoyez un message.' },
   },
+  report: {
+    title: { en: 'Free Neighbourhood Market Report | Gevitha Kunaratnam', fr: 'Rapport gratuit sur le marché de votre quartier | Gevitha Kunaratnam' },
+    desc: { en: 'Get a free email report on the real estate market in your neighbourhood: recent sales and local trends, from broker Gevitha Kunaratnam, RE/MAX 2000.', fr: 'Recevez gratuitement par courriel un rapport sur le marché immobilier de votre quartier : propriétés vendues et tendances locales, par Gevitha Kunaratnam, RE/MAX 2000.' },
+  },
   testimonials: {
     title: { en: 'Client Testimonials | Gevitha Kunaratnam, Real Estate Broker', fr: 'Témoignages de clients | Gevitha Kunaratnam, courtière immobilière' },
     desc: { en: 'Read what buyers and sellers say about working with real estate broker Gevitha Kunaratnam, RE/MAX 2000.', fr: 'Lisez ce que disent acheteurs et vendeurs au sujet de leur expérience avec la courtière immobilière Gevitha Kunaratnam, RE/MAX 2000.' },
@@ -718,6 +744,16 @@ ${testimonialStrip(l)}
       <p>${BIO[l][BIO_HOME[l][1]]}</p>
       <p><a class="textlink" href="${url(l, 'about')}">${E ? 'More about me' : 'En savoir plus sur moi'}</a></p>
     </div>
+  </div>
+</section>
+
+<section class="section report-band" id="market-report">
+  <div class="wrap contact">
+    <div class="prose">
+      <h2>${E ? 'What is happening in the real estate market in your area?' : 'Que se passe-t-il sur le marché immobilier dans votre secteur ?'}</h2>
+      <p>${E ? 'Get a free email report on your neighbourhood: properties sold and local trends.' : 'Recevez gratuitement par courriel un rapport sur le marché immobilier de votre quartier : propriétés vendues et tendances locales.'}</p>
+    </div>
+    ${form(l, 'report')}
   </div>
 </section>
 
@@ -866,6 +902,20 @@ ${ctaBand(l, E ? 'Talk about your commercial project' : 'Parlons de votre projet
       <ul class="badges">${badges.map((b) => `<li>${b}</li>`).join('')}</ul>
     </div>
     ${form(l, 'valuation')}
+  </div>
+</section>`;
+  },
+
+  report(l) {
+    const E = l === 'en';
+    return `${pageHero(l, E ? 'What is happening in the real estate market in your area?' : 'Que se passe-t-il sur le marché immobilier dans votre secteur ?', E ? 'Get a free email report on your neighbourhood: properties sold and local trends.' : 'Recevez gratuitement par courriel un rapport sur le marché immobilier de votre quartier : propriétés vendues et tendances locales.', LABEL.report[l])}
+<section class="section">
+  <div class="wrap contact">
+    <div class="prose">
+      <h2>${E ? 'Know your market before you decide' : 'Connaissez votre marché avant de décider'}</h2>
+      <p>${E ? 'Whether you are thinking of selling, buying or just curious, the numbers on your street matter more than the national headlines. Tell me where you live and I will email you what has sold nearby and where prices are heading.' : 'Que vous songiez à vendre, à acheter ou que vous soyez simplement curieux, les chiffres de votre rue comptent plus que les grands titres. Dites-moi où vous habitez et je vous enverrai par courriel ce qui s’est vendu près de chez vous et la direction des prix.'}</p>
+    </div>
+    ${form(l, 'report')}
   </div>
 </section>`;
   },
