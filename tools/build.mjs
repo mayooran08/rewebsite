@@ -192,13 +192,13 @@ function header(l, id, twinHref) {
 
 function chatLauncher(l) {
   const E = l === 'en';
-  return `<button class="chat-launch" type="button" aria-haspopup="dialog" aria-controls="chat-consent" aria-expanded="false"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg><span>${E ? 'Chat with me' : 'Discutons'}</span></button>
+  return `<button class="chat-launch" type="button" aria-haspopup="dialog" aria-controls="chat-consent" aria-expanded="false" hidden><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg><span>${E ? 'Chat with me' : 'Discutons'}</span></button>
 <div class="chat-consent" id="chat-consent" role="dialog" aria-labelledby="chat-consent-t" hidden>
-  <p id="chat-consent-t"><strong>${E ? 'Chat with Gevitha' : 'Clavarder avec Gevitha'}</strong></p>
-  <p>${E ? 'The chat is provided by Tawk.to. Starting it stores cookies in your browser and shares your chat messages, IP address and the pages you view with Tawk.to.' : 'Le clavardage est offert par Tawk.to. En le démarrant, des témoins sont enregistrés dans votre navigateur et vos messages, votre adresse IP et les pages consultées sont transmis à Tawk.to.'} <a href="${url(l, 'privacy')}">${E ? 'Read the privacy notice' : 'Lire l’avis de confidentialité'}</a></p>
+  <p id="chat-consent-t"><strong>${E ? 'Cookies' : 'Témoins (cookies)'}</strong></p>
+  <p>${E ? 'This site sets no tracking cookies. The live chat, provided by Tawk.to, does use cookies and receives your chat messages, IP address and the pages you view. Accept to turn the chat on.' : 'Ce site n’utilise aucun témoin de suivi. Le clavardage, offert par Tawk.to, utilise des témoins et reçoit vos messages, votre adresse IP et les pages consultées. Acceptez pour activer le clavardage.'} <a href="${url(l, 'privacy')}">${E ? 'Privacy notice' : 'Avis de confidentialité'}</a></p>
   <div class="chat-consent-actions">
-    <button class="btn" type="button" data-chat-ok>${E ? 'Start chat' : 'Démarrer'}</button>
-    <button class="btn btn-light" type="button" data-chat-no>${E ? 'Not now' : 'Pas maintenant'}</button>
+    <button class="btn" type="button" data-chat-ok>${E ? 'Accept' : 'Accepter'}</button>
+    <button class="btn btn-light" type="button" data-chat-no>${E ? 'Decline' : 'Refuser'}</button>
   </div>
 </div>`;
 }
@@ -949,7 +949,7 @@ ${ctaBand(l, E ? 'Talk about your commercial project' : 'Parlons de votre projet
         <li><strong>Language choice</strong>: the site remembers French or English on your device. This is not tracking.</li>
       </ul>
       <h2>Cookies</h2>
-      <p>This site uses no advertising or analytics cookies. The only cookies come from the live chat, and only after you choose to start it. If you never start the chat, nothing is stored. You can delete cookies at any time in your browser settings.</p>
+      <p>This site uses no advertising or analytics cookies. The only cookies come from the live chat, and only after you accept them in the cookie notice shown at the start of each visit. If you decline, nothing is stored and the chat stays off. You can delete cookies at any time in your browser settings.</p>
       <h2>Emails about the market</h2>
       <p>I only send market reports and similar emails if you ticked the box on the report form. You can unsubscribe at any time by replying to an email or calling 514 570-2152.</p>
       <h2>Who else handles your information</h2>
@@ -968,7 +968,7 @@ ${ctaBand(l, E ? 'Talk about your commercial project' : 'Parlons de votre projet
         <li><strong>Choix de langue</strong> : le site retient le français ou l’anglais sur votre appareil. Ce n’est pas du suivi.</li>
       </ul>
       <h2>Témoins (cookies)</h2>
-      <p>Ce site n’utilise aucun témoin publicitaire ni d’analyse. Les seuls témoins proviennent du clavardage, et seulement après que vous avez choisi de le démarrer. Si vous ne démarrez jamais le clavardage, rien n’est enregistré. Vous pouvez supprimer les témoins en tout temps dans les paramètres de votre navigateur.</p>
+      <p>Ce site n’utilise aucun témoin publicitaire ni d’analyse. Les seuls témoins proviennent du clavardage, et seulement après que vous les avez acceptés dans l’avis affiché au début de chaque visite. Si vous refusez, rien n’est enregistré et le clavardage reste désactivé. Vous pouvez supprimer les témoins en tout temps dans les paramètres de votre navigateur.</p>
       <h2>Courriels sur le marché</h2>
       <p>J’envoie des rapports du marché et des courriels semblables seulement si vous avez coché la case du formulaire de rapport. Vous pouvez vous désabonner en tout temps en répondant à un courriel ou en appelant le 514 570-2152.</p>
       <h2>Qui d’autre traite vos renseignements</h2>

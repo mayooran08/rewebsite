@@ -213,14 +213,16 @@
   } catch (e) {}
 })();
 
-/* Live chat (Tawk.to): nothing is loaded or stored until the visitor agrees.
-   A remembered "yes" (localStorage) starts the chat on later pages. */
+/* Cookie notice (Tawk.to live chat): shown at the start of every visit. Nothing is loaded or stored
+   until the visitor accepts. The choice lasts for the visit only (sessionStorage). */
 (function () {
   var launch = document.querySelector('.chat-launch');
   var box = document.getElementById('chat-consent');
   if (!launch || !box) return;
-  var KEY = 'chatConsent';
+  var KEY = 'cookieChoice';
   var started = false;
+
+  try { localStorage.removeItem('chatConsent'); } catch (e) {}
 
   window.Tawk_API = window.Tawk_API || {};
   window.Tawk_LoadStart = new Date();
@@ -231,12 +233,11 @@
     }
   };
 
-  function start(openNow) {
+  function start() {
     if (started) return;
     started = true;
     launch.hidden = true;
     box.hidden = true;
-    window.Tawk_API.onLoad = function () { if (openNow) window.Tawk_API.maximize(); };
     var s = document.createElement('script');
     s.async = true;
     s.src = 'https://embed.tawk.to/6ae7bb7026050d3c3477c6d5/1k6cj8bt6';
@@ -244,28 +245,30 @@
     s.setAttribute('crossorigin', '*');
     document.head.appendChild(s);
   }
-  function close() {
+  function remember(v) { try { sessionStorage.setItem(KEY, v); } catch (e) {} }
+  function decline() {
+    remember('no');
     box.hidden = true;
+    launch.hidden = false;
     launch.setAttribute('aria-expanded', 'false');
-    launch.focus();
   }
 
-  var agreed = false;
-  try { agreed = localStorage.getItem(KEY) === '1'; } catch (e) {}
-  if (agreed) {
-    window.addEventListener('load', function () { start(false); });
-    return;
+  var choice = null;
+  try { choice = sessionStorage.getItem(KEY); } catch (e) {}
+  if (choice === 'yes') {
+    window.addEventListener('load', start);
+  } else if (choice === 'no') {
+    launch.hidden = false;
+  } else {
+    window.addEventListener('load', function () { setTimeout(function () { box.hidden = false; }, 800); });
   }
 
   launch.addEventListener('click', function () {
-    box.hidden = !box.hidden;
-    launch.setAttribute('aria-expanded', String(!box.hidden));
-    if (!box.hidden) box.querySelector('[data-chat-ok]').focus();
+    box.hidden = false;
+    launch.setAttribute('aria-expanded', 'true');
+    box.querySelector('[data-chat-ok]').focus();
   });
-  box.querySelector('[data-chat-ok]').addEventListener('click', function () {
-    try { localStorage.setItem(KEY, '1'); } catch (e) {}
-    start(true);
-  });
-  box.querySelector('[data-chat-no]').addEventListener('click', close);
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !box.hidden) close(); });
+  box.querySelector('[data-chat-ok]').addEventListener('click', function () { remember('yes'); start(); });
+  box.querySelector('[data-chat-no]').addEventListener('click', decline);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !box.hidden) decline(); });
 })();
