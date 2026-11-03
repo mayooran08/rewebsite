@@ -24,6 +24,7 @@ const PAGES = {
   contact:    { slug: { en: 'contact', fr: 'contact' } },
   testimonials: { slug: { en: 'testimonials', fr: 'temoignages' } },
   report:     { slug: { en: 'market-report', fr: 'rapport-marche' } },
+  privacy:    { slug: { en: 'privacy', fr: 'confidentialite' } },
   blog:       { slug: { en: 'blog', fr: 'blogue' } },
 };
 
@@ -89,6 +90,7 @@ const LABEL = {
   valuation: { en: 'Home evaluation', fr: 'Évaluation de propriété' },
   testimonials: { en: 'Testimonials', fr: 'Témoignages' },
   report: { en: 'Market report', fr: 'Rapport du marché' },
+  privacy: { en: 'Privacy and cookies', fr: 'Confidentialité et témoins' },
   contact: { en: 'Contact', fr: 'Contact' },
 };
 // Main menu: a short list. Evaluation and testimonials are reached from the page content and the footer.
@@ -188,6 +190,19 @@ function header(l, id, twinHref) {
 `;
 }
 
+function chatLauncher(l) {
+  const E = l === 'en';
+  return `<button class="chat-launch" type="button" aria-haspopup="dialog" aria-controls="chat-consent" aria-expanded="false"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg><span>${E ? 'Chat with me' : 'Discutons'}</span></button>
+<div class="chat-consent" id="chat-consent" role="dialog" aria-labelledby="chat-consent-t" hidden>
+  <p id="chat-consent-t"><strong>${E ? 'Chat with Gevitha' : 'Clavarder avec Gevitha'}</strong></p>
+  <p>${E ? 'The chat is provided by Tawk.to. Starting it stores cookies in your browser and shares your chat messages, IP address and the pages you view with Tawk.to.' : 'Le clavardage est offert par Tawk.to. En le démarrant, des témoins sont enregistrés dans votre navigateur et vos messages, votre adresse IP et les pages consultées sont transmis à Tawk.to.'} <a href="${url(l, 'privacy')}">${E ? 'Read the privacy notice' : 'Lire l’avis de confidentialité'}</a></p>
+  <div class="chat-consent-actions">
+    <button class="btn" type="button" data-chat-ok>${E ? 'Start chat' : 'Démarrer'}</button>
+    <button class="btn btn-light" type="button" data-chat-no>${E ? 'Not now' : 'Pas maintenant'}</button>
+  </div>
+</div>`;
+}
+
 function footer(l) {
   const foot = ['about', 'buy', 'sell', 'commercial', 'valuation', 'report', 'testimonials', 'blog', 'contact']
     .map((p) => {
@@ -213,8 +228,10 @@ function footer(l) {
   <div class="wrap foot-bottom">
     <p>© <span id="year">${new Date().getFullYear()}</span> Gevitha Kunaratnam · RE/MAX 2000 INC.</p>
     <p class="small">${t('indep', l)}</p>
+    <p class="small"><a href="${url(l, 'privacy')}">${LABEL.privacy[l]}</a></p>
   </div>
 </footer>
+${chatLauncher(l)}
 <nav class="mobile-bar" aria-label="${l === 'en' ? 'Quick contact' : 'Contact rapide'}">
   <a class="mb-call" href="tel:+15145702152">${ICON.phone}<span>${l === 'en' ? 'Call' : 'Appeler'}</span></a>
   <a class="mb-wa" href="${waLink(l)}" target="_blank" rel="noopener noreferrer">${ICON.whatsapp}<span>WhatsApp</span></a>
@@ -648,6 +665,10 @@ const META = {
     title: { en: 'Contact Gevitha Kunaratnam | Real Estate Broker, Laval', fr: 'Contacter Gevitha Kunaratnam | Courtière immobilière, Laval' },
     desc: { en: 'Contact Gevitha Kunaratnam at RE/MAX 2000, 830 boul. Curé-Labelle, Laval. Call 514 570-2152 or send a message.', fr: 'Contactez Gevitha Kunaratnam chez RE/MAX 2000, 830 boul. Curé-Labelle, Laval. Appelez au 514 570-2152 ou envoyez un message.' },
   },
+  privacy: {
+    title: { en: 'Privacy and Cookies | Gevitha Kunaratnam', fr: 'Confidentialité et témoins | Gevitha Kunaratnam' },
+    desc: { en: 'How this website handles your personal information: forms, live chat, cookies and your rights.', fr: 'Comment ce site traite vos renseignements personnels : formulaires, clavardage, témoins et vos droits.' },
+  },
   report: {
     title: { en: 'Free Neighbourhood Market Report | Gevitha Kunaratnam', fr: 'Rapport gratuit sur le marché de votre quartier | Gevitha Kunaratnam' },
     desc: { en: 'Get a free email report on the real estate market in your neighbourhood: recent sales and local trends, from broker Gevitha Kunaratnam, RE/MAX 2000.', fr: 'Recevez gratuitement par courriel un rapport sur le marché immobilier de votre quartier : propriétés vendues et tendances locales, par Gevitha Kunaratnam, RE/MAX 2000.' },
@@ -913,6 +934,54 @@ ${ctaBand(l, E ? 'Talk about your commercial project' : 'Parlons de votre projet
     </div>
     ${form(l, 'valuation')}
   </div>
+</section>`;
+  },
+
+  privacy(l) {
+    const E = l === 'en';
+    const body = E ? `
+      <h2>Who is responsible</h2>
+      <p>This website belongs to Gevitha Kunaratnam, residential and commercial real estate broker, RE/MAX 2000 INC., 830 boul. Curé-Labelle, Laval (Chomedey), Québec H7V 2V3. Gevitha Kunaratnam is the person responsible for the protection of personal information. You can reach her at 514 570-2152.</p>
+      <h2>What I collect, and why</h2>
+      <ul>
+        <li><strong>Forms</strong> (contact, home evaluation, market report): your name, email, phone number, property address or neighbourhood, and your message. I use them to answer you, prepare your evaluation or send you the report you asked for.</li>
+        <li><strong>Live chat</strong>: what you write in the chat and any details you give. The chat tool also records technical information, such as your IP address, approximate location, browser and the pages you view.</li>
+        <li><strong>Language choice</strong>: the site remembers French or English on your device. This is not tracking.</li>
+      </ul>
+      <h2>Cookies</h2>
+      <p>This site uses no advertising or analytics cookies. The only cookies come from the live chat, and only after you choose to start it. If you never start the chat, nothing is stored. You can delete cookies at any time in your browser settings.</p>
+      <h2>Emails about the market</h2>
+      <p>I only send market reports and similar emails if you ticked the box on the report form. You can unsubscribe at any time by replying to an email or calling 514 570-2152.</p>
+      <h2>Who else handles your information</h2>
+      <p>I do not sell your information. To run the site I use service providers that may process it outside Québec or Canada, including in the United States: Web3Forms (delivers form messages to my email), Tawk.to (live chat) and GitHub (hosts the website and keeps ordinary server logs). Within the brokerage, RE/MAX 2000 INC. may need access to handle a file.</p>
+      <h2>How long I keep it</h2>
+      <p>I keep your information as long as needed for the reason you gave it, or as required by brokerage rules, then I delete or anonymize it.</p>
+      <h2>Your rights</h2>
+      <p>You can ask to see the information I hold about you, have it corrected or deleted, or withdraw your consent. Call 514 570-2152 or use the <a href="${url(l, 'contact')}">contact page</a>. If you are not satisfied, you can complain to the Commission d’accès à l’information du Québec.</p>
+      <p class="small">Last updated: November 3, 2026.</p>` : `
+      <h2>Qui est responsable</h2>
+      <p>Ce site appartient à Gevitha Kunaratnam, courtière immobilière résidentielle et commerciale, RE/MAX 2000 INC., 830, boul. Curé-Labelle, Laval (Chomedey), Québec H7V 2V3. Gevitha Kunaratnam est la personne responsable de la protection des renseignements personnels. Vous pouvez la joindre au 514 570-2152.</p>
+      <h2>Ce que je recueille, et pourquoi</h2>
+      <ul>
+        <li><strong>Formulaires</strong> (contact, évaluation de propriété, rapport du marché) : votre nom, courriel, numéro de téléphone, adresse de la propriété ou quartier, et votre message. Je les utilise pour vous répondre, préparer votre évaluation ou vous envoyer le rapport demandé.</li>
+        <li><strong>Clavardage</strong> : ce que vous écrivez dans le clavardage et les renseignements que vous donnez. L’outil enregistre aussi des données techniques, comme votre adresse IP, votre position approximative, votre navigateur et les pages consultées.</li>
+        <li><strong>Choix de langue</strong> : le site retient le français ou l’anglais sur votre appareil. Ce n’est pas du suivi.</li>
+      </ul>
+      <h2>Témoins (cookies)</h2>
+      <p>Ce site n’utilise aucun témoin publicitaire ni d’analyse. Les seuls témoins proviennent du clavardage, et seulement après que vous avez choisi de le démarrer. Si vous ne démarrez jamais le clavardage, rien n’est enregistré. Vous pouvez supprimer les témoins en tout temps dans les paramètres de votre navigateur.</p>
+      <h2>Courriels sur le marché</h2>
+      <p>J’envoie des rapports du marché et des courriels semblables seulement si vous avez coché la case du formulaire de rapport. Vous pouvez vous désabonner en tout temps en répondant à un courriel ou en appelant le 514 570-2152.</p>
+      <h2>Qui d’autre traite vos renseignements</h2>
+      <p>Je ne vends pas vos renseignements. Pour faire fonctionner le site, j’utilise des fournisseurs qui peuvent les traiter à l’extérieur du Québec ou du Canada, notamment aux États-Unis : Web3Forms (transmet les messages des formulaires à mon courriel), Tawk.to (clavardage) et GitHub (héberge le site et conserve les journaux habituels du serveur). Au sein du courtier, RE/MAX 2000 INC. peut avoir accès à un dossier au besoin.</p>
+      <h2>Durée de conservation</h2>
+      <p>Je conserve vos renseignements aussi longtemps que nécessaire pour la raison pour laquelle vous les avez fournis, ou selon les règles du courtage, puis je les détruis ou les anonymise.</p>
+      <h2>Vos droits</h2>
+      <p>Vous pouvez demander à consulter les renseignements que je détiens sur vous, les faire corriger ou supprimer, ou retirer votre consentement. Appelez le 514 570-2152 ou utilisez la <a href="${url(l, 'contact')}">page de contact</a>. Si vous n’êtes pas satisfait, vous pouvez porter plainte à la Commission d’accès à l’information du Québec.</p>
+      <p class="small">Dernière mise à jour : 3 novembre 2026.</p>`;
+    return `${pageHero(l, LABEL.privacy[l], E ? 'How this website handles your personal information.' : 'Comment ce site traite vos renseignements personnels.', LABEL.privacy[l])}
+<section class="section">
+  <div class="wrap"><div class="prose">${body}
+  </div></div>
 </section>`;
   },
 
