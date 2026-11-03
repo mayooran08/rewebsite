@@ -273,12 +273,29 @@
     setTimeout(function () { box.hidden = false; }, 700);
   }
 
-  launch.addEventListener('click', function () {
+  function panel(name) {
+    var all = box.querySelectorAll('[data-cc]');
+    for (var i = 0; i < all.length; i++) all[i].hidden = all[i].getAttribute('data-cc') !== name;
+  }
+  function openBox() {
+    panel('main');
     box.hidden = false;
     launch.setAttribute('aria-expanded', 'true');
     box.querySelector('[data-chat-ok]').focus();
-  });
+  }
+  var chatBox = box.querySelector('[data-cc-chat]');
+
+  launch.addEventListener('click', openBox);
   box.querySelector('[data-chat-ok]').addEventListener('click', function () { remember('yes'); start(); });
   box.querySelector('[data-chat-no]').addEventListener('click', decline);
+  box.querySelector('[data-cc-open]').addEventListener('click', function () {
+    chatBox.checked = recall() === 'yes';
+    panel('prefs');
+    chatBox.focus();
+  });
+  box.querySelector('[data-cc-back]').addEventListener('click', function () { panel('main'); });
+  box.querySelector('[data-cc-save]').addEventListener('click', function () {
+    if (chatBox.checked) { remember('yes'); start(); } else decline();
+  });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !box.hidden) decline(); });
 })();

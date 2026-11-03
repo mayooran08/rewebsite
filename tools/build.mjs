@@ -194,13 +194,43 @@ function header(l, id, twinHref) {
 
 function chatLauncher(l) {
   const E = l === 'en';
-  return `<button class="chat-launch" type="button" aria-haspopup="dialog" aria-controls="chat-consent" aria-expanded="false" hidden><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg><span>${E ? 'Chat with me' : 'Discutons'}</span></button>
-<div class="chat-consent" id="chat-consent" role="dialog" aria-labelledby="chat-consent-t" hidden>
-  <p id="chat-consent-t"><strong>${E ? 'Cookies' : 'Témoins (cookies)'}</strong></p>
-  <p>${E ? 'This site sets no tracking cookies. The live chat, provided by Tawk.to, does use cookies and receives your chat messages, IP address and the pages you view. Accept to turn the chat on.' : 'Ce site n’utilise aucun témoin de suivi. Le clavardage, offert par Tawk.to, utilise des témoins et reçoit vos messages, votre adresse IP et les pages consultées. Acceptez pour activer le clavardage.'} <a href="${url(l, 'privacy')}">${E ? 'Privacy notice' : 'Avis de confidentialité'}</a></p>
-  <div class="chat-consent-actions">
-    <button class="btn" type="button" data-chat-ok>${E ? 'Accept' : 'Accepter'}</button>
-    <button class="btn btn-light" type="button" data-chat-no>${E ? 'Decline' : 'Refuser'}</button>
+  const x = (en, fr) => (E ? en : fr);
+  return `<button class="chat-launch" type="button" aria-haspopup="dialog" aria-controls="chat-consent" aria-expanded="false" hidden><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg><span>${x('Chat with me', 'Discutons')}</span></button>
+<div class="chat-consent" id="chat-consent" role="dialog" aria-labelledby="cc-t" hidden>
+  <div class="cc-panel" data-cc="main">
+    <svg class="cc-art" viewBox="0 0 150 96" aria-hidden="true"><circle cx="118" cy="6" r="62" fill="#c3d1a6"/><circle cx="62" cy="52" r="26" fill="#e3b574"/><circle cx="50" cy="40" r="3.2" fill="#7a4a28"/><circle cx="72" cy="35" r="2.8" fill="#7a4a28"/><circle cx="78" cy="62" r="3.4" fill="#7a4a28"/><circle cx="46" cy="64" r="2.6" fill="#7a4a28"/><circle cx="55" cy="50" r="2.6" fill="#16241d"/><circle cx="69" cy="50" r="2.6" fill="#16241d"/><path d="M56 59q6 6 12 0" fill="none" stroke="#16241d" stroke-width="2.2" stroke-linecap="round"/><circle cx="108" cy="58" r="22" fill="#d49a58"/><circle cx="99" cy="50" r="2.8" fill="#7a4a28"/><circle cx="116" cy="46" r="2.6" fill="#7a4a28"/><circle cx="118" cy="68" r="3" fill="#7a4a28"/><circle cx="103" cy="58" r="2.3" fill="#16241d"/><circle cx="115" cy="58" r="2.3" fill="#16241d"/><path d="M104 65q5 5 10 0" fill="none" stroke="#16241d" stroke-width="2" stroke-linecap="round"/></svg>
+    <p class="cc-kicker">${x('Hello, it’s us…', 'Allo, c’est nous…')}</p>
+    <h2 class="cc-title" id="cc-t">${x('About cookies', 'Parlons témoins')}</h2>
+    <p>${x('This site uses no advertising or tracking cookies. Only the live chat, provided by Tawk.to, uses cookies, and only if you agree.', 'Ce site n’utilise aucun témoin publicitaire ni de suivi. Seul le clavardage en direct, offert par Tawk.to, utilise des témoins, et seulement si vous êtes d’accord.')}</p>
+    <div class="cc-why">
+      <strong>${x('Why we ask', 'Pourquoi on vous demande')}</strong>
+      <ul>
+        <li>${x('Live chat with Gevitha (Tawk.to)', 'Clavardage en direct avec Gevitha (Tawk.to)')}</li>
+        <li>${x('No ads, no analytics', 'Aucune publicité, aucune analyse')}</li>
+      </ul>
+    </div>
+    <p class="cc-more"><a href="${url(l, 'privacy')}">${x('Privacy notice', 'Avis de confidentialité')}</a></p>
+    <div class="cc-actions">
+      <button type="button" data-chat-no>${x('No thanks', 'Non merci')}</button>
+      <button type="button" data-cc-open>${x('I choose', 'Je choisis')}</button>
+      <button type="button" class="cc-primary" data-chat-ok>${x('Sounds good!', 'Ça me va !')}</button>
+    </div>
+  </div>
+  <div class="cc-panel" data-cc="prefs" hidden>
+    <h2 class="cc-title">${x('Your choices', 'Vos choix')}</h2>
+    <p>${x('Pick what you are comfortable with. You can change your mind at any time with the chat button.', 'Choisissez ce qui vous convient. Vous pouvez changer d’avis en tout temps avec le bouton de clavardage.')}</p>
+    <div class="cc-row">
+      <div><b>${x('Essential', 'Essentiel')}</b><small>${x('Remembers your language and this choice for 30 days. No tracking.', 'Retient votre langue et ce choix pendant 30 jours. Aucun suivi.')}</small></div>
+      <label class="cc-switch"><input type="checkbox" checked disabled aria-label="${x('Essential', 'Essentiel')}"><span></span></label>
+    </div>
+    <div class="cc-row">
+      <div><b>${x('Live chat (Tawk.to)', 'Clavardage en direct (Tawk.to)')}</b><small>${x('Lets you write to Gevitha. Tawk.to receives your messages, IP address and the pages you view.', 'Vous permet d’écrire à Gevitha. Tawk.to reçoit vos messages, votre adresse IP et les pages consultées.')}</small></div>
+      <label class="cc-switch"><input type="checkbox" data-cc-chat aria-label="${x('Live chat', 'Clavardage en direct')}"><span></span></label>
+    </div>
+    <div class="cc-actions">
+      <button type="button" data-cc-back>${x('Back', 'Retour')}</button>
+      <button type="button" class="cc-primary" data-cc-save>${x('Save', 'Enregistrer')}</button>
+    </div>
   </div>
 </div>`;
 }
