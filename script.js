@@ -213,16 +213,17 @@
   } catch (e) {}
 })();
 
-/* Cookie notice (Tawk.to live chat): shown at the start of every visit. Nothing is loaded or stored
-   until the visitor accepts. The choice lasts for the visit only (sessionStorage). */
+/* Cookie notice (Tawk.to live chat): shown on a visitor's first visit and again after 30 days.
+   Nothing is loaded or stored until the visitor accepts. The choice is kept in localStorage. */
 (function () {
   var launch = document.querySelector('.chat-launch');
   var box = document.getElementById('chat-consent');
   if (!launch || !box) return;
   var KEY = 'cookieChoice';
+  var DAYS = 30;
   var started = false;
 
-  try { localStorage.removeItem('chatConsent'); } catch (e) {}
+  try { localStorage.removeItem('chatConsent'); sessionStorage.removeItem(KEY); } catch (e) {}
 
   window.Tawk_API = window.Tawk_API || {};
   window.Tawk_LoadStart = new Date();
@@ -245,7 +246,17 @@
     s.setAttribute('crossorigin', '*');
     document.head.appendChild(s);
   }
-  function remember(v) { try { sessionStorage.setItem(KEY, v); } catch (e) {} }
+  function remember(v) {
+    try { localStorage.setItem(KEY, JSON.stringify({ v: v, t: Date.now() })); } catch (e) {}
+  }
+  function recall() {
+    try {
+      var o = JSON.parse(localStorage.getItem(KEY));
+      if (o && (o.v === 'yes' || o.v === 'no') && Date.now() - o.t < DAYS * 864e5) return o.v;
+      localStorage.removeItem(KEY);
+    } catch (e) {}
+    return null;
+  }
   function decline() {
     remember('no');
     box.hidden = true;
@@ -253,14 +264,13 @@
     launch.setAttribute('aria-expanded', 'false');
   }
 
-  var choice = null;
-  try { choice = sessionStorage.getItem(KEY); } catch (e) {}
+  var choice = recall();
   if (choice === 'yes') {
-    window.addEventListener('load', start);
+    if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
   } else if (choice === 'no') {
     launch.hidden = false;
   } else {
-    window.addEventListener('load', function () { setTimeout(function () { box.hidden = false; }, 800); });
+    setTimeout(function () { box.hidden = false; }, 700);
   }
 
   launch.addEventListener('click', function () {

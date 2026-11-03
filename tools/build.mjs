@@ -12,6 +12,8 @@ const INCLUDE_DRAFTS = process.argv.includes('--drafts');
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SITE = 'https://gevithakunaratnam.ca';
 const KEY = 'bf96f6c2-df22-4371-a191-958c660c935b';
+import { createHash } from 'node:crypto';
+const ASSET_V = (f) => createHash('md5').update(readFileSync(new URL('../' + f, import.meta.url))).digest('hex').slice(0, 8);
 const LANGS = ['en', 'fr'];
 
 const PAGES = {
@@ -163,7 +165,7 @@ ${alts.en && alts.fr ? `<link rel="alternate" hreflang="x-default" href="${SITE}
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231d3557'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='34' font-weight='700' text-anchor='middle' fill='%23ffffff'%3EGK%3C/text%3E%3C/svg%3E">
 <link rel="preload" href="/assets/fonts/newsreader-500-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/sourcesans3-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style.css?v=${ASSET_V('style.css')}">
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
 </head>
 <body>
@@ -236,7 +238,7 @@ ${chatLauncher(l)}
   <a class="mb-call" href="tel:+15145702152">${ICON.phone}<span>${l === 'en' ? 'Call' : 'Appeler'}</span></a>
   <a class="mb-wa" href="${waLink(l)}" target="_blank" rel="noopener noreferrer">${ICON.whatsapp}<span>WhatsApp</span></a>
 </nav>
-<script src="/script.js"></script>
+<script src="/script.js?v=${ASSET_V('script.js')}"></script>
 </body>
 </html>
 `;
@@ -949,7 +951,7 @@ ${ctaBand(l, E ? 'Talk about your commercial project' : 'Parlons de votre projet
         <li><strong>Language choice</strong>: the site remembers French or English on your device. This is not tracking.</li>
       </ul>
       <h2>Cookies</h2>
-      <p>This site uses no advertising or analytics cookies. The only cookies come from the live chat, and only after you accept them in the cookie notice shown at the start of each visit. If you decline, nothing is stored and the chat stays off. You can delete cookies at any time in your browser settings.</p>
+      <p>This site uses no advertising or analytics cookies. The only cookies come from the live chat, and only after you accept them in the cookie notice. Your choice is remembered for 30 days. If you decline, nothing is stored and the chat stays off. You can delete cookies at any time in your browser settings.</p>
       <h2>Emails about the market</h2>
       <p>I only send market reports and similar emails if you ticked the box on the report form. You can unsubscribe at any time by replying to an email or calling 514 570-2152.</p>
       <h2>Who else handles your information</h2>
@@ -968,7 +970,7 @@ ${ctaBand(l, E ? 'Talk about your commercial project' : 'Parlons de votre projet
         <li><strong>Choix de langue</strong> : le site retient le français ou l’anglais sur votre appareil. Ce n’est pas du suivi.</li>
       </ul>
       <h2>Témoins (cookies)</h2>
-      <p>Ce site n’utilise aucun témoin publicitaire ni d’analyse. Les seuls témoins proviennent du clavardage, et seulement après que vous les avez acceptés dans l’avis affiché au début de chaque visite. Si vous refusez, rien n’est enregistré et le clavardage reste désactivé. Vous pouvez supprimer les témoins en tout temps dans les paramètres de votre navigateur.</p>
+      <p>Ce site n’utilise aucun témoin publicitaire ni d’analyse. Les seuls témoins proviennent du clavardage, et seulement après que vous les avez acceptés dans l’avis de témoins. Votre choix est retenu pendant 30 jours. Si vous refusez, rien n’est enregistré et le clavardage reste désactivé. Vous pouvez supprimer les témoins en tout temps dans les paramètres de votre navigateur.</p>
       <h2>Courriels sur le marché</h2>
       <p>J’envoie des rapports du marché et des courriels semblables seulement si vous avez coché la case du formulaire de rapport. Vous pouvez vous désabonner en tout temps en répondant à un courriel ou en appelant le 514 570-2152.</p>
       <h2>Qui d’autre traite vos renseignements</h2>
@@ -1116,7 +1118,7 @@ write('index.html', `<!doctype html>
 <link rel="alternate" hreflang="fr" href="${SITE}/fr/">
 <link rel="alternate" hreflang="x-default" href="${SITE}/">
 <meta name="theme-color" content="#1d3557">
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style.css?v=${ASSET_V('style.css')}">
 <script>
 (function(){try{
   var s=localStorage.getItem('lang');
@@ -1145,7 +1147,7 @@ write('404.html', `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Page not found · Page introuvable</title>
 <meta name="robots" content="noindex">
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style.css?v=${ASSET_V('style.css')}">
 </head>
 <body class="chooser">
 <main class="choose">
