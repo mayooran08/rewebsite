@@ -369,4 +369,5 @@ address strong{color:var(--ink)}
 .cc-switch input:disabled+span{opacity:.55}
 .cc-switch input:focus-visible+span{outline:3px solid var(--olive);outline-offset:2px}
 @media(max-width:860px){.chat-launch{bottom:calc(78px + env(safe-area-inset-bottom,0px))}.chat-consent{left:12px;bottom:calc(78px + env(safe-area-inset-bottom,0px));width:calc(100vw - 24px);max-height:calc(100vh - 100px)}}
+.link-btn{padding:0;border:0;background:none;font:inherit;color:inherit;text-decoration:underline;cursor:pointer}
 @media print{.chat-launch,.chat-consent,.mobile-bar,.nav{display:none}}

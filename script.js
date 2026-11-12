@@ -38,6 +38,7 @@
         .then(function (r) { return r.json(); })
         .then(function (d) {
           if (d.success) {
+            if (window.adsConversion) window.adsConversion();
             status.className = 'status ok';
             status.textContent = form.getAttribute('data-ok');
             form.reset();
@@ -213,15 +214,19 @@
   } catch (e) {}
 })();
 
-/* Cookie notice (Tawk.to live chat): shown on a visitor's first visit and again after 30 days.
-   Nothing is loaded or stored until the visitor accepts. The choice is kept in localStorage. */
+/* Cookie notice: live chat (Tawk.to) and ad measurement (Google Ads). Shown on a visitor's first visit
+   and again after 30 days. Nothing is loaded or stored until the visitor agrees; each choice is separate.
+   The choice is kept in localStorage as {chat, ads, t}. */
 (function () {
   var launch = document.querySelector('.chat-launch');
   var box = document.getElementById('chat-consent');
   if (!launch || !box) return;
   var KEY = 'cookieChoice';
   var DAYS = 30;
-  var started = false;
+  var ADS_ID = 'AW-18515298620';
+  var ADS_CONVERSION = 'AW-18515298620/H4G_CLHmh7YdELyS5PxE';
+  var chatOn = false;
+  var adsOn = false;
 
   try { localStorage.removeItem('chatConsent'); sessionStorage.removeItem(KEY); } catch (e) {}
 
@@ -234,11 +239,10 @@
     }
   };
 
-  function start() {
-    if (started) return;
-    started = true;
+  function startChat() {
+    if (chatOn) return;
+    chatOn = true;
     launch.hidden = true;
-    box.hidden = true;
     var s = document.createElement('script');
     s.async = true;
     s.src = 'https://embed.tawk.to/6ae7bb7026050d3c3477c6d5/1k6cj8bt6';
@@ -246,29 +250,49 @@
     s.setAttribute('crossorigin', '*');
     document.head.appendChild(s);
   }
-  function remember(v) {
-    try { localStorage.setItem(KEY, JSON.stringify({ v: v, t: Date.now() })); } catch (e) {}
+  function startAds() {
+    if (adsOn) return;
+    adsOn = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', ADS_ID);
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ADS_ID;
+    document.head.appendChild(s);
+  }
+  // called by the forms after a successful send
+  window.adsConversion = function () {
+    if (adsOn && window.gtag) window.gtag('event', 'conversion', { send_to: ADS_CONVERSION });
+  };
+
+  function remember(chat, ads) {
+    try { localStorage.setItem(KEY, JSON.stringify({ chat: chat, ads: ads, t: Date.now() })); } catch (e) {}
   }
   function recall() {
     try {
       var o = JSON.parse(localStorage.getItem(KEY));
-      if (o && (o.v === 'yes' || o.v === 'no') && Date.now() - o.t < DAYS * 864e5) return o.v;
+      if (o && typeof o.chat === 'boolean' && typeof o.ads === 'boolean' && Date.now() - o.t < DAYS * 864e5) return o;
       localStorage.removeItem(KEY);
     } catch (e) {}
     return null;
   }
-  function decline() {
-    remember('no');
+  // Apply a choice. Turning something off after it was loaded needs a page reload to unload it.
+  function apply(chat, ads) {
+    var reload = (chatOn && !chat) || (adsOn && !ads);
+    remember(chat, ads);
     box.hidden = true;
-    launch.hidden = false;
     launch.setAttribute('aria-expanded', 'false');
+    if (reload) { location.reload(); return; }
+    if (chat) startChat(); else launch.hidden = false;
+    if (ads) startAds();
   }
 
   var choice = recall();
-  if (choice === 'yes') {
-    if (document.readyState === 'complete') start(); else window.addEventListener('load', start);
-  } else if (choice === 'no') {
-    launch.hidden = false;
+  if (choice) {
+    var go = function () { if (choice.chat) startChat(); else launch.hidden = false; if (choice.ads) startAds(); };
+    if (document.readyState === 'complete') go(); else window.addEventListener('load', go);
   } else {
     setTimeout(function () { box.hidden = false; }, 700);
   }
@@ -284,18 +308,21 @@
     box.querySelector('[data-chat-ok]').focus();
   }
   var chatBox = box.querySelector('[data-cc-chat]');
+  var adsBox = box.querySelector('[data-cc-ads]');
 
   launch.addEventListener('click', openBox);
-  box.querySelector('[data-chat-ok]').addEventListener('click', function () { remember('yes'); start(); });
-  box.querySelector('[data-chat-no]').addEventListener('click', decline);
+  var reopen = document.querySelectorAll('[data-cc-reopen]');
+  for (var r = 0; r < reopen.length; r++) reopen[r].addEventListener('click', openBox);
+  box.querySelector('[data-chat-ok]').addEventListener('click', function () { apply(true, true); });
+  box.querySelector('[data-chat-no]').addEventListener('click', function () { apply(false, false); });
   box.querySelector('[data-cc-open]').addEventListener('click', function () {
-    chatBox.checked = recall() === 'yes';
+    var c = recall();
+    chatBox.checked = !!(c && c.chat);
+    adsBox.checked = !!(c && c.ads);
     panel('prefs');
     chatBox.focus();
   });
   box.querySelector('[data-cc-back]').addEventListener('click', function () { panel('main'); });
-  box.querySelector('[data-cc-save]').addEventListener('click', function () {
-    if (chatBox.checked) { remember('yes'); start(); } else decline();
-  });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !box.hidden) decline(); });
+  box.querySelector('[data-cc-save]').addEventListener('click', function () { apply(chatBox.checked, adsBox.checked); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !box.hidden) apply(false, false); });
 })();

@@ -201,12 +201,12 @@ function chatLauncher(l) {
     <svg class="cc-art" viewBox="0 0 150 96" aria-hidden="true"><circle cx="118" cy="6" r="62" fill="#c3d1a6"/><circle cx="62" cy="52" r="26" fill="#e3b574"/><circle cx="50" cy="40" r="3.2" fill="#7a4a28"/><circle cx="72" cy="35" r="2.8" fill="#7a4a28"/><circle cx="78" cy="62" r="3.4" fill="#7a4a28"/><circle cx="46" cy="64" r="2.6" fill="#7a4a28"/><circle cx="55" cy="50" r="2.6" fill="#16241d"/><circle cx="69" cy="50" r="2.6" fill="#16241d"/><path d="M56 59q6 6 12 0" fill="none" stroke="#16241d" stroke-width="2.2" stroke-linecap="round"/><circle cx="108" cy="58" r="22" fill="#d49a58"/><circle cx="99" cy="50" r="2.8" fill="#7a4a28"/><circle cx="116" cy="46" r="2.6" fill="#7a4a28"/><circle cx="118" cy="68" r="3" fill="#7a4a28"/><circle cx="103" cy="58" r="2.3" fill="#16241d"/><circle cx="115" cy="58" r="2.3" fill="#16241d"/><path d="M104 65q5 5 10 0" fill="none" stroke="#16241d" stroke-width="2" stroke-linecap="round"/></svg>
     <p class="cc-kicker">${x('Hello, it’s us…', 'Allo, c’est nous…')}</p>
     <h2 class="cc-title" id="cc-t">${x('About cookies', 'Parlons témoins')}</h2>
-    <p>${x('This site uses no advertising or tracking cookies. Only the live chat, provided by Tawk.to, uses cookies, and only if you agree.', 'Ce site n’utilise aucun témoin publicitaire ni de suivi. Seul le clavardage en direct, offert par Tawk.to, utilise des témoins, et seulement si vous êtes d’accord.')}</p>
+    <p>${x('This site sets no tracking cookies on its own. With your OK, we use the live chat (Tawk.to) and measure whether our Google ads work (Google Ads).', 'Ce site ne dépose aucun témoin de suivi de lui-même. Avec votre accord, nous utilisons le clavardage en direct (Tawk.to) et mesurons si nos publicités Google fonctionnent (Google Ads).')}</p>
     <div class="cc-why">
       <strong>${x('Why we ask', 'Pourquoi on vous demande')}</strong>
       <ul>
         <li>${x('Live chat with Gevitha (Tawk.to)', 'Clavardage en direct avec Gevitha (Tawk.to)')}</li>
-        <li>${x('No ads, no analytics', 'Aucune publicité, aucune analyse')}</li>
+        <li>${x('Measuring our Google ads (Google Ads)', 'Mesure de nos publicités Google (Google Ads)')}</li>
       </ul>
     </div>
     <p class="cc-more"><a href="${url(l, 'privacy')}">${x('Privacy notice', 'Avis de confidentialité')}</a></p>
@@ -226,6 +226,10 @@ function chatLauncher(l) {
     <div class="cc-row">
       <div><b>${x('Live chat (Tawk.to)', 'Clavardage en direct (Tawk.to)')}</b><small>${x('Lets you write to Gevitha. Tawk.to receives your messages, IP address and the pages you view.', 'Vous permet d’écrire à Gevitha. Tawk.to reçoit vos messages, votre adresse IP et les pages consultées.')}</small></div>
       <label class="cc-switch"><input type="checkbox" data-cc-chat aria-label="${x('Live chat', 'Clavardage en direct')}"><span></span></label>
+    </div>
+    <div class="cc-row">
+      <div><b>${x('Ad measurement (Google Ads)', 'Mesure publicitaire (Google Ads)')}</b><small>${x('Tells us whether a Google ad led to a form submission. Google receives your IP address and the pages you view.', 'Nous indique si une publicité Google a mené à l’envoi d’un formulaire. Google reçoit votre adresse IP et les pages consultées.')}</small></div>
+      <label class="cc-switch"><input type="checkbox" data-cc-ads aria-label="${x('Ad measurement', 'Mesure publicitaire')}"><span></span></label>
     </div>
     <div class="cc-actions">
       <button type="button" data-cc-back>${x('Back', 'Retour')}</button>
@@ -260,7 +264,7 @@ function footer(l) {
   <div class="wrap foot-bottom">
     <p>© <span id="year">${new Date().getFullYear()}</span> Gevitha Kunaratnam · RE/MAX 2000 INC.</p>
     <p class="small">${t('indep', l)}</p>
-    <p class="small"><a href="${url(l, 'privacy')}">${LABEL.privacy[l]}</a></p>
+    <p class="small"><a href="${url(l, 'privacy')}">${LABEL.privacy[l]}</a> · <button type="button" class="link-btn" data-cc-reopen>${l === 'en' ? 'Cookie preferences' : 'Préférences de témoins'}</button></p>
   </div>
 </footer>
 ${chatLauncher(l)}
@@ -981,11 +985,11 @@ ${ctaBand(l, E ? 'Talk about your commercial project' : 'Parlons de votre projet
         <li><strong>Language choice</strong>: the site remembers French or English on your device. This is not tracking.</li>
       </ul>
       <h2>Cookies</h2>
-      <p>This site uses no advertising or analytics cookies. The only cookies come from the live chat, and only after you accept them in the cookie notice. Your choice is remembered for 30 days. If you decline, nothing is stored and the chat stays off. You can delete cookies at any time in your browser settings.</p>
+      <p>This site sets cookies only with your consent, given in the cookie notice: the live chat (Tawk.to) and advertising measurement (Google Ads), which tells me whether an ad led to a form submission. Your choice is remembered for 30 days. If you decline, none of them is loaded and nothing is stored. You can change your choice at any time with “Cookie preferences” at the bottom of each page. You can delete cookies at any time in your browser settings.</p>
       <h2>Emails about the market</h2>
       <p>I only send market reports and similar emails if you ticked the box on the report form. You can unsubscribe at any time by replying to an email or calling 514 570-2152.</p>
       <h2>Who else handles your information</h2>
-      <p>I do not sell your information. To run the site I use service providers that may process it outside Québec or Canada, including in the United States: Web3Forms (delivers form messages to my email), Tawk.to (live chat) and GitHub (hosts the website and keeps ordinary server logs). Within the brokerage, RE/MAX 2000 INC. may need access to handle a file.</p>
+      <p>I do not sell your information. To run the site I use service providers that may process it outside Québec or Canada, including in the United States: Web3Forms (delivers form messages to my email), Tawk.to (live chat), Google (Google Ads, advertising measurement) and GitHub (hosts the website and keeps ordinary server logs). Within the brokerage, RE/MAX 2000 INC. may need access to handle a file.</p>
       <h2>How long I keep it</h2>
       <p>I keep your information as long as needed for the reason you gave it, or as required by brokerage rules, then I delete or anonymize it.</p>
       <h2>Your rights</h2>
@@ -1000,11 +1004,11 @@ ${ctaBand(l, E ? 'Talk about your commercial project' : 'Parlons de votre projet
         <li><strong>Choix de langue</strong> : le site retient le français ou l’anglais sur votre appareil. Ce n’est pas du suivi.</li>
       </ul>
       <h2>Témoins (cookies)</h2>
-      <p>Ce site n’utilise aucun témoin publicitaire ni d’analyse. Les seuls témoins proviennent du clavardage, et seulement après que vous les avez acceptés dans l’avis de témoins. Votre choix est retenu pendant 30 jours. Si vous refusez, rien n’est enregistré et le clavardage reste désactivé. Vous pouvez supprimer les témoins en tout temps dans les paramètres de votre navigateur.</p>
+      <p>Ce site dépose des témoins seulement avec votre consentement, donné dans l’avis de témoins : le clavardage (Tawk.to) et la mesure publicitaire (Google Ads), qui m’indique si une publicité a mené à l’envoi d’un formulaire. Votre choix est retenu pendant 30 jours. Si vous refusez, aucun n’est chargé et rien n’est enregistré. Vous pouvez changer votre choix en tout temps avec « Préférences de témoins », au bas de chaque page. Vous pouvez supprimer les témoins en tout temps dans les paramètres de votre navigateur.</p>
       <h2>Courriels sur le marché</h2>
       <p>J’envoie des rapports du marché et des courriels semblables seulement si vous avez coché la case du formulaire de rapport. Vous pouvez vous désabonner en tout temps en répondant à un courriel ou en appelant le 514 570-2152.</p>
       <h2>Qui d’autre traite vos renseignements</h2>
-      <p>Je ne vends pas vos renseignements. Pour faire fonctionner le site, j’utilise des fournisseurs qui peuvent les traiter à l’extérieur du Québec ou du Canada, notamment aux États-Unis : Web3Forms (transmet les messages des formulaires à mon courriel), Tawk.to (clavardage) et GitHub (héberge le site et conserve les journaux habituels du serveur). Au sein du courtier, RE/MAX 2000 INC. peut avoir accès à un dossier au besoin.</p>
+      <p>Je ne vends pas vos renseignements. Pour faire fonctionner le site, j’utilise des fournisseurs qui peuvent les traiter à l’extérieur du Québec ou du Canada, notamment aux États-Unis : Web3Forms (transmet les messages des formulaires à mon courriel), Tawk.to (clavardage), Google (Google Ads, mesure publicitaire) et GitHub (héberge le site et conserve les journaux habituels du serveur). Au sein du courtier, RE/MAX 2000 INC. peut avoir accès à un dossier au besoin.</p>
       <h2>Durée de conservation</h2>
       <p>Je conserve vos renseignements aussi longtemps que nécessaire pour la raison pour laquelle vous les avez fournis, ou selon les règles du courtage, puis je les détruis ou les anonymise.</p>
       <h2>Vos droits</h2>
