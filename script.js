@@ -256,7 +256,7 @@
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
     window.gtag('js', new Date());
-    window.gtag('config', ADS_ID);
+    window.gtag('config', ADS_ID, { page_location: location.origin + location.pathname });
     var s = document.createElement('script');
     s.async = true;
     s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ADS_ID;
@@ -264,7 +264,7 @@
   }
   // called by the forms after a successful send
   window.adsConversion = function () {
-    if (adsOn && window.gtag) window.gtag('event', 'conversion', { send_to: ADS_CONVERSION });
+    if (adsOn && window.gtag) window.gtag('event', 'conversion', { send_to: ADS_CONVERSION, page_location: location.origin + location.pathname });
   };
 
   function remember(chat, ads) {
