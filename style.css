@@ -263,6 +263,10 @@ address strong{color:var(--ink)}
 .article .prose img{max-width:100%;height:auto;border-radius:16px;margin:1.6rem 0}
 .article .prose ul,.article .prose ol{color:var(--muted);font-size:1.08rem;padding-left:1.3rem}
 .article .prose blockquote{border-left:3px solid var(--olive);margin:1.6rem 0;padding:.2rem 0 .2rem 1.2rem;font-family:var(--font-head);font-size:1.3rem;color:var(--ink)}
+.article .prose table{display:block;overflow-x:auto;width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:1rem}
+.article .prose th,.article .prose td{padding:.65rem .8rem;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.article .prose th{background:var(--wash);font-weight:700;color:var(--ink)}
+.article .prose td{color:var(--muted)}
 .post-back{margin-top:2.6rem}
 .follow{margin-top:3.2rem;padding-top:2.4rem;border-top:1px solid var(--line);text-align:center}
 .follow h2{font-size:1.7rem}

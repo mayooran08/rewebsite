@@ -110,4 +110,16 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://gevithakunaratnam.ca/en/blog/"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://gevithakunaratnam.ca/fr/blogue/"/>
   </url>
+  <url>
+    <loc>https://gevithakunaratnam.ca/en/blog/property-whispers-nov-16-2026/</loc>
+    <lastmod>2026-11-16</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gevithakunaratnam.ca/en/blog/property-whispers-nov-16-2026/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gevithakunaratnam.ca/fr/blogue/property-whispers-16-novembre-2026/"/>
+  </url>
+  <url>
+    <loc>https://gevithakunaratnam.ca/fr/blogue/property-whispers-16-novembre-2026/</loc>
+    <lastmod>2026-11-16</lastmod>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://gevithakunaratnam.ca/fr/blogue/property-whispers-16-novembre-2026/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gevithakunaratnam.ca/en/blog/property-whispers-nov-16-2026/"/>
+  </url>
 </urlset>
